@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="ContratasApp.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:ContratasApp.Views"
+    FlyoutBehavior="Disabled"
+    Title="ContratasApp"
+    Shell.TabBarBackgroundColor="White"
+    Shell.TabBarForegroundColor="Black"  
+    Shell.TabBarTitleColor="Black"
+    Shell.TabBarUnselectedColor="Gray"
+    Shell.TabBarDisabledColor="Gray"
+    >
+    <Shell.Resources>
+        <Style 
+            TargetType="ShellItem">
+            <Setter 
+                Property="Shell.TabBarBackgroundColor" 
+                Value="LightGray" />
+        </Style>
+    </Shell.Resources>
+    
+    <TabBar>
+        <ShellContent
+            Title="Clients"
+            ContentTemplate="{DataTemplate views:ClientsPage}"
+            Route="ClientsView"
+            Icon="usericon.png"
+            />
+        
+        <ShellContent
+            Title="Settings"
+            ContentTemplate="{DataTemplate views:ConfigurationPage}"
+            Route="ConfigurationView"
+            Icon="settings.png"
+            />
+    </TabBar>
+
+</Shell>

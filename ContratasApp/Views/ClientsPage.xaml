@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<base:BasePage 
+    xmlns:base ="clr-namespace:ContratasApp.Views.Base"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:ContratasApp.ViewModels"
+    xmlns:models="clr-namespace:ContratasApp.Models"
+    xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
+    x:Class="ContratasApp.Views.ClientsPage"
+    x:DataType="vm:ClientsPageViewModel"
+    >
+    <Shell.TitleView>
+        <Grid
+            ColumnDefinitions="*,Auto"
+            >
+            <Label
+                Grid.Column="0"
+                Text="Clientes"
+                FontSize="30"
+                FontAttributes="Bold"
+            />
+            <Label
+                Grid.Column="1"
+                Text="{x:Static models:FaBrandIcons.Plus}"
+                FontSize="30"
+                FontAttributes="Bold">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer
+                        Command="{Binding AddClientCommand }" />
+                </Label.GestureRecognizers>
+            </Label>
+          
+        </Grid>
+    </Shell.TitleView>
+    
+    <ScrollView>
+         <VerticalStackLayout  
+             Padding="10">
+             <SearchBar 
+                 ios:SearchBar.SearchBarStyle="Minimal"
+                 Placeholder="Nombre del cliente" 
+                 />
+             <Grid 
+                 ColumnDefinitions="Auto,*"
+                 RowDefinitions="Auto"
+                 Padding="0,5"
+                 VerticalOptions="Start"
+                 HeightRequest="100">
+                
+                <Border 
+                    WidthRequest="50"
+                    HeightRequest="50"
+                    Padding="0"
+                    Margin="5,0"
+                    BackgroundColor="Transparent"
+                    HorizontalOptions="Start"
+                    VerticalOptions="Center"
+                    >
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="25" />
+                    </Border.StrokeShape>
+                    
+                    <Image 
+                        Source="feed1.jpg"
+                        Aspect="AspectFill" />
+                </Border>
+
+                <VerticalStackLayout Grid.Column="1" Margin="10,0" VerticalOptions="Center">
+                    <Label Text="Alondra" FontAttributes="Bold" FontSize="18"/>
+                    <Label Text="Numero de contratas: 5" FontSize="14" TextColor="Gray"/>
+                </VerticalStackLayout>
+            </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
+    
+</base:BasePage>
+

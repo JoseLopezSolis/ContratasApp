@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<base:BasePage 
+    xmlns:base ="clr-namespace:ContratasApp.Views.Base"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="ContratasApp.Views.AddClientPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Done"
+                     Priority="1"
+                     Order="Primary"
+                     IsEnabled="False"/>
+    </ContentPage.ToolbarItems>
+    
+    <VerticalStackLayout>
+        <Image
+            Margin="0,20"
+            Source="client.png"
+            WidthRequest="120"
+            HeightRequest="120"/>
+       <Button
+           Text="Add Photo"
+           WidthRequest="150"
+           Margin="0,20"
+           BackgroundColor="Transparent"
+           TextColor="{StaticResource Black}"
+           FontAttributes="Bold"
+           />
+       
+           <Entry
+               Placeholder="Name"
+               FontSize="12"
+           />
+        
+           <Entry
+               Placeholder="Apellidos"
+               FontSize="12"
+               />
+               
+           <Entry
+               Placeholder="Numero celular"
+               FontSize="12"
+               />
+      
+       
+    </VerticalStackLayout>
+    
+</base:BasePage>
