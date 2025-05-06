@@ -41,7 +41,23 @@
                Placeholder="Numero celular"
                FontSize="12"
                />
+        
+        <Picker Title="Select Gender" x:Name="GenderPicker">
+            <Picker.Items>
+                <x:String>Male</x:String>
+                <x:String>Female</x:String>
+                <x:String>Other</x:String>
+                <x:String>Prefer not to say</x:String>
+            </Picker.Items>
+        </Picker>
       
+        
+        <Picker Title="Select Payment Method" x:Name="PaymentPicker">
+            <Picker.Items>
+                <x:String>Cash</x:String>
+                <x:String>Card</x:String>
+            </Picker.Items>
+        </Picker>
        
     </VerticalStackLayout>
     
