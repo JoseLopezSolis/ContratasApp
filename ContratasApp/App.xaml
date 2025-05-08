@@ -9,6 +9,12 @@
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <converters:BoolToArchiveColorConverter
+                x:Key="BoolToArchiveColor"
+                xmlns:converters="clr-namespace:ContratasApp.Converters" />
+            <converters:InverseBoolConverter
+                x:Key="InverseBoolConverter"
+                xmlns:converters="clr-namespace:ContratasApp.Converters" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

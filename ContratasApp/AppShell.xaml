@@ -26,7 +26,7 @@
             Title="Clients"
             ContentTemplate="{DataTemplate views:ClientsPage}"
             Route="ClientsView"
-            Icon="usericon.png"
+            Icon="client.png"
             />
         
         <ShellContent

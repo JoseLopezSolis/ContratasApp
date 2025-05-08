@@ -4,5 +4,29 @@
     xmlns:base ="clr-namespace:ContratasApp.Views.Base"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:ContratasApp.ViewModels"
+    x:DataType="vm:ClientPageViewModel"
     x:Class="ContratasApp.Views.ClientPage">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+            <!-- Foto -->
+            <Border WidthRequest="120" HeightRequest="120">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="60" />
+                </Border.StrokeShape>
+                <Image Source="{Binding Client.ImagePath}"
+                       Aspect="AspectFill" />
+            </Border>
+
+            <!-- Datos -->
+            <Label Text="{Binding Client.Name}"
+                   Style="{StaticResource TitleLabelStyle}" />
+            <Label Text="{Binding Client.Email}"
+                   Style="{StaticResource SubtitleLabelStyle}" />
+            <Label Text="{Binding Client.Phone}"
+                   Style="{StaticResource SubtitleLabelStyle}" />
+            <Label Text="{Binding Client.PaymentMethod}"
+                   Style="{StaticResource SubtitleLabelStyle}" />
+        </VerticalStackLayout>
+    </ScrollView>
 </base:BasePage>
