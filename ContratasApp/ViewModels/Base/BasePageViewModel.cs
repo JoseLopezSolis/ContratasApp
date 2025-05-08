@@ -33,6 +33,9 @@ public class BasePageViewModel : ObservableObject, IViewModel, IQueryAttributabl
     protected virtual void InitProperties()
     {
     }
+    
+    public virtual Task InitializeAsync(object navigationData)
+        => Task.CompletedTask;
 
     #endregion
 }
