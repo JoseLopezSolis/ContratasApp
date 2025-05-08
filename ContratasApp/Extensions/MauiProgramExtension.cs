@@ -33,6 +33,7 @@ public static class MauiProgramExtension
     public static MauiAppBuilder RegisterShellRoutes(this MauiAppBuilder builder)
     {
         builder.Services.AddTransientWithShellRoute<AddClientPage, AddClientPageViewModel>(RouteConstants.AddClientPageRoute);
+        builder.Services.AddTransientWithShellRoute<ClientPage, ClientPageViewModel>(RouteConstants.ClientPageRoute);
 
         return builder;
     }
@@ -45,6 +46,11 @@ public static class MauiProgramExtension
     public static MauiAppBuilder RegisterServices(this MauiAppBuilder builder)
     {
         builder.Services.AddSingleton<INavigationService, NavigationService>();
+        builder.Services.AddSingleton<IClientService>(sp =>
+        {
+            var dbPath = Path.Combine(FileSystem.AppDataDirectory, "clients.db3");
+            return new ClientService(dbPath);
+        });
         
         return builder;
     }
