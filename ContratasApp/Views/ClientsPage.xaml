@@ -78,33 +78,84 @@
 
                         <!-- Acciones al deslizar -->
                         <SwipeView.RightItems>
-                            <SwipeItems Mode="Reveal">
+  <SwipeItems Mode="Reveal">
 
-                                <!-- Edit siempre visible -->
-                                <SwipeItem
-                                    Text="✎"
-                                    BackgroundColor="LightBlue"
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ClientsPageViewModel}}, Path=EditClientCommand}"
-                                    CommandParameter="{Binding .}" />
+    <!-- EDIT -->
+    <SwipeItemView
+      WidthRequest="48"
+      HeightRequest="48"
+      BackgroundColor="LightBlue">
+      <Grid
+        WidthRequest="48"
+        HeightRequest="48"
+        HorizontalOptions="Fill"
+        VerticalOptions="Fill">
+        <ImageButton
+          Source="edit_icon.png"
+          Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ClientsPageViewModel}}, Path=EditClientCommand}"
+          CommandParameter="{Binding .}"
+          BackgroundColor="Transparent" />
+      </Grid>
+    </SwipeItemView>
 
-                                <!-- Archive: sólo cuando NO estamos viendo archivados -->
-                                <SwipeItem
-                                    Text="📥"
-                                    BackgroundColor="LightGray"
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ClientsPageViewModel}}, Path=ArchiveClientCommand}"
-                                    CommandParameter="{Binding .}"
-                                    IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:ClientsPageViewModel}}, Path=ShowArchived, Converter={StaticResource InverseBoolConverter}}" />
+    <!-- ARCHIVE (sólo si no está archivado) -->
+    <SwipeItemView
+      WidthRequest="48"
+      HeightRequest="48"
+      BackgroundColor="LightGray"
+      IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:ClientsPageViewModel}}, Path=ShowArchived, Converter={StaticResource InverseBoolConverter}}">
+      <Grid
+        WidthRequest="48"
+        HeightRequest="48"
+        HorizontalOptions="Fill"
+        VerticalOptions="Fill">
+        <ImageButton
+          Source="archive_icon.png"
+          Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ClientsPageViewModel}}, Path=ArchiveClientCommand}"
+          CommandParameter="{Binding .}"
+          BackgroundColor="Transparent" />
+      </Grid>
+    </SwipeItemView>
 
-                                <!-- Unarchive: sólo cuando SÍ estamos viendo archivados -->
-                                <SwipeItem
-                                    Text="📤"
-                                    BackgroundColor="LightGreen"
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ClientsPageViewModel}}, Path=UnarchiveClientCommand}"
-                                    CommandParameter="{Binding .}"
-                                    IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:ClientsPageViewModel}}, Path=ShowArchived}" />
+    <!-- DELETE -->
+    <SwipeItemView
+      WidthRequest="48"
+      HeightRequest="48"
+      BackgroundColor="Tomato">
+      <Grid
+        WidthRequest="48"
+        HeightRequest="48"
+        HorizontalOptions="Fill"
+        VerticalOptions="Fill">
+        <ImageButton
+          Source="delete_icon.png"
+          Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ClientsPageViewModel}}, Path=DeleteClientCommand}"
+          CommandParameter="{Binding .}"
+          BackgroundColor="Transparent" />
+      </Grid>
+    </SwipeItemView>
 
-                            </SwipeItems>
-                        </SwipeView.RightItems>
+    <!-- UNARCHIVE (sólo si está archivado) -->
+    <SwipeItemView
+      WidthRequest="48"
+      HeightRequest="48"
+      BackgroundColor="LightGreen"
+      IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:ClientsPageViewModel}}, Path=ShowArchived}">
+      <Grid
+        WidthRequest="48"
+        HeightRequest="48"
+        HorizontalOptions="Fill"
+        VerticalOptions="Fill">
+        <ImageButton
+          Source="unarchive_icon.png"
+          Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ClientsPageViewModel}}, Path=UnarchiveClientCommand}"
+          CommandParameter="{Binding .}"
+          BackgroundColor="Transparent" />
+      </Grid>
+    </SwipeItemView>
+
+  </SwipeItems>
+</SwipeView.RightItems>
 
                         <!-- Tarjeta principal -->
                         <Border 

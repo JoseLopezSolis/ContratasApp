@@ -157,5 +157,25 @@ namespace ContratasApp.ViewModels;
             await Shell.Current.GoToAsync(
                 $"{RouteConstants.ClientPageRoute}?clientId={client.Id}");
         }
+        
+        //Command to delete a client from the database
+        [RelayCommand]
+        async Task DeleteClientAsync(Client client)
+        {
+            if (client is null)
+                return;
+
+            // Ask confirmation
+            bool answer = await Application.Current.MainPage
+                .DisplayAlert("Eliminar cliente",
+                    $"¿Seguro que quieres eliminar a {client.Name}?",
+                    "Sí", "No");
+            if (!answer)
+                return;
+
+            // Delete and refresh
+            await _clientService.DeleteAsync(client);
+            await RefreshAsync();
+        }
     }
 
