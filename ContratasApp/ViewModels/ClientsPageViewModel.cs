@@ -1,5 +1,4 @@
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ContratasApp.Helpers;
@@ -11,52 +10,90 @@ namespace ContratasApp.ViewModels;
 
     public partial class ClientsPageViewModel : BasePageViewModel
     {
+        #region Services
         readonly IClientService _clientService;
-        
+        readonly IContractService _contractService;
         readonly INavigationService _navigationService;
-
+        #endregion
+        
+        #region Observable properties
+        
         [ObservableProperty] ObservableCollection<Client> clients = new();
 
         [ObservableProperty] private ObservableCollection<Client> filteredClients = new();
         
         [ObservableProperty] string searchText;
         
-        [ObservableProperty]
-        bool isRefreshing;
-
-        // Nueva bandera que indica si mostramos archivados
-        [ObservableProperty] private bool showArchived;
+        [ObservableProperty] bool isRefreshing;
         
+        [ObservableProperty] private bool showArchived;
+
+        #endregion
+
+        #region Constructor
 
         public ClientsPageViewModel(
             IClientService clientService,
+            IContractService contractService,
             INavigationService navigationService)
             : base(navigationService)
         {
             _clientService = clientService;
             _navigationService = navigationService;
+            _contractService = contractService;
             showArchived = false;
         }
-        
-        // Texto dinámico para el botón
+
+        #endregion
+
+        #region OnChanged Methods
         public string ArchiveButtonText 
             => ShowArchived ? "Archived" : "Active";
         
-        // Comando que alterna bandera y recarga
+        partial void OnSearchTextChanged(string value)
+            => SearchCommand.Execute(null);
+        
+        public override void OnAppearing()
+        {
+            base.OnAppearing();
+            if (RefreshCommand.CanExecute(null))
+                RefreshCommand.Execute(null);
+        }
+        
+        public override async Task InitializeAsync(object navigationData)
+        {
+            // 1) trae todos los clientes activos
+            var lista = await _clientService.GetAllAsync();
+            Clients.Clear();
+
+            // 2) por cada uno, carga sus contratas
+            foreach (var c in lista)
+            {
+                var contratos = await _contractService
+                    .GetByClientIdAsync(c.Id);
+
+                // asigna la lista al cliente
+                c.Contracts = new ObservableCollection<LoanContract>(
+                    (IEnumerable<LoanContract>)contratos.OrderByDescending(x => x.StartDate));
+
+                Clients.Add(c);
+            }
+        }
+        
+        #endregion
+        
+        #region Relay Commands 
         [RelayCommand]
         async Task ToggleArchivedAsync()
         {
             ShowArchived = !ShowArchived;
             OnPropertyChanged(nameof(ArchiveButtonText));
-            await RefreshAsync();   // <--- aquí recargas según la nueva bandera
+            await RefreshAsync();  
         }
-
+        
         [RelayCommand]
         async Task RefreshAsync()
         {
-            // DEBUG: 
-            Debug.WriteLine($"RefreshAsync – ShowArchived={ShowArchived}");
-
             var list = ShowArchived
                 ? await _clientService.GetArchivedAsync()
                 : await _clientService.GetAllAsync();
@@ -73,29 +110,25 @@ namespace ContratasApp.ViewModels;
         [RelayCommand]
         async Task UnarchiveClientAsync(Client client)
         {
-            if (client == null) return;
-
-            bool ok = await Application.Current.MainPage
-                .DisplayAlert("Desarchivar",
-                    $"¿Quieres desarchivar a {client.Name}?",
-                    "Sí", "No");
+            bool ok = await Application.Current?.MainPage
+                .DisplayAlert("Unarchive",
+                    $"Do you want to Unarchive {client.Name}?",
+                    "Yes", "No");
             if (!ok) return;
 
             client.IsArchived = false;
             await _clientService.UpdateAsync(client);
-            await RefreshAsync(); // recarga lista según ShowArchived
+            await RefreshAsync(); // Reload the list 
         }
-
+        
         
         [RelayCommand]
         async Task EditClientAsync(Client client)
         {
-            if (client == null) return;
             await NavigationService.GoToAsync(
                 $"{RouteConstants.AddClientPageRoute}?clientId={client.Id}");
         }
         
-        // Nuevo: archivar
         [RelayCommand]
         async Task ArchiveClientAsync(Client client)
         {
@@ -110,8 +143,7 @@ namespace ContratasApp.ViewModels;
             await _clientService.ArchiveAsync(client);
             await RefreshAsync();
         }
-        
-        // Comando que filtra según SearchText
+       
         [RelayCommand]
         void Search()
         {
@@ -128,54 +160,33 @@ namespace ContratasApp.ViewModels;
                 FilteredClients.Add(c);
         }
         
-         // Cada vez que cambie SearchText, lanzamos automáticamente la búsqueda
-         partial void OnSearchTextChanged(string value)
-             => SearchCommand.Execute(null);
-
-        public override void OnAppearing()
-        {
-            base.OnAppearing();
-            // Dispara la carga inicial
-            if (RefreshCommand.CanExecute(null))
-                RefreshCommand.Execute(null);
-        }
-        
-        //Method to go to a new view
         [RelayCommand]
         async Task AddClient()
         {
             await NavigationService.GoToAsync(RouteConstants.AddClientPageRoute);
         }
         
-        // Comando que toma un Client y navega a detalle
         [RelayCommand]
         async Task NavigateToDetailAsync(Client client)
         {
-            if (client == null) return;
-
-            // Shell URI with query
             await Shell.Current.GoToAsync(
                 $"{RouteConstants.ClientPageRoute}?clientId={client.Id}");
         }
         
-        //Command to delete a client from the database
         [RelayCommand]
         async Task DeleteClientAsync(Client client)
         {
-            if (client is null)
-                return;
-
-            // Ask confirmation
             bool answer = await Application.Current.MainPage
-                .DisplayAlert("Eliminar cliente",
-                    $"¿Seguro que quieres eliminar a {client.Name}?",
-                    "Sí", "No");
+                .DisplayAlert("Remove Client",
+                    $"Are you sure you want to remove {client.Name}?",
+                    "Yes", "No");
             if (!answer)
                 return;
 
-            // Delete and refresh
             await _clientService.DeleteAsync(client);
             await RefreshAsync();
         }
+        
+        #endregion
     }
 

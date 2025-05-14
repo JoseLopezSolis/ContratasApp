@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <base:BasePage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:base ="clr-namespace:ContratasApp.Views.Base"
     xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:vm="clr-namespace:ContratasApp.ViewModels"
     xmlns:models="clr-namespace:ContratasApp.Models"
@@ -12,34 +12,31 @@
     <Shell.TitleView>
         <Grid 
             ColumnDefinitions="*,Auto,Auto" 
-            ColumnSpacing="15">
+            ColumnSpacing="10">
             <Label
                 Grid.Column="0"
+                Style="{StaticResource TitleLabel}"
                 Text="Clients"
-                FontFamily="SfProBold"
-                FontAttributes="Bold"
-                FontSize="30"
-                VerticalOptions="Center" />
+                />
 
             <Label
                 Grid.Column="1"
+                Style="{StaticResource CustomHeaderLabel}"
                 Text="{Binding ArchiveButtonText}"
-                FontSize="18"
-                FontAttributes="Bold"
-                TextColor="{Binding ShowArchived, Converter={StaticResource BoolToArchiveColor}}"
-                VerticalOptions="Center">
+                TextColor="{Binding ShowArchived,
+                Converter={StaticResource BoolToArchiveColor}}"
+                >
                 <Label.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding ToggleArchivedCommand}" />
+                    <TapGestureRecognizer 
+                        Command="{Binding ToggleArchivedCommand}" />
                 </Label.GestureRecognizers>
             </Label>
 
             <Label
                 Grid.Column="2"
+                Style="{StaticResource CustomHeaderIcon}"
                 Text="{x:Static models:FaBrandIcons.Plus}"
-                FontSize="30"
-                FontAttributes="Bold"
-                VerticalOptions="Center"
-                Margin="10,0">
+                >
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer
                         Command="{Binding AddClientCommand}" />
@@ -52,168 +49,151 @@
         RowDefinitions="Auto,*,Auto"
         Padding="16"
         >
-    <SearchBar
-        Grid.Row="0"
-        Placeholder="Search clients"
-        Text="{Binding SearchText}"
-        SearchCommand="{Binding SearchCommand}"
-        ios:SearchBar.SearchBarStyle="Minimal"
-        />
+        <SearchBar
+            Grid.Row="0"
+            Placeholder="Search Client"
+            Text="{Binding SearchText}"
+            SearchCommand="{Binding SearchCommand}"
+            ios:SearchBar.SearchBarStyle="Minimal"
+            />
 
-    <RefreshView
-        Grid.Row="1"
-        IsRefreshing="{Binding RefreshCommand.IsRunning}"
-        Command="{Binding RefreshCommand}"
-        VerticalOptions="Fill">
+        <RefreshView
+            Grid.Row="1"
+            IsRefreshing="{Binding RefreshCommand.IsRunning}"
+            Command="{Binding RefreshCommand}"
+            >
 
-        <CollectionView
-            ItemsSource="{Binding FilteredClients}"
-            EmptyView="There is no clients added"
-            SelectionMode="None"
-            VerticalOptions="FillAndExpand">
+            <CollectionView
+                ItemsSource="{Binding FilteredClients}"
+                EmptyView="No Clients added"
+                SelectionMode="None"
+                >
 
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="models:Client">
-                    <SwipeView>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Client">
+                        <SwipeView>
+                            
+                            <SwipeView.RightItems>
+                                <SwipeItems Mode="Reveal">
 
-                        <!-- Acciones al deslizar -->
-                        <SwipeView.RightItems>
-  <SwipeItems Mode="Reveal">
+                                    <!-- EDIT -->
+                                    <SwipeItemView
+                                        Style="{StaticResource SwipeItemCustomStyle}"
+                                        >
+                                            <ImageButton
+                                                  Style="{StaticResource ImageButton}"
+                                                  Source="edit.png"
+                                                  Command="{Binding 
+                                                  Source={RelativeSource AncestorType={x:Type vm:ClientsPageViewModel}},
+                                                  Path=EditClientCommand}"
+                                                  CommandParameter="{Binding .}"
+                                                  />
+                                    </SwipeItemView>
 
-    <!-- EDIT -->
-    <SwipeItemView
-      WidthRequest="48"
-      HeightRequest="48"
-      BackgroundColor="LightBlue">
-      <Grid
-        WidthRequest="48"
-        HeightRequest="48"
-        HorizontalOptions="Fill"
-        VerticalOptions="Fill">
-        <ImageButton
-          Source="edit_icon.png"
-          Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ClientsPageViewModel}}, Path=EditClientCommand}"
-          CommandParameter="{Binding .}"
-          BackgroundColor="Transparent" />
-      </Grid>
-    </SwipeItemView>
+                                    <!-- ARCHIVE -->
+                                    <SwipeItemView
+                                        Style="{StaticResource SwipeItemCustomStyle}"
+                                        IsVisible="{Binding 
+                                        Source={RelativeSource AncestorType={x:Type vm:ClientsPageViewModel}},
+                                        Path=ShowArchived, 
+                                        Converter={StaticResource InverseBoolConverter}}">
+                                        
+                                            <ImageButton
+                                                Style="{StaticResource ImageButton}"
+                                                Source="archive.png"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ClientsPageViewModel}}, 
+                                                Path=ArchiveClientCommand}"
+                                                CommandParameter="{Binding .}"
+                                                />
+                                    </SwipeItemView>
 
-    <!-- ARCHIVE (sólo si no está archivado) -->
-    <SwipeItemView
-      WidthRequest="48"
-      HeightRequest="48"
-      BackgroundColor="LightGray"
-      IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:ClientsPageViewModel}}, Path=ShowArchived, Converter={StaticResource InverseBoolConverter}}">
-      <Grid
-        WidthRequest="48"
-        HeightRequest="48"
-        HorizontalOptions="Fill"
-        VerticalOptions="Fill">
-        <ImageButton
-          Source="archive_icon.png"
-          Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ClientsPageViewModel}}, Path=ArchiveClientCommand}"
-          CommandParameter="{Binding .}"
-          BackgroundColor="Transparent" />
-      </Grid>
-    </SwipeItemView>
+                                    <!-- DELETE -->
+                                    <SwipeItemView
+                                        Style="{StaticResource SwipeItemCustomStyle}">
+                                        
+                                            <ImageButton
+                                                Style="{StaticResource ImageButton}"
+                                                Source="trash.png"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ClientsPageViewModel}},
+                                                Path=DeleteClientCommand}"
+                                                CommandParameter="{Binding .}"
+                                                />
+                                            
+                                    </SwipeItemView>
 
-    <!-- DELETE -->
-    <SwipeItemView
-      WidthRequest="48"
-      HeightRequest="48"
-      BackgroundColor="Tomato">
-      <Grid
-        WidthRequest="48"
-        HeightRequest="48"
-        HorizontalOptions="Fill"
-        VerticalOptions="Fill">
-        <ImageButton
-          Source="delete_icon.png"
-          Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ClientsPageViewModel}}, Path=DeleteClientCommand}"
-          CommandParameter="{Binding .}"
-          BackgroundColor="Transparent" />
-      </Grid>
-    </SwipeItemView>
+                                    <!-- UNARCHIVE -->
+                                    <SwipeItemView
+                                        Style="{StaticResource SwipeItemCustomStyle}"
+                                        IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:ClientsPageViewModel}},
+                                        Path=ShowArchived}">
+                                        
+                                            <ImageButton
+                                                Style="{StaticResource ImageButton}"
+                                                Source="unarchive.png"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ClientsPageViewModel}},
+                                                Path=UnarchiveClientCommand}"
+                                                CommandParameter="{Binding .}"
+                                             />
+                                    </SwipeItemView>
 
-    <!-- UNARCHIVE (sólo si está archivado) -->
-    <SwipeItemView
-      WidthRequest="48"
-      HeightRequest="48"
-      BackgroundColor="LightGreen"
-      IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:ClientsPageViewModel}}, Path=ShowArchived}">
-      <Grid
-        WidthRequest="48"
-        HeightRequest="48"
-        HorizontalOptions="Fill"
-        VerticalOptions="Fill">
-        <ImageButton
-          Source="unarchive_icon.png"
-          Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ClientsPageViewModel}}, Path=UnarchiveClientCommand}"
-          CommandParameter="{Binding .}"
-          BackgroundColor="Transparent" />
-      </Grid>
-    </SwipeItemView>
+                                </SwipeItems>
+                            </SwipeView.RightItems>
 
-  </SwipeItems>
-</SwipeView.RightItems>
-
-                        <!-- Tarjeta principal -->
+                            
                         <Border 
-                            Padding="10"
-                            Margin="0,5"
-                            StrokeShape="RoundRectangle, 10"
-                            BackgroundColor="{StaticResource White}"
+                            Style="{StaticResource BorderClient}"
                             >
                             
                             <!-- Gesto para navegar al detalle -->
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ClientsPageViewModel}}, Path=NavigateToDetailCommand}"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ClientsPageViewModel}},
+                                    Path=NavigateToDetailCommand}"
                                     CommandParameter="{Binding .}" />
                             </Border.GestureRecognizers>
                             
-                            <HorizontalStackLayout Spacing="12">
+                            <HorizontalStackLayout 
+                                Spacing="12">
                                 <!-- Imagen circular -->
                                 <Border
-                                    WidthRequest="60"
-                                    HeightRequest="60"
-                                    Padding="0"
-                                    HorizontalOptions="Center"
-                                    VerticalOptions="Center">
+                                    Style="{StaticResource ItemClientLayout}"
+                                    >
                                     <Border.StrokeShape>
                                         <RoundRectangle CornerRadius="30" />
                                     </Border.StrokeShape>
 
                                     <Image
+                                        Style="{StaticResource ImageItemStyle}"
                                         Source="{Binding ImagePath}"
-                                        Aspect="AspectFill"
-                                        WidthRequest="60"
-                                        HeightRequest="60" />
+                                        />
                                 </Border>
 
                                 <!-- Datos -->
-                                <VerticalStackLayout VerticalOptions="CenterAndExpand" Spacing="2">
+                                <VerticalStackLayout 
+                                    VerticalOptions="CenterAndExpand" 
+                                    Spacing="2">
                                     <Label 
                                         Text="{Binding Name}" 
-                                        Style="{StaticResource TitleLabelStyle}" />
+                                        Style="{StaticResource UsernameCardLabel}" />
+                                    
                                     <Label 
-                                        Text="{Binding Email}" 
-                                        Style="{StaticResource SubtitleLabelStyle}" />
+                                        Text="{Binding ContractsCount, 
+                                        StringFormat='Préstamos: {0}'}" />
+                                    
                                 </VerticalStackLayout>
                             </HorizontalStackLayout>
                         </Border>
                     </SwipeView>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
-
         </CollectionView>
     </RefreshView>
 
     <Label
         Grid.Row="2"
-        Text="{Binding Clients.Count, StringFormat='Total Clients: {0}'}"
+        Text="{Binding Clients.Count,
+        StringFormat='Total Clients: {0}'}"
         HorizontalOptions="Center"
-        Style="{StaticResource SubtitleLabelStyle}"
          />
 
   </Grid>

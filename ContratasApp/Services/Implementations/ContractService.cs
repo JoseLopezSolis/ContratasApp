@@ -50,16 +50,25 @@ public class ContractService : IContractService
                     IsPaid     = false
                 });
         }
-
         // 3) Inserta todas las cuotas en bloque
+        contract.CreatedAt = DateTime.Now;
         await _db.InsertAllAsync(schedules);
         return id;
     }
     
-    public Task<List<LoanContract>> GetByClientIdAsync(int clientId) =>
-        _db.Table<LoanContract>()
+    public async Task<List<LoanContract>> GetByClientIdAsync(int clientId)
+    {
+        return await _db.Table<LoanContract>()
             .Where(c => c.ClientId == clientId)
+            .OrderByDescending(c => c.CreatedAt)
             .ToListAsync();
+    }
+
+    public Task<LoanContract> GetByIdAsync(int contractId)
+    {
+        // Option A: use FindAsync
+        return _db.FindAsync<LoanContract>(contractId);
+    }
 
     public Task<List<PaymentSchedule>> GetPaymentSchedulesAsync(int contractId) =>
         _db.Table<PaymentSchedule>()
@@ -70,6 +79,7 @@ public class ContractService : IContractService
     public async Task MarkPaymentAsPaidAsync(PaymentSchedule payment)
     {
         // Marca como pagado
+        payment.PaidDate = DateTime.Now;
         payment.IsPaid = true;
         await _db.UpdateAsync(payment);
 

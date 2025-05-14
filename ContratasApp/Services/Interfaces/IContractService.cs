@@ -18,4 +18,6 @@ public interface IContractService
 
     // 5) Cierra un contrato manualmente
     Task CloseContractAsync(int contractId);
+    //Get contract by id
+    Task<LoanContract> GetByIdAsync(int contractId);
 }

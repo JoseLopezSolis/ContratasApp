@@ -11,11 +11,17 @@
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <converters:BoolToArchiveColorConverter
-                x:Key="BoolToArchiveColor"
-                xmlns:converters="clr-namespace:ContratasApp.Converters" />
+                x:Key="BoolToArchiveColor"/>
+            
             <converters:InverseBoolConverter
-                x:Key="InverseBoolConverter"
-                xmlns:converters="clr-namespace:ContratasApp.Converters" />
+                x:Key="InverseBoolConverter"/>
+            
+            <converters:HasPendingPaymentsConverter
+                x:Key="HasPendingPaymentsConverter" />
+            
+            <converters:BoolToCheckmarkConverter 
+                x:Key="BoolToCheckmarkConverter" />
+            
         </ResourceDictionary>
     </Application.Resources>
 </Application>
