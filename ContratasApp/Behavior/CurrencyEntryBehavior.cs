@@ -28,7 +28,7 @@ public class CurrencyEntryBehavior : Behavior<Entry>
         if (decimal.TryParse(newText, out var amount) && amount > 0)
         {
             // Format the decimal amount to the desired currency format
-            string formattedAmount = $"{amount / 100:C}";
+            string formattedAmount = $"{amount / 100}";
 
             // Set the formatted text to the Entry
             entry.Text = formattedAmount;

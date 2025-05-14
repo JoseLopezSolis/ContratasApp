@@ -26,15 +26,16 @@
             Title="Clients"
             ContentTemplate="{DataTemplate views:ClientsPage}"
             Route="ClientsView"
-            Icon="client.png"
+            Icon="customer.png"
             />
         
         <ShellContent
             Title="Settings"
             ContentTemplate="{DataTemplate views:ConfigurationPage}"
             Route="ConfigurationView"
-            Icon="settings.png"
+            Icon="settingsicon.png"
             />
+        
     </TabBar>
 
 </Shell>

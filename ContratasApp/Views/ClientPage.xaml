@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <base:BasePage 
     xmlns:base ="clr-namespace:ContratasApp.Views.Base"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
@@ -8,83 +7,108 @@
     xmlns:models="clr-namespace:ContratasApp.Models"
     x:DataType="vm:ClientPageViewModel"
     x:Class="ContratasApp.Views.ClientPage">
-    <ScrollView>
-        <VerticalStackLayout 
-            Padding="20" 
-            Spacing="20">
-            <!-- Foto -->
-            <Border WidthRequest="120" HeightRequest="120">
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="60" />
-                </Border.StrokeShape>
-                <Image 
-                    Source="{Binding Client.ImagePath}"
-                    Aspect="AspectFill" />
-            </Border>
+    <VerticalStackLayout 
+        >
+        <Border 
+            Style="{StaticResource BorderClientInformation}">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="60" />
+            </Border.StrokeShape>
+            <Image 
+                Source="{Binding Client.ImagePath}"
+                Aspect="AspectFill" />
+        </Border>
+        
+        <VerticalStackLayout>
+            <Grid
+                ColumnDefinitions="*"
+                RowDefinitions="Auto,Auto,Auto,Auto"
+                Padding="0"
+                Margin="0"
+                RowSpacing="5">
+    
+                <Label 
+                    Grid.Row="0" 
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3"
+                    HorizontalOptions="Center"
+                    FontSize="30"
+                    FontAttributes="Bold"
+                    Text="{Binding Client.Name, StringFormat='{0}'}" />
+    
+                <!-- <Label  -->
+                <!--     Grid.Row="1"  -->
+                <!--     Grid.Column="0" -->
+                <!--     Grid.ColumnSpan="3" -->
+                <!--     HorizontalOptions="Start" -->
+                <!--     Text="{Binding Client.Email, StringFormat='Email: {0}'}" /> -->
 
-            <!-- Datos -->
-            <Label 
-                Text="{Binding Client.Name}"
-                Style="{StaticResource TitleLabelStyle}" />
-            <Label 
-                Text="{Binding Client.Email}"
-                Style="{StaticResource SubtitleLabelStyle}" />
-            <Label 
-                Text="{Binding Client.Phone}"
-                Style="{StaticResource SubtitleLabelStyle}" />
-            <Label 
-                Text="{Binding Client.PaymentMethod}"
-                Style="{StaticResource SubtitleLabelStyle}" />
-            
-            <Button
-                Text="Agregar Contrata"
-                Command="{Binding CreateContractCommand}"
-                CommandParameter="{Binding Client}"
-                HorizontalOptions="Center"
-                Margin="0,20,0,0" />
-            
-            <CollectionView
-                ItemsSource="{Binding Contracts}"
-                EmptyView="Este cliente no tiene préstamos"
-                SelectionMode="Single"
-                SelectionChangedCommand="{Binding NavigateToContractDetailCommand}"
-                SelectionChangedCommandParameter="{Binding SelectedItem}"
-                VerticalOptions="FillAndExpand">
+                <Label 
+                    Grid.Row="2" 
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3"
+                    HorizontalOptions="Center"
+                    Text="{Binding Client.Phone, StringFormat='Phone: {0}'}" />
 
-                <CollectionView.ItemTemplate>
-                    <DataTemplate 
-                        x:DataType="models:LoanContract">
-                        <Border Padding="12" Margin="0,5">
-                            <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto">
-                                <!-- Monto -->
+                <!-- <Label  -->
+                <!--     Grid.Row="3"  -->
+                <!--     Grid.Column="0" -->
+                <!--     Grid.ColumnSpan="3" -->
+                <!--     HorizontalOptions="Start" -->
+                <!--     Text="{Binding Client.PaymentMethod, StringFormat='Method of payment: {0}'}" /> -->
+            </Grid>
+        </VerticalStackLayout>
+      
+        
+          
+        
+        
+        <CollectionView
+            x:Name="ContractsView"
+            ItemsSource="{Binding Contracts}"
+            EmptyView="Este cliente no tiene préstamos"
+            SelectionMode="Single"
+            SelectedItem="{Binding SelectedContract, Mode=TwoWay}"
+            VerticalOptions="FillAndExpand">
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate 
+                    x:DataType="models:LoanContract">
+                    <Border Padding="12" Margin="0,4">
+                        <VerticalStackLayout Spacing="5">
+
+                            <!-- Monto y estado -->
+                            <Grid ColumnDefinitions="*,Auto">
                                 <Label
-                                    Grid.Row="0" Grid.Column="0"
                                     Text="{Binding Principal, StringFormat='{}{0:C0}'}"
                                     Style="{StaticResource TitleLabelStyle}" />
-                                <!-- Fecha de inicio -->
                                 <Label
-                                    Grid.Row="0" Grid.Column="1"
-                                    Text="{Binding StartDate, StringFormat='{0:dd/MM/yyyy}'}"
-                                    Style="{StaticResource SubtitleLabelStyle}"
-                                    HorizontalOptions="End" />
-
-                                <!-- Tipo de préstamo -->
-                                <Label
-                                    Grid.Row="1" Grid.Column="0"
-                                    Text="{Binding Type}"
-                                    Style="{StaticResource SubtitleLabelStyle}" />
-                                <!-- Estado -->
-                                <Label
-                                    Grid.Row="1" Grid.Column="1"
                                     Text="{Binding IsClosed}"
-                                    Style="{StaticResource SubtitleLabelStyle}"
                                     HorizontalOptions="End" />
                             </Grid>
-                        </Border>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-            
-        </VerticalStackLayout>
-    </ScrollView>
+
+                            <!-- Fecha de creación -->
+                            <Label
+                                Text="{Binding CreatedAt, StringFormat='Creado: {0:dd/MM/yyyy HH:mm}'}"
+                                Style="{StaticResource SubtitleLabelStyle}"
+                                HorizontalOptions="Start" />
+
+                            <!-- Tipo de préstamo -->
+                            <Label Text="{Binding Type}" />
+
+                        </VerticalStackLayout>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+        </CollectionView>
+        
+        <Button
+            Text="Add Contract"
+            Command="{Binding CreateContractCommand}"
+            CommandParameter="{Binding Client}"
+            HorizontalOptions="End"
+            Margin="0,20,0,0" />
+        
+    </VerticalStackLayout>
 </base:BasePage>
