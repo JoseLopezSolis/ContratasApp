@@ -1,11 +1,13 @@
 using CommunityToolkit.Maui;
 using ContratasApp.Helpers;
+using ContratasApp.Models;
 using ContratasApp.Services.Implementations;
 using ContratasApp.Services.Interfaces;
 using ContratasApp.ViewModels;
 using ContratasApp.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Maui.Hosting;
+using SQLite;
 
 namespace ContratasApp.Extensions;
 
@@ -22,6 +24,8 @@ public static class MauiProgramExtension
         builder.Services.AddTransient<ClientPageViewModel>();
         builder.Services.AddTransient<ClientsPageViewModel>();
         builder.Services.AddTransient<ConfigurationPageViewModel>();
+        builder.Services.AddTransient<AddContractPageViewModel>();
+        builder.Services.AddTransient<ContractDetailPageViewModel>();
         return builder;
     }
     
@@ -33,7 +37,9 @@ public static class MauiProgramExtension
     public static MauiAppBuilder RegisterShellRoutes(this MauiAppBuilder builder)
     {
         builder.Services.AddTransientWithShellRoute<AddClientPage, AddClientPageViewModel>(RouteConstants.AddClientPageRoute);
+        builder.Services.AddTransientWithShellRoute<AddContractPage, AddContractPageViewModel>(RouteConstants.AddContractRoute);
         builder.Services.AddTransientWithShellRoute<ClientPage, ClientPageViewModel>(RouteConstants.ClientPageRoute);
+        builder.Services.AddTransientWithShellRoute<ContractDetailPage, ContractDetailPageViewModel>(RouteConstants.ContractDetailRoute);
 
         return builder;
     }
@@ -45,12 +51,22 @@ public static class MauiProgramExtension
     /// <returns></returns>
     public static MauiAppBuilder RegisterServices(this MauiAppBuilder builder)
     {
-        builder.Services.AddSingleton<INavigationService, NavigationService>();
-        builder.Services.AddSingleton<IClientService>(sp =>
+        
+        // only one SQLiteAsyncConnection in the container
+        builder.Services.AddSingleton<SQLiteAsyncConnection>(sp =>
         {
-            var dbPath = Path.Combine(FileSystem.AppDataDirectory, "clients.db3");
-            return new ClientService(dbPath);
+          var path = Path.Combine(FileSystem.AppDataDirectory, "app.db3");
+          var db   = new SQLiteAsyncConnection(path);
+          db.CreateTableAsync<Client>().Wait();
+          db.CreateTableAsync<LoanContract>().Wait();
+          db.CreateTableAsync<PaymentSchedule>().Wait();
+          return db;
         });
+        
+        // now register both services that depend on it
+        builder.Services.AddSingleton<IClientService, ClientService>();
+        builder.Services.AddSingleton<IContractService, ContractService>();
+        builder.Services.AddSingleton<INavigationService, NavigationService>();
         
         return builder;
     }

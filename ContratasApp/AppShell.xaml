@@ -10,8 +10,8 @@
     Shell.TabBarForegroundColor="Black"  
     Shell.TabBarTitleColor="Black"
     Shell.TabBarUnselectedColor="Gray"
-    Shell.TabBarDisabledColor="Gray"
-    >
+    Shell.TabBarDisabledColor="Gray">
+    
     <Shell.Resources>
         <Style 
             TargetType="ShellItem">
@@ -26,15 +26,13 @@
             Title="Clients"
             ContentTemplate="{DataTemplate views:ClientsPage}"
             Route="ClientsView"
-            Icon="client.png"
-            />
+            Icon="customer.png"/>
         
         <ShellContent
             Title="Settings"
             ContentTemplate="{DataTemplate views:ConfigurationPage}"
             Route="ConfigurationView"
-            Icon="settings.png"
-            />
+            Icon="settingsicon.png"/>
     </TabBar>
 
 </Shell>

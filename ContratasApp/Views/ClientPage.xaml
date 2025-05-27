@@ -1,32 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <base:BasePage 
-    xmlns:base ="clr-namespace:ContratasApp.Views.Base"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:vm="clr-namespace:ContratasApp.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:base ="clr-namespace:ContratasApp.Views.Base"
+    xmlns:models="clr-namespace:ContratasApp.Models"
     x:DataType="vm:ClientPageViewModel"
     x:Class="ContratasApp.Views.ClientPage">
+    
+    <Shell.TitleView>
+        <Grid 
+            ColumnDefinitions="*,Auto" 
+            ColumnSpacing="10">
+            
+            <Label
+                Grid.Column="2"
+                Text="Add Contract" 
+                VerticalOptions="Center"
+                FontAttributes="Bold"
+                FontSize="15">
+                
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer
+                        CommandParameter="{Binding Client}"
+                        Command="{Binding CreateContractCommand}" />
+                </Label.GestureRecognizers>
+                
+            </Label>
+            
+        </Grid>
+    </Shell.TitleView>
+    
     <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="20">
-            <!-- Foto -->
-            <Border WidthRequest="120" HeightRequest="120">
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="60" />
-                </Border.StrokeShape>
-                <Image Source="{Binding Client.ImagePath}"
-                       Aspect="AspectFill" />
+        
+        <VerticalStackLayout
+            Margin="10,0">
+            <Border 
+                Style="{StaticResource BorderClientInformation}">
+                
+                    <Border.StrokeShape>
+                        <RoundRectangle
+                            CornerRadius="100" />
+                    </Border.StrokeShape>
+                
+                    <Image
+                        Source="{Binding Client.ImagePath}"
+                        Aspect="AspectFill" />
             </Border>
+            
+            <Label
+                HorizontalOptions="Center"
+                FontSize="25"
+                Text="{Binding Client.Name, StringFormat='{0}'}" />
+            
+            <Label
+                Text="Contracts"
+                FontSize="20"
+                FontAttributes="Bold"
+                Margin="0, 10"/>
+            
+            <VerticalStackLayout>
+                
+                <CollectionView
+                    SelectionMode="Single"
+                    ItemsSource="{Binding Contracts}"
+                    SelectedItem="{Binding SelectedContract, Mode=TwoWay}"
+                    VerticalOptions="Fill">
+                    
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout
+                            Orientation="Vertical"
+                            ItemSpacing="20"/>
+                    </CollectionView.ItemsLayout>
+                    
+                    <CollectionView.ItemTemplate>
+                        
+                        <DataTemplate 
+                            x:DataType="models:LoanContract">
+                            <Border
+                                Margin="12"
+                                Stroke="Black"
+                                BackgroundColor="{StaticResource CardBackgroundLight}"
+                                >
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="10" />
+                                </Border.StrokeShape>
+      
+                                <VerticalStackLayout 
+                                    Spacing="6"
+                                    Padding="10">
+                
+                                    <!-- Monto y tipo -->
+                                    <Label
+                                        Text="{Binding Principal, StringFormat='Monto: {0:C0}'}"
+                                        FontSize="18"
+                                        FontAttributes="Bold" />
+                                    
+                                    <Label
+                                        Text="{Binding Type}"
+                                        FontSize="14"
+                                        TextColor="Gray" />
 
-            <!-- Datos -->
-            <Label Text="{Binding Client.Name}"
-                   Style="{StaticResource TitleLabelStyle}" />
-            <Label Text="{Binding Client.Email}"
-                   Style="{StaticResource SubtitleLabelStyle}" />
-            <Label Text="{Binding Client.Phone}"
-                   Style="{StaticResource SubtitleLabelStyle}" />
-            <Label Text="{Binding Client.PaymentMethod}"
-                   Style="{StaticResource SubtitleLabelStyle}" />
+                                    <!-- Fechas y estado -->
+                                    <Grid 
+                                        ColumnDefinitions="*" 
+                                        RowDefinitions="*,Auto,Auto">
+                                        <Label
+                                            Grid.Row="0" Grid.Column="0"
+                                            Text="{Binding StartDate, StringFormat='Inicio: {0:dd/MM/yyyy}'}"
+                                            FontSize="12" />
+                                        <Label
+                                            Grid.Row="1" Grid.Column="0"
+                                            Text="{Binding IsClosed, Converter={StaticResource BoolToStatusConverter}}"
+                                            FontSize="12" />
+                                        <Label
+                                            Grid.Row="1" Grid.Column="1"
+                                            Text="{Binding RemainingPayments, StringFormat='Faltan: {0}'}"
+                                            FontSize="12"
+                                            HorizontalOptions="End" />
+                                    </Grid>
+
+                                    <!-- Barra de progreso -->
+                                    <ProgressBar
+                                        Progress="{Binding PaymentProgress}"
+                                        HeightRequest="4" />
+
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                
+            </VerticalStackLayout>
+            
         </VerticalStackLayout>
+        
     </ScrollView>
+
 </base:BasePage>

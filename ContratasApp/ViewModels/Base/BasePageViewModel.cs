@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using ContratasApp.Interfaces;
 using ContratasApp.Services.Interfaces;
@@ -10,11 +11,18 @@ public class BasePageViewModel : ObservableObject, IViewModel, IQueryAttributabl
 {
     #region Private Properties
     protected readonly INavigationService NavigationService;
+    public bool needRefreshPage;
+    private bool _firstStart = true;
     #endregion
     
     public BasePageViewModel(INavigationService navigationService)
     {
-        NavigationService = navigationService; 
+        NavigationService = navigationService;
+        if (_firstStart) needRefreshPage = true;
+        else
+        {
+            _firstStart = false;
+        }
     }
     
     #region Virtual Methods

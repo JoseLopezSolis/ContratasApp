@@ -1,94 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <base:BasePage 
-    xmlns:base ="clr-namespace:ContratasApp.Views.Base"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:base ="clr-namespace:ContratasApp.Views.Base"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:vm="clr-namespace:ContratasApp.ViewModels"
+    xmlns:behavior="clr-namespace:ContratasApp.Behavior"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:DataType="vm:AddClientPageViewModel"
     x:Class="ContratasApp.Views.AddClientPage">
+    
     <ContentPage.ToolbarItems>
         <ToolbarItem
             Text="Done"
-            Priority="1"
-            Order="Primary"
             Command="{Binding SaveCommand}" />
     </ContentPage.ToolbarItems>
     
-    <ScrollView>
-        <VerticalStackLayout Padding="16" Spacing="16">
+    <VerticalStackLayout 
+        Padding="20" 
+        Spacing="15">
+                
+        <Border
+            Style="{StaticResource BorderClientInformation}">
             
-            <Label
-                Text="Add New Client"
-                HorizontalOptions="Center"
-                FontSize="20"/>
-
-            <!-- Foto de perfil circular -->
-            <Border
-                WidthRequest="200"
-                HeightRequest="200"
-                BackgroundColor="{StaticResource CardBackgroundLight}"
-                HorizontalOptions="Center"
-                Stroke="Transparent" 
-                >
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="100" />
-                </Border.StrokeShape>
-
-                <Image
-                    Source="{Binding ProfileImage}"
-                    Aspect="AspectFill">
-                    <Image.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding PickImageCommand}" />
-                    </Image.GestureRecognizers>
-                </Image>
+            <Border.StrokeShape>
+                <RoundRectangle
+                    CornerRadius="100" />
+            </Border.StrokeShape>
+            
+            <Image
+                Source="{Binding ProfileImage}"
+                Aspect="AspectFill">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding PickImageCommand}" />
+                </Image.GestureRecognizers>
+            </Image>
   
-            </Border>
+        </Border>
 
-            <Label
-                Text="Toca la imagen para cambiar foto"
-                TextColor="{StaticResource Gray500}"
-                Style="{StaticResource SubtitleLabelStyle}"
-                HorizontalOptions="Center" />
+        <Label
+            Style="{StaticResource LabelIndicator}"
+            Text="Tap the image to change the picture"/>
 
-            <!-- Formulario en Grid de 2 columnas -->
-            <Grid 
-                RowDefinitions="Auto,Auto,Auto,Auto,Auto"
-                ColumnDefinitions="*,*"
-                RowSpacing="12"
-                ColumnSpacing="12">
+        <Grid 
+            RowDefinitions="Auto,Auto,Auto,Auto,Auto"
+            ColumnDefinitions="*,*"
+            RowSpacing="25"
+            ColumnSpacing="10">
         
-                <Entry
-                    Placeholder="Nombre"
-                    Text="{Binding Name}"
-                    Grid.Row="0" Grid.ColumnSpan="2" />
+            <Entry
+                Placeholder="Name (Obligatory)"
+                Text="{Binding Name}"
+                Grid.Row="0" Grid.ColumnSpan="2" />
 
-                <Entry
-                    Placeholder="Apellido"
-                    Text="{Binding LastName}"
-                    Grid.Row="1" Grid.Column="0" />
+            <Entry
+                Placeholder="Lastname (Obligatory)"
+                Text="{Binding LastName}"
+                Grid.Row="1" Grid.Column="0" />
 
-                <Entry
-                    Placeholder="Teléfono"
-                    Keyboard="Telephone"
-                    Text="{Binding Phone}"
-                    Grid.Row="1" Grid.Column="1" />
+            <Entry
+                Placeholder="Phone number"
+                Keyboard="Telephone"
+                Text="{Binding Phone, Mode=TwoWay}"
+                Grid.Row="1" Grid.Column="1" >
+                    
+                <Entry.Behaviors>
+                    <behavior:PhoneValidationBehavior />
+                </Entry.Behaviors>
+                    
+            </Entry>
 
-                <Entry
-                    Placeholder="Correo electrónico"
-                    Keyboard="Email"
-                    Text="{Binding Email}"
-                    Grid.Row="2" Grid.ColumnSpan="2" />
+            <Entry
+                Placeholder="email@ejemplo.com"
+                Keyboard="Email"
+                Text="{Binding Email, Mode=TwoWay}"
+                Grid.Row="2" Grid.ColumnSpan="2">
+                    
+                <Entry.Behaviors>
+                    <toolkit:EmailValidationBehavior />
+                </Entry.Behaviors>
+                    
+            </Entry>
 
-                <Picker
-                    Title="Método de pago"
-                    ItemsSource="{Binding PaymentMethods}"
-                    SelectedItem="{Binding PaymentMethod}"
-                    Grid.Row="3" Grid.ColumnSpan="2" />
-
-            </Grid>
-
-        </VerticalStackLayout>
-    </ScrollView>
-    
+            <Picker
+                Title="Method of payment"
+                ItemsSource="{Binding PaymentMethods}"
+                SelectedItem="{Binding PaymentMethod}"
+                Grid.Row="3" Grid.ColumnSpan="2" />
+        </Grid>
+        
+    </VerticalStackLayout>
 </base:BasePage>

@@ -6,67 +6,46 @@ namespace ContratasApp.Services.Implementations;
 
 public class ClientService: IClientService
 {
-    private readonly SQLiteAsyncConnection _database;
+    private readonly SQLiteAsyncConnection _db;
 
-    public ClientService(string dbpath)
+    public ClientService(SQLiteAsyncConnection db)
     {
-        //Initialize the connection to SQLite in the path given
-        _database = new SQLiteAsyncConnection(dbpath);
-        
-        //Create the table Client 
-        _database.CreateTableAsync<Client>().Wait();
+        _db = db;
+        _db.CreateTableAsync<Client>().Wait();
     }
 
-    /// <summary>
-    /// Add new client
-    /// </summary>
-    public Task<int> AddAsync(Client client) =>
-        _database.InsertAsync(client);
-    
-    /// <summary>
-    /// Get client by id
-    /// </summary>
-    public Task<Client> GetByIdAsync(int id) =>
-        _database.Table<Client>()
-            .Where(c => c.Id == id)
-            .FirstOrDefaultAsync();
-
-    /// <summary>
-    /// Update a client
-    /// </summary>
-    public Task<int> UpdateAsync(Client client) =>
-        _database.UpdateAsync(client);
-
-    /// <summary>
-    /// Delete a client
-    /// </summary>
-    public Task<int> DeleteAsync(Client client) =>
-        _database.DeleteAsync(client);
-
-    /// <summary>
-    /// Archive client
-    /// </summary>
-    public Task ArchiveAsync(Client client)
-    {
-        client.IsArchived = true;
-        return UpdateAsync(client);
-    }
-    
-    /// <summary>
-    /// Get archived clients
-    /// </summary>
-    public Task<List<Client>> GetArchivedAsync() =>
-        _database.Table<Client>()
-            .Where(c => c.IsArchived)
-            .ToListAsync();
-    
-    /// <summary>
-    /// Get all client without archived
-    /// </summary>
+    // Obtiene todos los clientes no archivados
     public Task<List<Client>> GetAllAsync() =>
-        _database.Table<Client>()
+        _db.Table<Client>()
             .Where(c => !c.IsArchived)
             .ToListAsync();
 
- 
+    // Obtiene los clientes archivados
+    public Task<List<Client>> GetArchivedAsync() =>
+        _db.Table<Client>()
+            .Where(c => c.IsArchived)
+            .ToListAsync();
+
+    // Obtiene un cliente por Id
+    public Task<Client> GetByIdAsync(int id) =>
+        _db.FindAsync<Client>(id);
+
+    // Agrega un nuevo cliente
+    public Task<int> AddAsync(Client client) =>
+        _db.InsertAsync(client);
+
+    // Actualiza un cliente existente
+    public Task<int> UpdateAsync(Client client) =>
+        _db.UpdateAsync(client);
+    
+    // Elimina un cliente
+    public Task<int> DeleteAsync(Client client) =>
+        _db.DeleteAsync(client);
+
+    // Archiva un cliente (marca IsArchived = true)
+    public async Task ArchiveAsync(Client client)
+    {
+        client.IsArchived = true;
+        await _db.UpdateAsync(client);
+    }
 }

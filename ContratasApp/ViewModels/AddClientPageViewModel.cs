@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ContratasApp.Models;
@@ -9,26 +10,35 @@ namespace ContratasApp.ViewModels;
 [QueryProperty(nameof(ClientId), "clientId")]
 public partial class AddClientPageViewModel : BasePageViewModel
     {
-        const string DefaultImageFileName = "default_profile.png";
-
-        // Campos de formulario
+        
+        #region Observable properties
+        
         [ObservableProperty] private int clientId;
         [ObservableProperty] private string name;
         [ObservableProperty] private string lastName;
         [ObservableProperty] private string phone;
         [ObservableProperty] private string email;
         [ObservableProperty] private string paymentMethod;
-
-        // Imagen de perfil
         [ObservableProperty] private string imagePath;
         [ObservableProperty] private ImageSource profileImage;
+        
+        #endregion
 
-        // Opciones para el Picker
+        #region Picker options
         public IList<string> PaymentMethods { get; } =
-            new List<string> { "Efectivo", "Transferencia" };
+            new List<string> { "Money", "Bank Transfer", "Money and Bank Transfer" };
+        #endregion
 
+        #region Services
         readonly IClientService _clientService;
+        #endregion
 
+        #region Constants
+        const string DefaultImageFileName = "default_profile.png";
+        private readonly string DefaultPaymentMethod = "Money and Bank Transfer" ;
+        #endregion
+
+        #region Constructor
         public AddClientPageViewModel(
             IClientService clientService,
             INavigationService navigationService) 
@@ -40,37 +50,12 @@ public partial class AddClientPageViewModel : BasePageViewModel
             ImagePath = DefaultImageFileName;
             ProfileImage = ImageSource.FromFile(DefaultImageFileName);
         }
-        
-        // Este partial se invoca automáticamente al recibir el query param
-        partial void OnClientIdChanged(int id)
-            => LoadExistingClientAsync(id);
-        
-        async void LoadExistingClientAsync(int id)
-        {
-            var existing = await _clientService.GetByIdAsync(id);
-            if (existing == null) return;
+        #endregion
 
-            // Divide nombre y apellido si los guardas juntos
-            var partes = existing.Name.Split(' ', 2);
-            Name = partes[0];
-            LastName = partes.Length > 1 ? partes[1] : string.Empty;
-
-            Phone = existing.Phone;
-            Email = existing.Email;
-            PaymentMethod = existing.PaymentMethod;
-            ImagePath = existing.ImagePath;
-        }
+        #region Relays commands
 
         /// <summary>
-        /// Se invoca cada vez que ImagePath cambia: actualiza ProfileImage.
-        /// </summary>
-        partial void OnImagePathChanged(string value)
-        {
-            ProfileImage = ImageSource.FromFile(value);
-        }
-
-        /// <summary>
-        /// Abre galería, copia foto a AppData y actualiza ImagePath.
+        /// Open gallery, copy the picture to AppData and update ImagePath
         /// </summary>
         [RelayCommand]
         async Task PickImageAsync()
@@ -78,7 +63,7 @@ public partial class AddClientPageViewModel : BasePageViewModel
             try
             {
                 var result = await MediaPicker.PickPhotoAsync(
-                    new MediaPickerOptions { Title = "Selecciona foto de perfil" });
+                    new MediaPickerOptions { Title = "Select a profile picture" });
                 if (result == null)
                     return;
 
@@ -117,29 +102,79 @@ public partial class AddClientPageViewModel : BasePageViewModel
             var client = new Client
             {
                 Id = ClientId,
-                Name          = $"{Name} {LastName}".Trim(),
+                Name = ValidName(name,lastName),
                 Phone         = Phone?.Trim(),
                 Email         = Email?.Trim(),
-                PaymentMethod = PaymentMethod,
+                PaymentMethod = ValidPaymentMethod(PaymentMethod),
                 ImagePath     = ImagePath,
                 IsArchived = false
             };
+            needRefreshPage = true;
 
             if (ClientId > 0)
                 await _clientService.UpdateAsync(client);
             else
                 await _clientService.AddAsync(client);
-
+            // Force refresh of the page
             await NavigationService.GoBackAsync();
         }
 
-        bool CanSave() =>
-            !string.IsNullOrWhiteSpace(Name) &&
-            !string.IsNullOrWhiteSpace(LastName);
-
+        #endregion
+        
+        #region OnChanged methods
+        // Este partial se invoca automáticamente al recibir el query param
+        partial void OnClientIdChanged(int id)
+            => LoadExistingClientAsync(id);
+        
+        
+        // When picture change, this method runs.
+        partial void OnImagePathChanged(string value)
+        {
+            ProfileImage = ImageSource.FromFile(value);
+        }
+        
         partial void OnNameChanged(string value)
             => SaveCommand.NotifyCanExecuteChanged();
 
         partial void OnLastNameChanged(string value)
             => SaveCommand.NotifyCanExecuteChanged();
+        
+        partial void OnPhoneChanged(string value)
+            => SaveCommand.NotifyCanExecuteChanged();
+        #endregion
+
+        #region Validators
+        private string ValidName(string name, string lastName) =>
+            $"{name.Trim()} {lastName.Trim()}";
+
+        private string ValidPaymentMethod(string paymentMethod)
+        {
+            if (paymentMethod == null)
+                return DefaultPaymentMethod;
+            return paymentMethod;
+        }
+        #endregion
+
+        #region Extra methods
+
+        async void LoadExistingClientAsync(int id)
+        {
+            var existing = await _clientService.GetByIdAsync(id);
+            var partes = existing.Name.Split(' ', 2);
+            Name = partes[0];
+            LastName = partes.Length > 1 ? partes[1] : string.Empty;
+            Phone = existing.Phone;
+            Email = existing.Email;
+            PaymentMethod = existing.PaymentMethod;
+            ImagePath = existing.ImagePath;
+        }
+        
+        
+        bool CanSave()
+            => !string.IsNullOrWhiteSpace(Name)
+               && !string.IsNullOrWhiteSpace(LastName)
+               && !string.IsNullOrWhiteSpace(Phone)
+               && Phone.Length > 9;
+        #endregion
+        
     }

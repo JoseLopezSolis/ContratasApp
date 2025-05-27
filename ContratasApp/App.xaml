@@ -2,19 +2,31 @@
 <Application 
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converters="clr-namespace:ContratasApp.Converters"
     x:Class="ContratasApp.App">
     <Application.Resources>
         <ResourceDictionary>
+            
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            
             <converters:BoolToArchiveColorConverter
-                x:Key="BoolToArchiveColor"
-                xmlns:converters="clr-namespace:ContratasApp.Converters" />
+                x:Key="BoolToArchiveColor"/>
+            
+            <converters:BoolToCheckmarkConverter 
+                x:Key="BoolToCheckmarkConverter" />
+            
+            <converters:BoolToStatusConverter 
+                x:Key="BoolToStatusConverter" />
+            
             <converters:InverseBoolConverter
-                x:Key="InverseBoolConverter"
-                xmlns:converters="clr-namespace:ContratasApp.Converters" />
+                x:Key="InverseBoolConverter"/>
+            
+            <converters:HasPendingPaymentsConverter
+                x:Key="HasPendingPaymentsConverter" />
+            
         </ResourceDictionary>
     </Application.Resources>
 </Application>

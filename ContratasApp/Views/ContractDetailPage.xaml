@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<base:BasePage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:base="clr-namespace:ContratasApp.Views.Base"
+    xmlns:vm="clr-namespace:ContratasApp.ViewModels"
+    xmlns:models="clr-namespace:ContratasApp.Models"
+    x:Class="ContratasApp.Views.ContractDetailPage"
+    x:DataType="vm:ContractDetailPageViewModel"
+    Title="Detalle del Préstamo"
+    HideSoftInputOnTapped="True">
+  <ScrollView>
+    <VerticalStackLayout Padding="20" Spacing="24">
+
+      <!-- 1) Resumen del contrato -->
+      <Border  Padding="16">
+        <VerticalStackLayout Spacing="8">
+          <Label Text="{Binding Contract.Principal, StringFormat='Monto: {0:C0}'}"
+                  />
+          <Label Text="{Binding Contract.Type}"
+                  />
+          <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" RowSpacing="4">
+            <Label Grid.Row="0" Grid.Column="0"
+                   Text="{Binding Contract.StartDate, StringFormat='Inicio: {0:dd/MM/yyyy}'}"
+                    />
+            <Label Grid.Row="0" Grid.Column="1"
+                   Text="{Binding Contract.CreatedAt, StringFormat='Creado: {0:dd/MM/yyyy}'}"
+                   
+                   HorizontalOptions="End" />
+
+            <Label Grid.Row="1" Grid.Column="0"
+                   Text="{Binding Contract.Status}"
+                    />
+            <Label Grid.Row="1" Grid.Column="1"
+                   Text="{Binding Contract.RemainingPayments, StringFormat='Faltan: {0}'}"
+                   
+                   HorizontalOptions="End" />
+          </Grid>
+
+          <!-- Barra de progreso visual -->
+          <ProgressBar
+            Progress="{Binding Contract.PaymentProgress}"
+            HeightRequest="6" />
+        </VerticalStackLayout>
+      </Border>
+
+      <!-- 2) Acción rápida: agregar pago -->
+      <Button
+        Text="Registrar próximo pago"
+        Command="{Binding AddPaymentCommand}"
+        HorizontalOptions="FillAndExpand"
+        Margin="0,10" />
+
+      <!-- 3) Historial de pagos -->
+      <Label Text="Historial de Pagos"
+             Style="{StaticResource TitleLabelStyle}" />
+
+      <CollectionView
+          ItemsSource="{Binding Payments}"
+          EmptyView="Aún no hay pagos registrados"
+          VerticalOptions="FillAndExpand">
+
+        <!-- Espacio entre ítems -->
+        <CollectionView.ItemsLayout>
+          <LinearItemsLayout Orientation="Vertical" ItemSpacing="12" />
+        </CollectionView.ItemsLayout>
+
+        <CollectionView.ItemTemplate>
+          <DataTemplate x:DataType="models:PaymentSchedule">
+            <Border Padding="12">
+              <Grid ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="8">
+                
+                <!-- Nº de pago -->
+                <Label Grid.Column="0"
+                       Text="{Binding PaymentNumber}"
+                       Style="{StaticResource TitleLabelStyle}" />
+
+                <!-- Monto -->
+                <Label Grid.Column="1"
+                       Text="{Binding Amount, StringFormat='{0:C0}'}"
+                       Style="{StaticResource SubtitleLabelStyle}" />
+
+                <!-- Fecha Programada -->
+                <Label Grid.Column="2"
+                       Text="{Binding DueDate, StringFormat='{0:dd/MM/yyyy}'}"
+                       Style="{StaticResource SubtitleLabelStyle}" />
+
+                <!-- Botón / Icono estado -->
+                <Grid Grid.Column="3">
+                  <Button
+                    Text="Pagar"
+                    IsVisible="{Binding IsPaid, Converter={StaticResource InverseBoolConverter}}"
+                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ContractDetailPageViewModel}}, Path=MarkPaymentAsPaidCommand}"
+                    CommandParameter="{Binding .}"
+                    FontSize="12"
+                    Padding="0"
+                    WidthRequest="60"
+                    HeightRequest="28" />
+                  <Label
+                    Text="✓"
+                    IsVisible="{Binding IsPaid}"
+                    Style="{StaticResource TitleLabelStyle}"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center" />
+                </Grid>
+
+              </Grid>
+            </Border>
+          </DataTemplate>
+        </CollectionView.ItemTemplate>
+      </CollectionView>
+
+    </VerticalStackLayout>
+  </ScrollView>
+</base:BasePage>

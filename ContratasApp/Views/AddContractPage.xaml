@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<base:BasePage 
+    xmlns:base="clr-namespace:ContratasApp.Views.Base"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:ContratasApp.ViewModels"
+    x:DataType="vm:AddContractPageViewModel"
+    xmlns:syst="clr-namespace:System;assembly=System.Runtime"
+    x:Class="ContratasApp.Views.AddContractPage">
+    
+    <base:BasePage.ToolbarItems>
+        <ToolbarItem
+            Text="Save"
+            Command="{Binding SaveCommand}"
+            Priority="1"
+            Order="Primary" />
+    </base:BasePage.ToolbarItems> 
+    
+    <ScrollView>
+        <VerticalStackLayout 
+            Padding="20" 
+            Spacing="16">
+
+            <!-- Monto prestado -->
+            <Label
+                Text="Monto a prestar"/>
+            
+            <Entry
+                HorizontalTextAlignment="Start"
+                Keyboard="Numeric"
+                Placeholder="$0.00"
+                Text="{Binding Principal, Mode=TwoWay}" >
+                <!-- <Entry.Behaviors> -->
+                <!--     <behavior:CurrencyEntryBehavior /> -->
+                <!-- </Entry.Behaviors> -->
+            </Entry>
+            
+            <!-- Tipo de préstamo -->
+            <Label
+                Text="Tipo de préstamo"
+                Style="{StaticResource SubtitleLabelStyle}" />
+            
+            <Picker
+                Title="Seleccione tipo"
+                ItemsSource="{Binding LoanTypes}"
+                SelectedItem="{Binding SelectedLoanType}"
+                ItemDisplayBinding="{Binding .}" />
+
+            <!-- Fecha de inicio -->
+            <Label
+                Text="Fecha de inicio"
+                Style="{StaticResource SubtitleLabelStyle}" />
+            
+            <DatePicker
+                Date="{Binding StartDate}"
+                MaximumDate="{x:Static syst:DateTime.Today}" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+    
+</base:BasePage >
