@@ -1,7 +1,7 @@
 using System.Collections.ObjectModel;
-using System.Diagnostics.Contracts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using ContratasApp.Enums;
 using ContratasApp.Models;
 using ContratasApp.Services.Interfaces;
 using ContratasApp.ViewModels.Base;
@@ -46,12 +46,15 @@ public partial class ContractDetailPageViewModel:BasePageViewModel
     {
         var list = await _contractService.GetPaymentSchedulesAsync(Contract.Id);
 
-        // Asigna el número de pago (1, 2, 3, …) y refresca la lista
+        // Actualiza el contador de pagos ya hechos
+        Contract.PaidCount = list.Count(p => p.IsPaid);
+
         Payments.Clear();
-        for (int i = 0; i < list.Count; i++)
+        int num = 1;
+        foreach (var p in list.OrderBy(p => p.DueDate ?? DateTime.MinValue))
         {
-            list[i].PaymentNumber = i + 1;
-            Payments.Add(list[i]);
+            p.PaymentNumber = num++;
+            Payments.Add(p);
         }
     }
     
@@ -59,11 +62,33 @@ public partial class ContractDetailPageViewModel:BasePageViewModel
     [RelayCommand]
     async Task AddPaymentAsync()
     {
-        var next = Payments.FirstOrDefault(p => !p.IsPaid);
-        if (next == null) return;
+        if (Contract.Type == LoanType.Weekly)
+        {
+            // 1) Busca la siguiente cuota no pagada
+            var next = Payments.FirstOrDefault(p => !p.IsPaid);
+            if (next != null)
+            {
+                // 2) Márquela como pagada
+                await _contractService.MarkPaymentAsPaidAsync(next);
+            }
+        }
+        else // MonthlyInterest
+        {
+            // Cada pago es un 10% del principal, se inserta uno nuevo
+            var pago = new PaymentSchedule
+            {
+                ContractId = Contract.Id,
+                Amount     = Math.Round(Contract.Principal * 0.10m, 2),
+                IsPaid     = true,
+                PaidDate   = DateTime.Now
+            };
+            await _contractService.AddPaymentAsync(pago);
+        }
 
-        await _contractService.MarkPaymentAsPaidAsync(next);
+        // 3) Recarga la lista y notifica progreso
         await LoadPaymentsAsync();
+        OnPropertyChanged(nameof(Contract.PaymentProgress));
+        OnPropertyChanged(nameof(Contract.RemainingPayments));
     }
     
     // Command to mark a payment as paid and refresh the list

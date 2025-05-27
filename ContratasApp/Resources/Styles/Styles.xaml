@@ -640,10 +640,6 @@
         TargetType="Border"
         x:Key="BorderClient">
         <Setter
-            Property="Stroke"
-            Value="Transparent"/>
-        
-        <Setter
             Property="Padding"
             Value="10"
             />
@@ -679,6 +675,10 @@
         <Setter
             Property="BackgroundColor"
             Value="{StaticResource White}"/>
+        <Setter
+            Property="Margin"
+            Value="0, 20"
+            />
     </Style>
     
     <!-- LABEL INDICATOR -->

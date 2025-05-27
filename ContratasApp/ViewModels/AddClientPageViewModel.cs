@@ -25,7 +25,7 @@ public partial class AddClientPageViewModel : BasePageViewModel
         #endregion
 
         #region Picker options
-        public static IList<string> PaymentMethods { get; } =
+        public IList<string> PaymentMethods { get; } =
             new List<string> { "Money", "Bank Transfer", "Money and Bank Transfer" };
         #endregion
 
@@ -35,7 +35,7 @@ public partial class AddClientPageViewModel : BasePageViewModel
 
         #region Constants
         const string DefaultImageFileName = "default_profile.png";
-        private static readonly string DefaultPaymentMethod = PaymentMethods[2];
+        private readonly string DefaultPaymentMethod = "Money and Bank Transfer" ;
         #endregion
 
         #region Constructor
@@ -109,12 +109,13 @@ public partial class AddClientPageViewModel : BasePageViewModel
                 ImagePath     = ImagePath,
                 IsArchived = false
             };
+            needRefreshPage = true;
 
             if (ClientId > 0)
                 await _clientService.UpdateAsync(client);
             else
                 await _clientService.AddAsync(client);
-
+            // Force refresh of the page
             await NavigationService.GoBackAsync();
         }
 
@@ -173,8 +174,7 @@ public partial class AddClientPageViewModel : BasePageViewModel
             => !string.IsNullOrWhiteSpace(Name)
                && !string.IsNullOrWhiteSpace(LastName)
                && !string.IsNullOrWhiteSpace(Phone)
-               && Regex.IsMatch(Phone.Trim(), @"^\d{7,15}$");
-
+               && Phone.Length > 9;
         #endregion
         
     }

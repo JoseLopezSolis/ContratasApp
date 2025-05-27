@@ -20,4 +20,5 @@ public interface IContractService
     Task CloseContractAsync(int contractId);
     //Get contract by id
     Task<LoanContract> GetByIdAsync(int contractId);
+    Task AddPaymentAsync(PaymentSchedule pago);
 }

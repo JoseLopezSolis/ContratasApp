@@ -8,81 +8,85 @@
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:DataType="vm:AddClientPageViewModel"
     x:Class="ContratasApp.Views.AddClientPage">
+    
     <ContentPage.ToolbarItems>
         <ToolbarItem
             Text="Done"
             Command="{Binding SaveCommand}" />
     </ContentPage.ToolbarItems>
     
-        <VerticalStackLayout 
-            Padding="20" 
-            Spacing="15"
-            >
-            <Border
-                Style="{StaticResource BorderClientInformation}"
-                >
-                <Border.StrokeShape>
-                    <RoundRectangle 
-                        CornerRadius="100" />
-                </Border.StrokeShape>
-
-                <Image
-                    Source="{Binding ProfileImage}"
-                    Aspect="AspectFill">
-                    <Image.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding PickImageCommand}" />
-                    </Image.GestureRecognizers>
-                </Image>
+    <VerticalStackLayout 
+        Padding="20" 
+        Spacing="15">
+                
+        <Border
+            Style="{StaticResource BorderClientInformation}">
+            
+            <Border.StrokeShape>
+                <RoundRectangle
+                    CornerRadius="100" />
+            </Border.StrokeShape>
+            
+            <Image
+                Source="{Binding ProfileImage}"
+                Aspect="AspectFill">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding PickImageCommand}" />
+                </Image.GestureRecognizers>
+            </Image>
   
-            </Border>
+        </Border>
 
-            <Label
-                Style="{StaticResource LabelIndicator}"
-                Text="Touch the image to change the picture"
-                />
+        <Label
+            Style="{StaticResource LabelIndicator}"
+            Text="Tap the image to change the picture"/>
 
-            <Grid 
-                RowDefinitions="Auto,Auto,Auto,Auto,Auto"
-                ColumnDefinitions="*,*"
-                RowSpacing="25"
-                ColumnSpacing="10">
+        <Grid 
+            RowDefinitions="Auto,Auto,Auto,Auto,Auto"
+            ColumnDefinitions="*,*"
+            RowSpacing="25"
+            ColumnSpacing="10">
         
-                <Entry
-                    Placeholder="Name (Obligatory)"
-                    Text="{Binding Name}"
-                    Grid.Row="0" Grid.ColumnSpan="2" />
+            <Entry
+                Placeholder="Name (Obligatory)"
+                Text="{Binding Name}"
+                Grid.Row="0" Grid.ColumnSpan="2" />
 
-                <Entry
-                    Placeholder="Lastname (Obligatory)"
-                    Text="{Binding LastName}"
-                    Grid.Row="1" Grid.Column="0" />
+            <Entry
+                Placeholder="Lastname (Obligatory)"
+                Text="{Binding LastName}"
+                Grid.Row="1" Grid.Column="0" />
 
-                <Entry
-                    Placeholder="Phone number"
-                    Keyboard="Telephone"
-                    Text="{Binding Phone, Mode=TwoWay}"
-                    Grid.Row="1" Grid.Column="1" >
-                    <Entry.Behaviors>
-                        <behavior:PhoneValidationBehavior />
-                    </Entry.Behaviors>
-                </Entry>
+            <Entry
+                Placeholder="Phone number"
+                Keyboard="Telephone"
+                Text="{Binding Phone, Mode=TwoWay}"
+                Grid.Row="1" Grid.Column="1" >
+                    
+                <Entry.Behaviors>
+                    <behavior:PhoneValidationBehavior />
+                </Entry.Behaviors>
+                    
+            </Entry>
 
-                <Entry
-                    Placeholder="email@ejemplo.com"
-                    Keyboard="Email"
-                    Text="{Binding Email, Mode=TwoWay}"
-                    Grid.Row="2" Grid.ColumnSpan="2" >
+            <Entry
+                Placeholder="email@ejemplo.com"
+                Keyboard="Email"
+                Text="{Binding Email, Mode=TwoWay}"
+                Grid.Row="2" Grid.ColumnSpan="2">
+                    
+                <Entry.Behaviors>
+                    <toolkit:EmailValidationBehavior />
+                </Entry.Behaviors>
+                    
+            </Entry>
 
-                    <Entry.Behaviors>
-                        <toolkit:EmailValidationBehavior />
-                    </Entry.Behaviors>
-                </Entry>
-
-                <Picker
-                    Title="Method of payment"
-                    ItemsSource="{Binding PaymentMethods}"
-                    SelectedItem="{Binding PaymentMethod}"
-                    Grid.Row="3" Grid.ColumnSpan="2" />
-            </Grid>
-        </VerticalStackLayout>
+            <Picker
+                Title="Method of payment"
+                ItemsSource="{Binding PaymentMethods}"
+                SelectedItem="{Binding PaymentMethod}"
+                Grid.Row="3" Grid.ColumnSpan="2" />
+        </Grid>
+        
+    </VerticalStackLayout>
 </base:BasePage>

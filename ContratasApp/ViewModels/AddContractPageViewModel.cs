@@ -46,7 +46,7 @@ public partial class AddContractPageViewModel : BasePageViewModel
             StartDate = StartDate,
             IsClosed  = false
         };
-
+        needRefreshPage = true; //To force refresh of the page
         await _contractService.CreateAsync(contract);
         await NavigationService.GoBackAsync();
     }

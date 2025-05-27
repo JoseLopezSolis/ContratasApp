@@ -70,28 +70,6 @@ public class ContractService : IContractService
         return _db.FindAsync<LoanContract>(contractId);
     }
 
-    public Task<List<PaymentSchedule>> GetPaymentSchedulesAsync(int contractId) =>
-        _db.Table<PaymentSchedule>()
-            .Where(p => p.ContractId == contractId)
-            .ToListAsync();
-
-
-    public async Task MarkPaymentAsPaidAsync(PaymentSchedule payment)
-    {
-        // Marca como pagado
-        payment.PaidDate = DateTime.Now;
-        payment.IsPaid = true;
-        await _db.UpdateAsync(payment);
-
-        // Si ya no quedan cuotas pendientes, cierra el contrato
-        var pendientes = await _db.Table<PaymentSchedule>()
-            .Where(p => p.ContractId == payment.ContractId && !p.IsPaid)
-            .CountAsync();
-
-        if (pendientes == 0)
-            await CloseContractAsync(payment.ContractId);
-    }
-
     public async Task CloseContractAsync(int contractId)
     {
         var contrato = await _db.FindAsync<LoanContract>(contractId);
@@ -99,4 +77,23 @@ public class ContractService : IContractService
         contrato.IsClosed = true;
         await _db.UpdateAsync(contrato);
     }
+    
+    public async Task MarkPaymentAsPaidAsync(PaymentSchedule payment)
+    {
+        payment.IsPaid   = true;
+        payment.PaidDate = DateTime.Now;
+        await _db.UpdateAsync(payment);
+    }
+
+    public async Task AddPaymentAsync(PaymentSchedule payment)
+    {
+        payment.IsPaid   = true;
+        payment.PaidDate = DateTime.Now;
+        await _db.InsertAsync(payment);
+    }
+
+    public Task<List<PaymentSchedule>> GetPaymentSchedulesAsync(int contractId)
+        => _db.Table<PaymentSchedule>()
+            .Where(p => p.ContractId == contractId)
+            .ToListAsync();
 }

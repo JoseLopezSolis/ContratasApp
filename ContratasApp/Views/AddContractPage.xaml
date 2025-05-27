@@ -24,8 +24,8 @@
 
             <!-- Monto prestado -->
             <Label
-                Text="Monto a prestar"
-                />
+                Text="Monto a prestar"/>
+            
             <Entry
                 HorizontalTextAlignment="Start"
                 Keyboard="Numeric"
@@ -40,6 +40,7 @@
             <Label
                 Text="Tipo de préstamo"
                 Style="{StaticResource SubtitleLabelStyle}" />
+            
             <Picker
                 Title="Seleccione tipo"
                 ItemsSource="{Binding LoanTypes}"
@@ -50,6 +51,7 @@
             <Label
                 Text="Fecha de inicio"
                 Style="{StaticResource SubtitleLabelStyle}" />
+            
             <DatePicker
                 Date="{Binding StartDate}"
                 MaximumDate="{x:Static syst:DateTime.Today}" />

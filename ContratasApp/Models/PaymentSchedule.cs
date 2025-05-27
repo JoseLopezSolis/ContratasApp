@@ -1,16 +1,36 @@
+using CommunityToolkit.Mvvm.ComponentModel;
 using SQLite;
 
 namespace ContratasApp.Models;
 
-public class PaymentSchedule
+public partial class PaymentSchedule : ObservableObject
 {
     [PrimaryKey, AutoIncrement]
-    public int      Id          { get; set; }
-    public int      ContractId  { get; set; }     // FK a LoanContract
-    public DateTime DueDate     { get; set; }     // Fecha de vencimiento
-    public decimal  Amount      { get; set; }     // Importe a pagar
-    public bool     IsPaid      { get; set; }     // Estado de pago
-    public DateTime? PaidDate   { get; set; }     // Nuevo: fecha y hora en que realmente se pagó
+    public int Id { get; set; }
+
+    [Indexed]
+    public int ContractId { get; set; }
+
+    // Fecha programada de vencimiento (sólo para pagos semanales)
+    public DateTime? DueDate { get; set; }
+
+    // Monto a pagar en esta cuota
+    public decimal Amount { get; set; }
+
+    // Marca si ya fue pagado
+    public bool IsPaid { get; set; }
+
+    // Fecha y hora real del pago
+    public DateTime? PaidDate { get; set; }
+
+    // Número de pago (1..N), asignado en el ViewModel
     [Ignore]
-    public int      PaymentNumber { get; set; }     // Ignorado por SQLite, lo calcularemos en el VM
+    public int PaymentNumber { get; set; }
+
+    // Texto legible del estado del pago
+    [Ignore]
+    public string DisplayStatus =>
+        IsPaid
+            ? $"✓ Pagado ({PaidDate:dd/MM/yyyy HH:mm})"
+            : "Pendiente";
 }

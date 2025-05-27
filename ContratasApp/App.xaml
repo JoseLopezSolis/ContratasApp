@@ -6,21 +6,26 @@
     x:Class="ContratasApp.App">
     <Application.Resources>
         <ResourceDictionary>
+            
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            
             <converters:BoolToArchiveColorConverter
                 x:Key="BoolToArchiveColor"/>
+            
+            <converters:BoolToCheckmarkConverter 
+                x:Key="BoolToCheckmarkConverter" />
+            
+            <converters:BoolToStatusConverter 
+                x:Key="BoolToStatusConverter" />
             
             <converters:InverseBoolConverter
                 x:Key="InverseBoolConverter"/>
             
             <converters:HasPendingPaymentsConverter
                 x:Key="HasPendingPaymentsConverter" />
-            
-            <converters:BoolToCheckmarkConverter 
-                x:Key="BoolToCheckmarkConverter" />
             
         </ResourceDictionary>
     </Application.Resources>

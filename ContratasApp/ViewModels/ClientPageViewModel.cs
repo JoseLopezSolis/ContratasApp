@@ -1,4 +1,3 @@
-
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -78,7 +77,7 @@ namespace ContratasApp.ViewModels;
         {
             if (client == null)
                 return;
-
+            needRefreshPage = true;
             await NavigationService.GoToAsync(
                 $"{RouteConstants.AddContractRoute}?clientId={client.Id}");
         }
