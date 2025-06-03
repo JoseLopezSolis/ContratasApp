@@ -51,6 +51,10 @@
     <Color x:Key="CardBackgroundDark">#2C2C2C</Color>
     <Color x:Key="PrimaryTextColorLight">#333333</Color>
     <Color x:Key="PrimaryTextColorDark">#FFFFFF</Color>
+    
+    
+    <!-- Custom colors -->
+    <Color x:Key="CustomBlue">#0066d9 </Color>
 
 
 </ResourceDictionary>

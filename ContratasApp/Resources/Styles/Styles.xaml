@@ -677,7 +677,7 @@
             Value="{StaticResource White}"/>
         <Setter
             Property="Margin"
-            Value="0, 20"
+            Value="0, 10"
             />
     </Style>
     

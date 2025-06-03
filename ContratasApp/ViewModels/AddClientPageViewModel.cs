@@ -26,7 +26,7 @@ public partial class AddClientPageViewModel : BasePageViewModel
 
         #region Picker options
         public IList<string> PaymentMethods { get; } =
-            new List<string> { "Money", "Bank Transfer", "Money and Bank Transfer" };
+            new List<string> { "Efectivo", "Transferencia bancaria", "Ambas" };
         #endregion
 
         #region Services

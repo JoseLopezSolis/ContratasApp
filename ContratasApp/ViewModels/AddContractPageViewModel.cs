@@ -25,7 +25,7 @@ public partial class AddContractPageViewModel : BasePageViewModel
     private DateTime startDate = DateTime.Today;
 
     public IList<LoanType> LoanTypes { get; } =
-        new List<LoanType> { LoanType.Weekly, LoanType.MonthlyInterest };
+        new List<LoanType> { LoanType.Semanal, LoanType.Mensual };
 
     public AddContractPageViewModel(
         IContractService contractService,

@@ -1,4 +1,3 @@
-using System.Threading.Tasks.Dataflow;
 using ContratasApp.Enums;
 using ContratasApp.Models;
 using ContratasApp.Services.Interfaces;
@@ -14,7 +13,6 @@ public class ContractService : IContractService
     public ContractService(SQLiteAsyncConnection db)
     {
         _db = db;
-        //Creating the tables when class is called
         _db.CreateTableAsync<LoanContract>().Wait();
         _db.CreateTableAsync<PaymentSchedule>().Wait();
     }
@@ -27,7 +25,7 @@ public class ContractService : IContractService
         // 2) Genera las cuotas según el tipo
         var schedules = new List<PaymentSchedule>();
 
-        if (contract.Type == LoanType.Weekly)
+        if (contract.Type == LoanType.Semanal)
         {
             var cuota = contract.Principal * 0.10m;
             for (int i = 1; i <= 13; i++)

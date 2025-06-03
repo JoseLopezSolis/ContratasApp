@@ -7,42 +7,16 @@
     xmlns:models="clr-namespace:ContratasApp.Models"
     x:DataType="vm:ClientPageViewModel"
     x:Class="ContratasApp.Views.ClientPage">
-    
-    <Shell.TitleView>
-        <Grid 
-            ColumnDefinitions="*,Auto" 
-            ColumnSpacing="10">
-            
-            <Label
-                Grid.Column="2"
-                Text="Add Contract" 
-                VerticalOptions="Center"
-                FontAttributes="Bold"
-                FontSize="15">
-                
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer
-                        CommandParameter="{Binding Client}"
-                        Command="{Binding CreateContractCommand}" />
-                </Label.GestureRecognizers>
-                
-            </Label>
-            
-        </Grid>
-    </Shell.TitleView>
-    
     <ScrollView>
-        
         <VerticalStackLayout
             Margin="10,0">
+            
             <Border 
                 Style="{StaticResource BorderClientInformation}">
-                
                     <Border.StrokeShape>
                         <RoundRectangle
                             CornerRadius="100" />
                     </Border.StrokeShape>
-                
                     <Image
                         Source="{Binding Client.ImagePath}"
                         Aspect="AspectFill" />
@@ -53,13 +27,27 @@
                 FontSize="25"
                 Text="{Binding Client.Name, StringFormat='{0}'}" />
             
-            <Label
-                Text="Contracts"
-                FontSize="20"
+            <Button
+                Text="Agregar prestamo"
+                Margin="0, 10"
+                WidthRequest="250"
+                BackgroundColor="{StaticResource CustomBlue}"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
                 FontAttributes="Bold"
-                Margin="0, 10"/>
+                FontSize="15"
+                Command="{Binding CreateContractCommand}"
+                CommandParameter="{Binding Client}"
+                />
             
-            <VerticalStackLayout>
+            <Label
+                Text="Lista de prestamos:"
+                HorizontalOptions="Start"
+                FontSize="20"
+                Margin="10"/>
+            
+            <VerticalStackLayout
+                Margin="10">
                 
                 <CollectionView
                     SelectionMode="Single"

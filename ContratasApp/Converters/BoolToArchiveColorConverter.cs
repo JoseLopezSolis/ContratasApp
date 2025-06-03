@@ -8,7 +8,9 @@ public class BoolToArchiveColorConverter : IValueConverter
     {
         if (value is bool archived && archived)
             return Colors.Gray;   // archivados
-        return Colors.Green;      // activos
+        if (Application.Current.Resources["CustomBlue"] is Color color)
+            return color;    // activos
+        return null;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
