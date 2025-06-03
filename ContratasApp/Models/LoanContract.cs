@@ -26,7 +26,7 @@ public class LoanContract : ObservableObject
 
     // Número total de pagos según el tipo
     [Ignore]
-    public int TotalPayments => Type == LoanType.Weekly ? 13 : 0;
+    public int TotalPayments => Type == LoanType.Semanal ? 13 : 0;
 
     // Cuotas ya abonadas (se calcula en el ViewModel)
     [Ignore]

@@ -5,6 +5,7 @@ using ContratasApp.Helpers;
 using ContratasApp.Models;
 using ContratasApp.Services.Interfaces;
 using ContratasApp.ViewModels.Base;
+using UIKit;
 
 namespace ContratasApp.ViewModels;
 public partial class ClientsPageViewModel : BasePageViewModel
@@ -17,22 +18,27 @@ public partial class ClientsPageViewModel : BasePageViewModel
 
     #region Observable properties
         
-    [ObservableProperty] 
+    [ObservableProperty]  
     ObservableCollection<Client> clients = new();
 
-    [ObservableProperty] private ObservableCollection<Client> filteredClients = new();
+    [ObservableProperty] 
+    private ObservableCollection<Client> filteredClients = new();
         
-    [ObservableProperty] string searchText;
+    [ObservableProperty] 
+    string searchText;
         
-    [ObservableProperty] bool isRefreshing;
+    [ObservableProperty] 
+    bool isRefreshing;
         
-    [ObservableProperty] private bool showArchived;
-
-
+    [ObservableProperty] 
+    private bool showArchived;
     #endregion
+    
+    public string EmptyClientsMessage => Clients.Count > 0 
+        ? "" 
+        : $"No hay clientes {(ShowArchived ? "archivados" : "activos")}";
 
     #region Constructor
-
     public ClientsPageViewModel(
         IClientService clientService,
         IContractService contractService,
@@ -43,14 +49,21 @@ public partial class ClientsPageViewModel : BasePageViewModel
         _navigationService = navigationService;
         _contractService = contractService;
         showArchived = false;
+        Clients.CollectionChanged += (s, e) => OnPropertyChanged(nameof(EmptyClientsMessage));
     }
 
     #endregion
 
     #region OnChanged & Lifecycle
+    
+    partial void OnShowArchivedChanged(bool oldValue, bool newValue)
+    {
+        OnPropertyChanged(nameof(EmptyClientsMessage));
+    }
 
     public string ArchiveButtonText 
-        => ShowArchived ? "Archived" : "Active";
+        => ShowArchived ? "Archivados" : "Activos";
+    
         
     partial void OnSearchTextChanged(string value)
         => SearchCommand.Execute(null);
@@ -62,14 +75,12 @@ public partial class ClientsPageViewModel : BasePageViewModel
             base.OnAppearing();
             if (RefreshCommand.CanExecute(null))
                 RefreshCommand.Execute(null);
-            needRefreshPage = false;
+            
+            needRefreshPage = false; // Flag to avoid unexpected refresh page
         }
     }
 
-    public override async Task InitializeAsync(object navigationData)
-    {
-        await RefreshAsync();
-    }
+    public override async Task InitializeAsync(object navigationData) => await RefreshAsync();
 
     #endregion
 
@@ -86,27 +97,26 @@ public partial class ClientsPageViewModel : BasePageViewModel
     [RelayCommand]
     async Task RefreshAsync()
     {
-        if (IsRefreshing) return;      // <- evita dobles ejecuciones
-        IsRefreshing = true;
+        if (IsRefreshing) return; //Avoid refreshing twise     
+        IsRefreshing = true; 
         try
         {
-            var list = ShowArchived
+            var listClients = ShowArchived
                 ? await _clientService.GetArchivedAsync()
                 : await _clientService.GetAllAsync();
 
-            Clients.Clear();
-            foreach (var c in list.OrderByDescending(x => x.Id))
+            Clients.Clear(); 
+            
+            foreach (var client in listClients.OrderByDescending(client => client.Id))
             {
-                var contratos = await _contractService
-                    .GetByClientIdAsync(c.Id);
-
-                // limpias y agregas a la colección existente
-                c.Contracts.Clear();
-                foreach (var contrato in contratos
+                List<LoanContract> loans = await _contractService
+                    .GetByClientIdAsync(client.Id);
+                client.Contracts.Clear();
+                foreach (var loan in loans
                              .OrderByDescending(x => x.StartDate))
-                    c.Contracts.Add(contrato);
+                    client.Contracts.Add(loan);
 
-                Clients.Add(c);
+                Clients.Add(client);
             }
 
             // refrescas tu lista filtrada…
@@ -143,64 +153,68 @@ public partial class ClientsPageViewModel : BasePageViewModel
         await NavigationService.GoToAsync(RouteConstants.AddClientPageRoute);
     }
         
-        [RelayCommand]
-        async Task NavigateToDetailAsync(Client client)
-        {
-            await Shell.Current.GoToAsync(
-                $"{RouteConstants.ClientPageRoute}?clientId={client.Id}");
-        }
+    [RelayCommand]
+    async Task NavigateToDetailAsync(Client client)
+    {
+        await Shell.Current.GoToAsync(
+            $"{RouteConstants.ClientPageRoute}?clientId={client.Id}");
+    }
         
-        [RelayCommand]
-        async Task DeleteClientAsync(Client client)
-        {
-            bool answer = await Application.Current.MainPage
-                .DisplayAlert("Remove Client",
-                    $"Are you sure you want to remove {client.Name}?",
-                    "Yes", "No");
-            if (!answer)
-                return;
+    [RelayCommand]
+    async Task DeleteClientAsync(Client client)
+    {
+        bool answer = await Application.Current.MainPage
+            .DisplayAlert("Eliminar cliente",
+                $"Estas seguro que deseas eliminar a {client.Name}?",
+                "Eliminar", "Cancelar");
+        if (!answer)
+            return;
 
-            await _clientService.DeleteAsync(client);
-            await RefreshAsync();
-        }
+        await _clientService.DeleteAsync(client);
+        await RefreshAsync();
+    }
         
-        [RelayCommand]
-        async Task UnarchiveClientAsync(Client client)
+    [RelayCommand]
+    async Task UnarchiveClientAsync(Client client)
         {
-            bool ok = await Application.Current?.MainPage
-                .DisplayAlert("Unarchive",
-                    $"Do you want to Unarchive {client.Name}?",
-                    "Yes", "No");
-            if (!ok) return;
+            bool isClientArchived = await Application.Current?.MainPage
+                .DisplayAlert("Desarchivar",
+                    $"Quieres desarchivar {client.Name}?",
+                    "Si", "Cancelar");
+            if (!isClientArchived) return;
 
             client.IsArchived = false;
             await _clientService.UpdateAsync(client);
-            await RefreshAsync(); // Reload the list 
+            await RefreshAsync(); 
         }
         
-          [RelayCommand]
-                async Task EditClientAsync(Client client)
+    [RelayCommand]
+    async Task EditClientAsync(Client client)
                 {
                     needRefreshPage = true;
                     await NavigationService.GoToAsync(
                         $"{RouteConstants.AddClientPageRoute}?clientId={client.Id}");
                 }
                 
-                [RelayCommand]
-                async Task ArchiveClientAsync(Client client)
+    [RelayCommand]
+    async Task ArchiveClientAsync(Client client)
                 {
                     if (client == null) return;
         
                     bool ok = await Application.Current.MainPage
                         .DisplayAlert("Archivar",
                             $"¿Archivar a {client.Name}?",
-                            "Sí", "No");
+                            "Sí", "Cancelar");
                     if (!ok) return;
         
                     await _clientService.ArchiveAsync(client);
                     await RefreshAsync();
                 }
         
-        #endregion
-    }
+    #endregion
+
+    #region Extra Methods 
+    
+    #endregion
+}
 

@@ -16,7 +16,7 @@
             <Label
                 Grid.Column="0"
                 Style="{StaticResource TitleLabel}"
-                Text="Clients"/>
+                Text="Clientes"/>
             
             <Label
                 Grid.Column="1"
@@ -54,7 +54,7 @@
         
         <SearchBar
             Grid.Row="0"
-            Placeholder="Search Client"
+            Placeholder="Buscar cliente"
             Text="{Binding SearchText}"
             SearchCommand="{Binding SearchCommand}"
             ios:SearchBar.SearchBarStyle="Minimal"/>
@@ -66,7 +66,7 @@
 
             <CollectionView
                 ItemsSource="{Binding FilteredClients}"
-                EmptyView="No Clients added"
+                EmptyView="{Binding EmptyClientsMessage}"
                 SelectionMode="None">
 
                 <CollectionView.ItemTemplate>
@@ -174,7 +174,7 @@
                                         Style="{StaticResource UsernameCardLabel}" />
                                     
                                     <Label Text="{Binding ContractsCount,
-                                     StringFormat='Total loans: {0}'}" />
+                                     StringFormat='Prestamos totales: {0}'}" />
                                 </VerticalStackLayout>
                                 
                             </HorizontalStackLayout>
@@ -193,4 +193,5 @@
         HorizontalOptions="Center"/>
         
   </Grid>
+    
 </base:BasePage>

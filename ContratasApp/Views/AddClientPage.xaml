@@ -11,12 +11,12 @@
     
     <ContentPage.ToolbarItems>
         <ToolbarItem
-            Text="Done"
+            Text="Hecho"
             Command="{Binding SaveCommand}" />
     </ContentPage.ToolbarItems>
     
     <VerticalStackLayout 
-        Padding="20" 
+        Padding="20,0" 
         Spacing="15">
                 
         <Border
@@ -39,26 +39,26 @@
 
         <Label
             Style="{StaticResource LabelIndicator}"
-            Text="Tap the image to change the picture"/>
+            Text="Tap para cambiar la foto"/>
 
         <Grid 
-            RowDefinitions="Auto,Auto,Auto,Auto,Auto"
+            RowDefinitions="Auto,Auto,Auto"
             ColumnDefinitions="*,*"
             RowSpacing="25"
             ColumnSpacing="10">
         
             <Entry
-                Placeholder="Name (Obligatory)"
+                Placeholder="Nombre (Obligatorio)"
                 Text="{Binding Name}"
                 Grid.Row="0" Grid.ColumnSpan="2" />
 
             <Entry
-                Placeholder="Lastname (Obligatory)"
+                Placeholder="Apellido (Obligatorio)"
                 Text="{Binding LastName}"
                 Grid.Row="1" Grid.Column="0" />
-
+            
             <Entry
-                Placeholder="Phone number"
+                Placeholder="Numero telefonico"
                 Keyboard="Telephone"
                 Text="{Binding Phone, Mode=TwoWay}"
                 Grid.Row="1" Grid.Column="1" >
@@ -66,26 +66,13 @@
                 <Entry.Behaviors>
                     <behavior:PhoneValidationBehavior />
                 </Entry.Behaviors>
-                    
             </Entry>
-
-            <Entry
-                Placeholder="email@ejemplo.com"
-                Keyboard="Email"
-                Text="{Binding Email, Mode=TwoWay}"
-                Grid.Row="2" Grid.ColumnSpan="2">
-                    
-                <Entry.Behaviors>
-                    <toolkit:EmailValidationBehavior />
-                </Entry.Behaviors>
-                    
-            </Entry>
-
+            
             <Picker
-                Title="Method of payment"
+                Title="Metodo de pago"
                 ItemsSource="{Binding PaymentMethods}"
                 SelectedItem="{Binding PaymentMethod}"
-                Grid.Row="3" Grid.ColumnSpan="2" />
+                Grid.Row="2" Grid.ColumnSpan="2" />
         </Grid>
         
     </VerticalStackLayout>

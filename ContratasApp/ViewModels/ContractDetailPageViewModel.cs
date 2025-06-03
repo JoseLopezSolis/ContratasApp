@@ -62,7 +62,7 @@ public partial class ContractDetailPageViewModel:BasePageViewModel
     [RelayCommand]
     async Task AddPaymentAsync()
     {
-        if (Contract.Type == LoanType.Weekly)
+        if (Contract.Type == LoanType.Semanal)
         {
             // 1) Busca la siguiente cuota no pagada
             var next = Payments.FirstOrDefault(p => !p.IsPaid);
