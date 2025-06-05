@@ -58,7 +58,9 @@
                     TextDecorations="Underline">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer 
-                            Tapped="OnSeeDetailClient"/>
+                            Tapped="OnSeeDetailClient"
+                            CommandParameter="{Binding .}"
+                            />
                     </Label.GestureRecognizers>
                 </Label>
                 
