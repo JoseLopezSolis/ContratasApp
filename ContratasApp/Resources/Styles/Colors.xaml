@@ -52,9 +52,23 @@
     <Color x:Key="PrimaryTextColorLight">#333333</Color>
     <Color x:Key="PrimaryTextColorDark">#FFFFFF</Color>
     
-    
-    <!-- Custom colors -->
-    <Color x:Key="CustomBlue">#0066d9 </Color>
+    <!-- Primary Colors -->
+    <Color x:Key="PrimaryColor">#2ECC71</Color> <!-- Emerald Green -->
+    <Color x:Key="SecondaryColor">#2C3E50</Color> <!-- Deep Navy -->
+    <Color x:Key="AccentColor">#3498DB</Color> <!-- Sky Blue -->
+
+    <!-- Backgrounds -->
+    <Color x:Key="BackgroundColor">#F5F6FA</Color> <!-- Light Gray -->
+    <Color x:Key="CardBackgroundColor">#FFFFFF</Color> <!-- Optional for white cards -->
+
+    <!-- Text Colors -->
+    <Color x:Key="PrimaryTextColor">#2D3436</Color> <!-- Charcoal -->
+    <Color x:Key="SecondaryTextColor">#7F8C8D</Color> <!-- Muted Gray -->
+
+    <!-- Status Colors -->
+    <Color x:Key="PositiveColor">#27AE60</Color> <!-- Gains -->
+    <Color x:Key="NegativeColor">#E74C3C</Color> <!-- Losses -->
+    <Color x:Key="HighlightColor">#F1C40F</Color> <!-- Gold -->
 
 
 </ResourceDictionary>

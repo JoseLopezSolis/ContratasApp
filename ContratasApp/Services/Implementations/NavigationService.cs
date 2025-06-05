@@ -15,22 +15,12 @@ public class NavigationService : INavigationService
             return;
 
         if (parameters == null)
-        {
-            // Sin parámetros usa la sobrecarga sencilla
             await Shell.Current.GoToAsync(route);
-        }
         else
-        {
-            // Con parámetros usa ShellNavigationState
             await Shell.Current.GoToAsync(new ShellNavigationState(route), parameters);
-        }
     }
 
-    public async Task GoBackAsync()
-    {
-        await Shell.Current.GoToAsync("../");
-    }
+    public async Task GoBackAsync() => await Shell.Current.GoToAsync("../");
 
-    private Page? GetCurrentPage()
-        => Shell.Current.CurrentPage;
+    private Page? GetCurrentPage() => Shell.Current.CurrentPage;
 }

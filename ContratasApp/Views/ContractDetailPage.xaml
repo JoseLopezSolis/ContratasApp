@@ -15,7 +15,7 @@
       <!-- 1) Resumen del contrato -->
       <Border  Padding="16">
         <VerticalStackLayout Spacing="8">
-          <Label Text="{Binding Contract.Principal, StringFormat='Monto: {0:C0}'}"
+          <Label Text="{Binding Contract.Amount, StringFormat='Monto: {0:C0}'}"
                   />
           <Label Text="{Binding Contract.Type}"
                   />

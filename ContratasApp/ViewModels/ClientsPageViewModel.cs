@@ -5,7 +5,6 @@ using ContratasApp.Helpers;
 using ContratasApp.Models;
 using ContratasApp.Services.Interfaces;
 using ContratasApp.ViewModels.Base;
-using UIKit;
 
 namespace ContratasApp.ViewModels;
 public partial class ClientsPageViewModel : BasePageViewModel
@@ -109,7 +108,7 @@ public partial class ClientsPageViewModel : BasePageViewModel
             
             foreach (var client in listClients.OrderByDescending(client => client.Id))
             {
-                List<LoanContract> loans = await _contractService
+                List<Loan> loans = await _contractService
                     .GetByClientIdAsync(client.Id);
                 client.Contracts.Clear();
                 foreach (var loan in loans

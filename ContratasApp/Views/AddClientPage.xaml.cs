@@ -11,6 +11,7 @@ public partial class AddClientPage
 {
     public AddClientPage()
     {
+        
         InitializeComponent();
     }
 }

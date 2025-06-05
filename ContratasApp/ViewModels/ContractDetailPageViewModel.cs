@@ -17,7 +17,7 @@ public partial class ContractDetailPageViewModel:BasePageViewModel
     private int contractId;
 
     [ObservableProperty]
-    private LoanContract contract;
+    private Loan contract;
 
     [ObservableProperty]
     private ObservableCollection<PaymentSchedule> payments = new();
@@ -62,7 +62,7 @@ public partial class ContractDetailPageViewModel:BasePageViewModel
     [RelayCommand]
     async Task AddPaymentAsync()
     {
-        if (Contract.Type == LoanType.Semanal)
+        if (Contract.Type == LoanType.Weekly)
         {
             // 1) Busca la siguiente cuota no pagada
             var next = Payments.FirstOrDefault(p => !p.IsPaid);
@@ -74,11 +74,11 @@ public partial class ContractDetailPageViewModel:BasePageViewModel
         }
         else // MonthlyInterest
         {
-            // Cada pago es un 10% del principal, se inserta uno nuevo
+            // Cada pago es un 10% del Amount, se inserta uno nuevo
             var pago = new PaymentSchedule
             {
                 ContractId = Contract.Id,
-                Amount     = Math.Round(Contract.Principal * 0.10m, 2),
+                Amount     = Math.Round(Contract.Amount * 0.10m, 2),
                 IsPaid     = true,
                 PaidDate   = DateTime.Now
             };

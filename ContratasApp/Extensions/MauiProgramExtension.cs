@@ -58,7 +58,7 @@ public static class MauiProgramExtension
           var path = Path.Combine(FileSystem.AppDataDirectory, "app.db3");
           var db   = new SQLiteAsyncConnection(path);
           db.CreateTableAsync<Client>().Wait();
-          db.CreateTableAsync<LoanContract>().Wait();
+          db.CreateTableAsync<Loan>().Wait();
           db.CreateTableAsync<PaymentSchedule>().Wait();
           return db;
         });

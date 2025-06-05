@@ -104,7 +104,6 @@ public partial class AddClientPageViewModel : BasePageViewModel
                 Id = ClientId,
                 Name = ValidName(name,lastName),
                 Phone         = Phone?.Trim(),
-                Email         = Email?.Trim(),
                 PaymentMethod = ValidPaymentMethod(PaymentMethod),
                 ImagePath     = ImagePath,
                 IsArchived = false
@@ -164,7 +163,6 @@ public partial class AddClientPageViewModel : BasePageViewModel
             Name = partes[0];
             LastName = partes.Length > 1 ? partes[1] : string.Empty;
             Phone = existing.Phone;
-            Email = existing.Email;
             PaymentMethod = existing.PaymentMethod;
             ImagePath = existing.ImagePath;
         }

@@ -16,7 +16,7 @@ public partial class AddContractPageViewModel : BasePageViewModel
     private int clientId;
 
     [ObservableProperty]
-    private decimal principal;
+    private decimal amount;
 
     [ObservableProperty]
     private LoanType selectedLoanType;
@@ -25,7 +25,7 @@ public partial class AddContractPageViewModel : BasePageViewModel
     private DateTime startDate = DateTime.Today;
 
     public IList<LoanType> LoanTypes { get; } =
-        new List<LoanType> { LoanType.Semanal, LoanType.Mensual };
+        new List<LoanType> { LoanType.Weekly, LoanType.Monthly };
 
     public AddContractPageViewModel(
         IContractService contractService,
@@ -38,10 +38,10 @@ public partial class AddContractPageViewModel : BasePageViewModel
     [RelayCommand(CanExecute = nameof(CanSave))]
     async Task SaveAsync()
     {
-        var contract = new LoanContract
+        var contract = new Loan()
         {
             ClientId  = ClientId,
-            Principal = Principal,
+            Amount = Amount,
             Type      = SelectedLoanType,
             StartDate = StartDate,
             IsClosed  = false
@@ -52,11 +52,11 @@ public partial class AddContractPageViewModel : BasePageViewModel
     }
 
     bool CanSave()
-        => Principal > 0
+        => Amount > 0
            && Enum.IsDefined(typeof(LoanType), SelectedLoanType)
            && ClientId > 0;
 
-    partial void OnPrincipalChanged(decimal value)
+    partial void OnAmountChanged(decimal value)
         => SaveCommand.NotifyCanExecuteChanged();
 
     partial void OnSelectedLoanTypeChanged(LoanType value)

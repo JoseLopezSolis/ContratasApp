@@ -6,27 +6,26 @@ using SQLite;
 
 namespace ContratasApp.Models;
 
-public class LoanContract : ObservableObject
+public class Loan : ObservableObject
 {
     [PrimaryKey, AutoIncrement]
     public int Id { get; set; }
 
     [Indexed]
     public int ClientId { get; set; }
-
-    public decimal Principal { get; set; }
+    public decimal Amount { get; set; }
     public LoanType Type { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     public bool IsClosed { get; set; }
 
-    // Monto de cada cuota semanal (10% del principal)
+    // Monto de cada cuota semanal (10% del Amount)
     [Ignore]
-    public decimal WeeklyPaymentAmount => Math.Round(Principal * 0.10m, 2);
+    public decimal WeeklyPaymentAmount => Math.Round(Amount * 0.10m, 2);
 
     // Número total de pagos según el tipo
     [Ignore]
-    public int TotalPayments => Type == LoanType.Semanal ? 13 : 0;
+    public int TotalPayments => Type == LoanType.Weekly ? 13 : 0;
 
     // Cuotas ya abonadas (se calcula en el ViewModel)
     [Ignore]

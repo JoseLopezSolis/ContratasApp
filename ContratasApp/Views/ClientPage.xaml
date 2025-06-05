@@ -7,91 +7,103 @@
     xmlns:models="clr-namespace:ContratasApp.Models"
     x:DataType="vm:ClientPageViewModel"
     x:Class="ContratasApp.Views.ClientPage">
-    <ScrollView>
-        <VerticalStackLayout
-            Margin="10,0">
-            
-            <Border 
-                Style="{StaticResource BorderClientInformation}">
+    <Grid 
+        RowDefinitions="*,Auto" 
+        Padding="10">
+        <ScrollView 
+            Grid.Row="0">
+            <VerticalStackLayout 
+                Spacing="5"
+                Margin="10,0">
+                <Border
+                    WidthRequest="200"
+                    HeightRequest="200"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    StrokeThickness="0"
+                    BackgroundColor="Transparent">
+                    
                     <Border.StrokeShape>
-                        <RoundRectangle
+                        <RoundRectangle 
                             CornerRadius="100" />
                     </Border.StrokeShape>
+                    
+                    <Border.Shadow>
+                        <Shadow
+                            Brush="Black"
+                            Offset="0,5"
+                            Radius="15"
+                            Opacity="0.2" />
+                    </Border.Shadow>
+                    
                     <Image
                         Source="{Binding Client.ImagePath}"
                         Aspect="AspectFill" />
-            </Border>
-            
-            <Label
-                HorizontalOptions="Center"
-                FontSize="25"
-                Text="{Binding Client.Name, StringFormat='{0}'}" />
-            
-            <Button
-                Text="Agregar prestamo"
-                Margin="0, 10"
-                WidthRequest="250"
-                BackgroundColor="{StaticResource CustomBlue}"
-                HorizontalOptions="Center"
-                VerticalOptions="Center"
-                FontAttributes="Bold"
-                FontSize="15"
-                Command="{Binding CreateContractCommand}"
-                CommandParameter="{Binding Client}"
-                />
-            
-            <Label
-                Text="Lista de prestamos:"
-                HorizontalOptions="Start"
-                FontSize="20"
-                Margin="10"/>
-            
-            <VerticalStackLayout
-                Margin="10">
+                    
+                </Border>
+
+                <Label
+                    HorizontalOptions="Center"
+                    FontSize="20"
+                    FontAttributes="Bold"
+                    TextColor="Black"
+                    Text="{Binding Client.FullName}" />
                 
+                <Label
+                    Text="Prestamos:"
+                    FontSize="20"
+                    FontAttributes="Bold"
+                    Margin="0,10"/>
+
                 <CollectionView
                     SelectionMode="Single"
-                    ItemsSource="{Binding Contracts}"
+                    ItemsSource="{Binding Loans}"
                     SelectedItem="{Binding SelectedContract, Mode=TwoWay}"
                     VerticalOptions="Fill">
-                    
+
                     <CollectionView.ItemsLayout>
-                        <LinearItemsLayout
+                        <LinearItemsLayout 
                             Orientation="Vertical"
-                            ItemSpacing="20"/>
+                            ItemSpacing="10"/>
                     </CollectionView.ItemsLayout>
-                    
+
                     <CollectionView.ItemTemplate>
-                        
                         <DataTemplate 
-                            x:DataType="models:LoanContract">
-                            <Border
-                                Margin="12"
-                                Stroke="Black"
-                                BackgroundColor="{StaticResource CardBackgroundLight}"
-                                >
+                            x:DataType="models:Loan">
+                            <Border 
+                                Stroke="#E0E0E0"
+                                StrokeThickness="1"
+                                Margin="0,5"
+                                BackgroundColor="White">
                                 <Border.StrokeShape>
                                     <RoundRectangle CornerRadius="10" />
                                 </Border.StrokeShape>
-      
+
                                 <VerticalStackLayout 
-                                    Spacing="6"
-                                    Padding="10">
-                
-                                    <!-- Monto y tipo -->
-                                    <Label
-                                        Text="{Binding Principal, StringFormat='Monto: {0:C0}'}"
-                                        FontSize="18"
-                                        FontAttributes="Bold" />
+                                    Padding="15">
+                                    <Label 
+                                        FontSize="18" 
+                                        FontAttributes="Bold">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span 
+                                                    Text="Monto: " 
+                                                    TextColor="Black" 
+                                                    FontAttributes="Bold"/>
+                                                <Span 
+                                                    Text="{Binding Amount, StringFormat='{0:C0}'}" 
+                                                    TextColor="#4CAF50"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
                                     
                                     <Label
                                         Text="{Binding Type}"
                                         FontSize="14"
                                         TextColor="Gray" />
 
-                                    <!-- Fechas y estado -->
                                     <Grid 
-                                        ColumnDefinitions="*" 
+                                        ColumnDefinitions="*"
                                         RowDefinitions="*,Auto,Auto">
                                         <Label
                                             Grid.Row="0" Grid.Column="0"
@@ -108,21 +120,33 @@
                                             HorizontalOptions="End" />
                                     </Grid>
 
-                                    <!-- Barra de progreso -->
                                     <ProgressBar
                                         Progress="{Binding PaymentProgress}"
                                         HeightRequest="4" />
-
                                 </VerticalStackLayout>
                             </Border>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-                
+
             </VerticalStackLayout>
-            
-        </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Button static from bottom-->
+        <Button
+            Grid.Row="1"
+            Text="Agregar nuevo"
+            BackgroundColor="#333" 
+            TextColor="White"
+            FontSize="16"
+            FontAttributes="Bold"
+            CornerRadius="20"
+            HeightRequest="50"
+            HorizontalOptions="Fill"
+            Margin="20,10"
+            Command="{Binding CreateContractCommand}"
+            CommandParameter="{Binding Client}" />
         
-    </ScrollView>
+    </Grid>
 
 </base:BasePage>

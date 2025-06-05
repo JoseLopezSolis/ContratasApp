@@ -1,10 +1,12 @@
 using System.Collections.ObjectModel;
+using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ContratasApp.Helpers;
 using ContratasApp.Models;
 using ContratasApp.Services.Interfaces;
 using ContratasApp.ViewModels.Base;
+using ContratasApp.Views.Popups;
 
 namespace ContratasApp.ViewModels;
 
@@ -21,11 +23,11 @@ namespace ContratasApp.ViewModels;
         private Client client;
 
         [ObservableProperty]
-        private ObservableCollection<LoanContract> contracts = new();
+        private ObservableCollection<Loan> loans = new();
         
         [ObservableProperty]
-        private LoanContract selectedContract;
-
+        private Loan selectedContract;
+        
         public ClientPageViewModel(
             IClientService clientService,
             IContractService contractService,
@@ -49,9 +51,9 @@ namespace ContratasApp.ViewModels;
 
             // 2) Load and sort contracts by StartDate descending
             var list = await _contractService.GetByClientIdAsync(id);
-            Contracts.Clear();
+            Loans.Clear();
             foreach (var c in list.OrderByDescending(x => x.StartDate))
-                Contracts.Add(c);
+                Loans.Add(c);
         }
 
         /// <summary>
@@ -64,14 +66,15 @@ namespace ContratasApp.ViewModels;
                 return;
 
             var list = await _contractService.GetByClientIdAsync(Client.Id);
-            Contracts.Clear();
+            Loans.Clear();
             foreach (var c in list.OrderByDescending(x => x.StartDate))
-                Contracts.Add(c);
+                Loans.Add(c);
         }
 
         /// <summary>
         /// Navigates to AddContractPage to create a new contract for this client.
         /// </summary>
+        
         [RelayCommand]
         async Task CreateContractAsync(Client client)
         {
@@ -82,20 +85,35 @@ namespace ContratasApp.ViewModels;
                 $"{RouteConstants.AddContractRoute}?clientId={client.Id}");
         }
 
+        
+        [RelayCommand]
+        private void SeeDetails()
+        {
+            var popup = new ClientDetailPopup();
+            try
+            {
+                Shell.Current.CurrentPage.ShowPopup(popup);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+            }
+
+        }
         /// <summary>
         /// Triggered when a contract is selected in the CollectionView.
         /// Executes the navigation command to contract detail.
         /// </summary>
-        partial void OnSelectedContractChanged(LoanContract contract)
+        partial void OnSelectedContractChanged(Loan loan)
         {
-            if (contract == null) return;
-            NavigateToContractDetailCommand.Execute(contract);
+            if (loan == null) return;
+            NavigateToContractDetailCommand.Execute(loan);
         }
 
         /// <summary>
         /// Navigates to the detail page of the selected contract.
         /// </summary>
         [RelayCommand]
-        async Task NavigateToContractDetailAsync(LoanContract contract)
+        async Task NavigateToContractDetailAsync(Loan contract)
             => await NavigationService.GoToAsync($"{RouteConstants.ContractDetailRoute}?contractId={contract.Id}");
     }

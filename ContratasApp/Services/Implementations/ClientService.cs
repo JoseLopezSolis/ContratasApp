@@ -14,35 +14,35 @@ public class ClientService: IClientService
         _db.CreateTableAsync<Client>().Wait();
     }
 
-    // Obtiene todos los clientes no archivados
+    // GET list of active Clients
     public Task<List<Client>> GetAllAsync() =>
         _db.Table<Client>()
             .Where(c => !c.IsArchived)
             .ToListAsync();
 
-    // Obtiene los clientes archivados
+    //GET list of arhived Clients
     public Task<List<Client>> GetArchivedAsync() =>
         _db.Table<Client>()
             .Where(c => c.IsArchived)
             .ToListAsync();
 
-    // Obtiene un cliente por Id
+    // GET Client by id
     public Task<Client> GetByIdAsync(int id) =>
         _db.FindAsync<Client>(id);
 
-    // Agrega un nuevo cliente
+    //ADD new Client
     public Task<int> AddAsync(Client client) =>
         _db.InsertAsync(client);
 
-    // Actualiza un cliente existente
+    //UPDATE Client list
     public Task<int> UpdateAsync(Client client) =>
         _db.UpdateAsync(client);
     
-    // Elimina un cliente
+    //REMOVE Client
     public Task<int> DeleteAsync(Client client) =>
         _db.DeleteAsync(client);
 
-    // Archiva un cliente (marca IsArchived = true)
+    //ARCHIVE Client
     public async Task ArchiveAsync(Client client)
     {
         client.IsArchived = true;

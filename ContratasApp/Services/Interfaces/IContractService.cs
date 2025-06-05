@@ -4,21 +4,21 @@ namespace ContratasApp.Services.Interfaces;
 
 public interface IContractService
 {
-    // 1) Crea un LoanContract y genera automáticamente sus PaymentSchedule
-    Task<int> CreateAsync(LoanContract contract);
+    //CREATE - Loan contract and generate the payment schedule.
+    Task<int> CreateAsync(Loan contract);
+    
+    //GET - List of loan contract giving clientId.
+    Task<List<Loan>> GetByClientIdAsync(int clientId);
 
-    // 2) Obtiene todos los contratos de un cliente
-    Task<List<LoanContract>> GetByClientIdAsync(int clientId);
-
-    // 3) Obtiene el detalle de pagos de un contrato
+    //GET - Detail of payments
     Task<List<PaymentSchedule>> GetPaymentSchedulesAsync(int contractId);
 
-    // 4) Marca una cuota como pagada (y, si es la última, cierra el contrato)
+    //MARK - Mark a coute as payed
     Task MarkPaymentAsPaidAsync(PaymentSchedule payment);
 
     // 5) Cierra un contrato manualmente
     Task CloseContractAsync(int contractId);
     //Get contract by id
-    Task<LoanContract> GetByIdAsync(int contractId);
+    Task<Loan> GetByIdAsync(int contractId);
     Task AddPaymentAsync(PaymentSchedule pago);
 }

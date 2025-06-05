@@ -1,4 +1,7 @@
+using System;
+using CommunityToolkit.Maui.Views;
 using ContratasApp.ViewModels;
+using ContratasApp.Views.Popups;
 
 namespace ContratasApp.Views;
 

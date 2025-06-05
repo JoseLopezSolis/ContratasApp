@@ -170,7 +170,7 @@
                                     VerticalOptions="CenterAndExpand" 
                                     Spacing="2">
                                     <Label 
-                                        Text="{Binding Name}" 
+                                        Text="{Binding FullName}" 
                                         Style="{StaticResource UsernameCardLabel}" />
                                     
                                     <Label Text="{Binding ContractsCount,
@@ -191,7 +191,6 @@
         Text="{Binding Clients.Count,
         StringFormat='Total Clients: {0}'}"
         HorizontalOptions="Center"/>
-        
   </Grid>
     
 </base:BasePage>
