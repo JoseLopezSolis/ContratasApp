@@ -24,8 +24,7 @@
                     HorizontalTextAlignment="Center"
                     FontSize="20"
                     FontAttributes="Bold"
-                    Margin="0,-20,0,30"
-                    />
+                    Margin="0,-20,0,30"/>
 
                 <Border 
                     WidthRequest="200"

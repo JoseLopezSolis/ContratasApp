@@ -27,12 +27,6 @@
             ContentTemplate="{DataTemplate views:ClientsPage}"
             Route="ClientsView"
             Icon="customer.png"/>
-        
-        <!-- <ShellContent -->
-        <!--     Title="Settings" -->
-        <!--     ContentTemplate="{DataTemplate views:ConfigurationPage}" -->
-        <!--     Route="ConfigurationView" -->
-        <!--     Icon="settingsicon.png"/> -->
     </TabBar>
 
 </Shell>

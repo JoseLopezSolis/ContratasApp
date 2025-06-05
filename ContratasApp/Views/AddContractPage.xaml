@@ -13,7 +13,6 @@
         <converters:LoanTypeToSpanishConverter 
             x:Key="LoanTypeToSpanishConverter" />
     </base:BasePage.Resources>
-    
     <ScrollView>
         <Grid 
             Padding="15,0" 

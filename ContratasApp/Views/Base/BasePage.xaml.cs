@@ -1,6 +1,5 @@
 using ContratasApp.Extensions;
 using ContratasApp.Interfaces;
-using Microsoft.Maui.Controls;
 
 namespace ContratasApp.Views.Base;
 
