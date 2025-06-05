@@ -1,4 +1,3 @@
-using System;
 using CommunityToolkit.Maui.Views;
 using ContratasApp.ViewModels;
 using ContratasApp.Views.Popups;
@@ -19,5 +18,11 @@ public partial class ClientPage
         (BindingContext as ClientPageViewModel)
             ?.RefreshContractsCommand
             .Execute(null);
+    }
+
+    private async void OnSeeDetailClient(object sender, EventArgs e)
+    {
+        var popup = new ClientDetailPopup();
+        await this.ShowPopupAsync(popup);
     }
 }

@@ -10,7 +10,7 @@ public partial class BasePage : ContentPage
     {
         InitializeComponent();
         BindingContext = this.GetViewModel();
-        this.SetValue(ContentPage.HideSoftInputOnTappedProperty, true);
+        SetValue(HideSoftInputOnTappedProperty, true);
     }
 
     #region Override_methods

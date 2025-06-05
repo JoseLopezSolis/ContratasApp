@@ -84,22 +84,6 @@ namespace ContratasApp.ViewModels;
             await NavigationService.GoToAsync(
                 $"{RouteConstants.AddContractRoute}?clientId={client.Id}");
         }
-
-        
-        [RelayCommand]
-        private void SeeDetails()
-        {
-            var popup = new ClientDetailPopup();
-            try
-            {
-                Shell.Current.CurrentPage.ShowPopup(popup);
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception);
-            }
-
-        }
         /// <summary>
         /// Triggered when a contract is selected in the CollectionView.
         /// Executes the navigation command to contract detail.

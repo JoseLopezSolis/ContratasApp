@@ -47,7 +47,20 @@
                     FontSize="20"
                     FontAttributes="Bold"
                     TextColor="Black"
-                    Text="{Binding Client.FullName}" />
+                    Text="{Binding  Client.FullName}" />
+                
+                <Label
+                    HorizontalTextAlignment="Center"
+                    FontSize="15"
+                    FontAttributes="Bold"
+                    TextColor="Black"
+                    Text="Ver detalle"
+                    TextDecorations="Underline">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer 
+                            Tapped="OnSeeDetailClient"/>
+                    </Label.GestureRecognizers>
+                </Label>
                 
                 <Label
                     Text="Prestamos:"

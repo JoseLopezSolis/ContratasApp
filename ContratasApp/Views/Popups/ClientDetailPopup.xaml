@@ -9,6 +9,8 @@
 
     <VerticalStackLayout>
         <Label Text="This is a very important message!" />
+        <Button Text="OK" 
+                Clicked="OnOKButtonClicked" />
     </VerticalStackLayout>
     
 </toolkit:Popup>
