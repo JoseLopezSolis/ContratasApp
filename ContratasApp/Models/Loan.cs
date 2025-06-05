@@ -42,4 +42,7 @@ public class Loan : ObservableObject
     // Estado legible
     [Ignore]
     public string Status => IsClosed ? "Cerrado" : "Activo";
+
+    [Ignore]
+    public string LoanTypeTranslated => Type == LoanType.Weekly ? "Semanal" : "Mensual";
 }

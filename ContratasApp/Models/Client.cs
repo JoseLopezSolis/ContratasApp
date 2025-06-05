@@ -10,7 +10,8 @@ public class Client : ObservableObject
     public string Name { get; set; }
     public string LastName { get; set; }
     public string Phone { get; set; }
-    public string PaymentMethod { get; set; }
+    public string PaymentMethod { get; set;} 
+        
     public string ImagePath { get; set; }
     public bool IsArchived { get; set; }
 
@@ -18,8 +19,8 @@ public class Client : ObservableObject
     public string FullName => $"{Name} {LastName}".Trim();
 
     [Ignore]
-    public ObservableCollection<Loan> Contracts { get; } = new();
+    public ObservableCollection<Loan> Loans { get; } = new();
 
     [Ignore]
-    public int ContractsCount => Contracts.Count;
+    public int ContractsCount => Loans.Count;
 }

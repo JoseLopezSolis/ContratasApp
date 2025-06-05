@@ -58,12 +58,14 @@
                     TextDecorations="Underline">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer 
-                            Tapped="OnSeeDetailClient"/>
+                            Tapped="OnSeeDetailClient"
+                            CommandParameter="{Binding .}"
+                            />
                     </Label.GestureRecognizers>
                 </Label>
                 
                 <Label
-                    Text="Prestamos:"
+                    Text="Prestamos"
                     FontSize="20"
                     FontAttributes="Bold"
                     Margin="0,10"/>
@@ -73,6 +75,19 @@
                     ItemsSource="{Binding Loans}"
                     SelectedItem="{Binding SelectedContract, Mode=TwoWay}"
                     VerticalOptions="Fill">
+                    
+                    <CollectionView.EmptyView>
+                        <Grid
+                            HorizontalOptions="Fill"
+                            VerticalOptions="Fill">
+                            <Label 
+                                Text="No hay préstamos registrados." 
+                                HorizontalTextAlignment="Center"
+                                FontSize="16" 
+                                TextColor="Gray"
+                                 />
+                        </Grid>
+                    </CollectionView.EmptyView>
 
                     <CollectionView.ItemsLayout>
                         <LinearItemsLayout 
@@ -111,7 +126,7 @@
                                     </Label>
                                     
                                     <Label
-                                        Text="{Binding Type}"
+                                        Text="{Binding LoanTypeTranslated}"
                                         FontSize="14"
                                         TextColor="Gray" />
 

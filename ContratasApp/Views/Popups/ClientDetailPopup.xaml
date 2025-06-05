@@ -5,12 +5,89 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:Class="ContratasApp.Views.Popups.ClientDetailPopup"
-    CanBeDismissedByTappingOutsideOfPopup="False">
+    CanBeDismissedByTappingOutsideOfPopup="True">
 
-    <VerticalStackLayout>
-        <Label Text="This is a very important message!" />
-        <Button Text="OK" 
-                Clicked="OnOKButtonClicked" />
-    </VerticalStackLayout>
+    <Grid
+        RowDefinitions="Auto,*,Auto"
+        ColumnDefinitions="*"
+        Background="White"
+        HeightRequest="300"
+        WidthRequest="300"
+        Padding="20">
+        
+        <Label
+            Grid.Row="0"
+            x:Name="welcomeMessage"
+            FontSize="20"
+            HorizontalTextAlignment="Center"
+            FontAttributes="Bold"
+            Margin="0,20"/>
+        
+        <Grid
+            Grid.Row="1"
+            Grid.Column="0"
+            RowDefinitions="Auto, Auto, Auto, Auto"
+            ColumnDefinitions="Auto, Auto"
+            ColumnSpacing="5"
+            RowSpacing="10">
+            
+            <Label
+                Grid.Row="0"
+                Grid.Column="0"
+                FontAttributes="Bold"
+                Text="Telefono:"/>
+            <Label
+                x:Name="phone"
+                Grid.Row="0"
+                Grid.Column="1"
+                HorizontalTextAlignment="End"
+                TextDecorations="Underline"/>
+            
+            <Label
+                Grid.Row="1"
+                Grid.Column="0"
+                FontAttributes="Bold"
+                Text="Forma de pago:"/>
+            <Label
+                x:Name="methodOfPayment"
+                Grid.Row="1"
+                Grid.Column="1"
+                HorizontalTextAlignment="End"
+                Text="Efectivo"/>
+            
+            <Label
+                Grid.Row="2"
+                Grid.Column="0"
+                FontAttributes="Bold"
+                Text="Email"/>
+            <Label
+                x:Name="email"
+                Grid.Row="2"
+                Grid.Column="1"
+                HorizontalTextAlignment="End"
+                Text="itsjoselops@gmail.com"/>
+            
+            
+            <Label
+                Grid.Row="3"
+                Grid.Column="0"
+                FontAttributes="Bold"
+                Text="Contratas activas"/>
+            <Label
+                x:Name="loanCount"
+                Grid.Row="3"
+                Grid.Column="1"
+                HorizontalTextAlignment="End"
+                Text="itsjoselops@gmail.com"/>
+        </Grid>
+        
+        
+        <Button
+            Grid.Row="2"
+            Text="Cerrar"
+            Clicked="OnOKButtonClicked"
+            Background="{StaticResource Black}"
+            />
+    </Grid>
     
 </toolkit:Popup>

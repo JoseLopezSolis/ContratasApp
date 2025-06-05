@@ -22,7 +22,19 @@ public partial class ClientPage
 
     private async void OnSeeDetailClient(object sender, EventArgs e)
     {
-        var popup = new ClientDetailPopup();
-        await this.ShowPopupAsync(popup);
+        if (BindingContext is ClientPageViewModel vm && vm.Client is not null)
+        {
+            var client = vm.Client;
+
+            var popup = new ClientDetailPopup(
+                $"{client.FullName}",
+                client.Phone,
+                client.PaymentMethod,
+                "itsjoselops@gmail.com", 
+                client.ContractsCount
+            );
+
+            await this.ShowPopupAsync(popup);
+        }
     }
 }

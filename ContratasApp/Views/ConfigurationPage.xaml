@@ -6,11 +6,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="ContratasApp.Views.ConfigurationPage">
     <Shell.TitleView>
-        
         <Label
                 Text="Ajustes"
                 FontSize="30"
                 FontAttributes="Bold"/>
-            
     </Shell.TitleView>
 </base:BasePage>
