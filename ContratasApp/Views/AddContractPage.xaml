@@ -4,10 +4,15 @@
     xmlns:base="clr-namespace:ContratasApp.Views.Base"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:vm="clr-namespace:ContratasApp.ViewModels"
-    x:DataType="vm:AddContractPageViewModel"
     xmlns:syst="clr-namespace:System;assembly=System.Runtime"
+    xmlns:vm="clr-namespace:ContratasApp.ViewModels"
+    xmlns:converters="clr-namespace:ContratasApp.Converters"
+    x:DataType="vm:AddContractPageViewModel"
     x:Class="ContratasApp.Views.AddContractPage">
+    <base:BasePage.Resources>
+        <converters:LoanTypeToSpanishConverter 
+            x:Key="LoanTypeToSpanishConverter" />
+    </base:BasePage.Resources>
     
     <ScrollView>
         <Grid 
@@ -46,8 +51,12 @@
                 Grid.Row="4"
                 Title="Seleccione tipo"
                 ItemsSource="{Binding LoanTypes}"
-                SelectedItem="{Binding SelectedLoanType}"
-                ItemDisplayBinding="{Binding .}" />
+                SelectedItem="{Binding SelectedLoanType}">
+                <Picker.ItemDisplayBinding>
+                    <Binding 
+                        Converter="{StaticResource LoanTypeToSpanishConverter}" />
+                </Picker.ItemDisplayBinding>
+            </Picker>
 
             <Label
                 Grid.Row="5"

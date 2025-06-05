@@ -110,10 +110,10 @@ public partial class ClientsPageViewModel : BasePageViewModel
             {
                 List<Loan> loans = await _contractService
                     .GetByClientIdAsync(client.Id);
-                client.Contracts.Clear();
+                client.Loans.Clear();
                 foreach (var loan in loans
                              .OrderByDescending(x => x.StartDate))
-                    client.Contracts.Add(loan);
+                    client.Loans.Add(loan);
 
                 Clients.Add(client);
             }

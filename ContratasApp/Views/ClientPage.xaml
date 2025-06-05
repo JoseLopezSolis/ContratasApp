@@ -126,7 +126,7 @@
                                     </Label>
                                     
                                     <Label
-                                        Text="{Binding Type}"
+                                        Text="{Binding LoanTypeTranslated}"
                                         FontSize="14"
                                         TextColor="Gray" />
 

@@ -31,7 +31,7 @@ public partial class ClientPage
                 client.Phone,
                 client.PaymentMethod,
                 "itsjoselops@gmail.com", 
-                10
+                client.ContractsCount
             );
 
             await this.ShowPopupAsync(popup);
