@@ -57,6 +57,12 @@
 
         <!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
         <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+        <None Remove="Resources\Fonts\Brand-Regular-400.otf" />
+        <MauiFont Include="Resources\Fonts\Brand-Regular-400.otf" />
+        <None Remove="Resources\Fonts\Free-Regular-400.otf" />
+        <MauiFont Include="Resources\Fonts\Free-Regular-400.otf" />
+        <None Remove="Resources\Fonts\Free-Solid-900.otf" />
+        <MauiFont Include="Resources\Fonts\Free-Solid-900.otf" />
     </ItemGroup>
 
     <ItemGroup>

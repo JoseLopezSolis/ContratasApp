@@ -37,4 +37,23 @@ public partial class ClientPage
             await this.ShowPopupAsync(popup);
         }
     }
+    
+    private async void OnCallButtonClicked(object sender, EventArgs e)
+    {
+        string phoneNumber = "3121219656"; // Replace with your desired number
+
+        try
+        {
+            // Create tel URI
+            var phoneUri = new Uri($"tel:{phoneNumber}");
+
+            // Use Launcher to initiate the call
+            await Launcher.Default.OpenAsync(phoneUri);
+        }
+        catch (Exception ex)
+        {
+            // Handle error, e.g., unsupported device
+            await DisplayAlert("Error", $"Unable to initiate call: {ex.Message}", "OK");
+        }
+    }
 }

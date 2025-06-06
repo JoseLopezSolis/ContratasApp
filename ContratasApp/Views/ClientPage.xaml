@@ -41,6 +41,7 @@
                         Aspect="AspectFill" />
                     
                 </Border>
+              
 
                 <Label
                     HorizontalOptions="Center"
@@ -54,13 +55,12 @@
                     FontSize="15"
                     FontAttributes="Bold"
                     TextColor="Black"
-                    Text="Ver detalle"
+                    Text="Ver detalles"
                     TextDecorations="Underline">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer 
                             Tapped="OnSeeDetailClient"
-                            CommandParameter="{Binding .}"
-                            />
+                            CommandParameter="{Binding .}"/>
                     </Label.GestureRecognizers>
                 </Label>
                 
@@ -69,7 +69,7 @@
                     FontSize="20"
                     FontAttributes="Bold"
                     Margin="0,10"/>
-
+                
                 <CollectionView
                     SelectionMode="Single"
                     ItemsSource="{Binding Loans}"
@@ -81,7 +81,7 @@
                             HorizontalOptions="Fill"
                             VerticalOptions="Fill">
                             <Label 
-                                Text="No hay préstamos registrados." 
+                                Text="No hay préstamos registrados" 
                                 HorizontalTextAlignment="Center"
                                 FontSize="16" 
                                 TextColor="Gray"
@@ -104,7 +104,8 @@
                                 Margin="0,5"
                                 BackgroundColor="White">
                                 <Border.StrokeShape>
-                                    <RoundRectangle CornerRadius="10" />
+                                    <RoundRectangle 
+                                        CornerRadius="10" />
                                 </Border.StrokeShape>
 
                                 <VerticalStackLayout 
@@ -162,8 +163,7 @@
 
         <!-- Button static from bottom-->
         <Button
-            Grid.Row="1"
-            Text="Agregar nuevo"
+            Grid.Row="1" Text="Agregar nuevo"
             BackgroundColor="#333" 
             TextColor="White"
             FontSize="16"

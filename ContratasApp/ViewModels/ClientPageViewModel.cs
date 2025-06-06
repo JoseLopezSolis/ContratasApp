@@ -52,8 +52,8 @@ namespace ContratasApp.ViewModels;
             // 2) Load and sort contracts by StartDate descending
             var list = await _contractService.GetByClientIdAsync(id);
             Loans.Clear();
-            foreach (var c in list.OrderByDescending(x => x.StartDate))
-                Loans.Add(c);
+            foreach (var client in list.OrderByDescending(x => x.StartDate))
+                Loans.Add(client);
         }
 
         /// <summary>
@@ -67,8 +67,8 @@ namespace ContratasApp.ViewModels;
 
             var list = await _contractService.GetByClientIdAsync(Client.Id);
             Loans.Clear();
-            foreach (var c in list.OrderByDescending(x => x.StartDate))
-                Loans.Add(c);
+            foreach (var client in list.OrderByDescending(x => x.StartDate))
+                Loans.Add(client);
         }
 
         /// <summary>
