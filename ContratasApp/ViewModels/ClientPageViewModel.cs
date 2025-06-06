@@ -100,4 +100,20 @@ namespace ContratasApp.ViewModels;
         [RelayCommand]
         async Task NavigateToContractDetailAsync(Loan contract)
             => await NavigationService.GoToAsync($"{RouteConstants.ContractDetailRoute}?contractId={contract.Id}");
+       
+        
+        [RelayCommand]
+        private async Task CallToClientAsync(string clientNumber)
+        {
+            try
+            {
+                var phoneUri = new Uri($"tel:{clientNumber}");
+                await Launcher.Default.OpenAsync(phoneUri);
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", $"Unable to initiate call: {ex.Message}", "OK");
+            }
+        }
+
     }

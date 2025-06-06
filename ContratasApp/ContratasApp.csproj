@@ -54,6 +54,9 @@
 
         <!-- Custom Fonts -->
         <MauiFont Include="Resources\Fonts\SfPro.OTF" Alias="SfPro" />
+        <MauiFont Include="Resources\Fonts\Brand-Regular-400.otf" Alias="FAB" />
+        <MauiFont Include="Resources\Fonts\Free-Regular-400.otf" Alias="FAR" />
+        <MauiFont Include="Resources\Fonts\Free-Solid-900.otf" Alias="FAS" />
 
         <!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
         <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />

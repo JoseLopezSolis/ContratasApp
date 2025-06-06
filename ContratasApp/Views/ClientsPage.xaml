@@ -33,6 +33,7 @@
             </Label>
 
             <Label
+                FontFamily="FAS"
                 Grid.Column="2"
                 Style="{StaticResource CustomHeaderIcon}"
                 Text="{x:Static models:FaBrandIcons.Plus}">
@@ -59,19 +60,9 @@
             SearchCommand="{Binding SearchCommand}"
             ios:SearchBar.SearchBarStyle="Minimal"/>
         
-        <Image WidthRequest="200"
-               HeightRequest="200"
-               BackgroundColor="Black">
-            <Image.Source>
-                <FontImageSource FontFamily="FAS" Glyph="\uf095"></FontImageSource>
-            </Image.Source>
-        </Image>
         
+     
         
-        <Label
-            FontFamily="FAB"
-            Text="\uf095"
-            ></Label>
         <RefreshView
             Grid.Row="1"
             IsRefreshing="{Binding RefreshCommand.IsRunning}"

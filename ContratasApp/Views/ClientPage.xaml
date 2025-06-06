@@ -7,6 +7,11 @@
     xmlns:models="clr-namespace:ContratasApp.Models"
     x:DataType="vm:ClientPageViewModel"
     x:Class="ContratasApp.Views.ClientPage">
+    <!-- FONTAWESOME ICONS-->
+    <base:BasePage.Resources>
+        <x:String x:Key="Phone">&#xf095;</x:String>
+        <x:String x:Key="Whatsapp">&#xf232;</x:String>
+    </base:BasePage.Resources>
     <Grid 
         RowDefinitions="*,Auto" 
         Padding="10">
@@ -50,19 +55,78 @@
                     TextColor="Black"
                     Text="{Binding  Client.FullName}" />
                 
-                <Label
-                    HorizontalTextAlignment="Center"
-                    FontSize="15"
-                    FontAttributes="Bold"
-                    TextColor="Black"
-                    Text="Ver detalles"
-                    TextDecorations="Underline">
-                    <Label.GestureRecognizers>
-                        <TapGestureRecognizer 
-                            Tapped="OnSeeDetailClient"
-                            CommandParameter="{Binding .}"/>
-                    </Label.GestureRecognizers>
-                </Label>
+                <HorizontalStackLayout
+                    Margin="0,5"
+                    HorizontalOptions="Center"
+                    Spacing="10">
+                        <Border
+                            BackgroundColor="White"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 100"
+                            HeightRequest="40"
+                            WidthRequest="40"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"
+                            Padding="10">
+                        
+                            <Border.Shadow>
+                                <Shadow
+                                    Brush="Black"
+                                    Opacity="0.1"
+                                    Radius="8"
+                                    Offset="2,5" />
+                            </Border.Shadow>
+        
+                            <Image 
+                                HorizontalOptions="Center" 
+                                VerticalOptions="Center">
+                                
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer 
+                                        x:DataType="vm:ClientPageViewModel"
+                                        Command="{Binding CallToClientCommand}" 
+                                        CommandParameter="{Binding Client.Phone}" />
+                                </Image.GestureRecognizers>
+                                
+                                <Image.Source>
+                                    <FontImageSource 
+                                        Glyph="{StaticResource Phone}" 
+                                        FontFamily="FAS" 
+                                        Size="32" 
+                                        Color="DodgerBlue" />
+                                </Image.Source>
+                            </Image>
+                        </Border>
+                        <Border
+                            BackgroundColor="White"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 100"
+                            HeightRequest="40"
+                            WidthRequest="40"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"
+                            Padding="10">
+                            
+                            <Border.Shadow>
+                                <Shadow
+                                    Brush="Black"
+                                    Opacity="0.1"
+                                    Radius="8"
+                                    Offset="2,5" />
+                            </Border.Shadow>
+            
+                            <Image HorizontalOptions="Center" VerticalOptions="Center">
+                                <Image.Source>
+                                    <FontImageSource 
+                                        Glyph="{StaticResource Whatsapp}" 
+                                        FontFamily="FAB" 
+                                        Size="32" 
+                                        Color="Green" />
+                                </Image.Source>
+                            </Image>
+                        </Border>
+                </HorizontalStackLayout>
+               
                 
                 <Label
                     Text="Prestamos"
@@ -84,8 +148,7 @@
                                 Text="No hay préstamos registrados" 
                                 HorizontalTextAlignment="Center"
                                 FontSize="16" 
-                                TextColor="Gray"
-                                 />
+                                TextColor="Gray"/>
                         </Grid>
                     </CollectionView.EmptyView>
 
