@@ -11,7 +11,7 @@ namespace ContratasApp.ViewModels;
 [QueryProperty(nameof(ContractId), "contractId")]
 public partial class ContractDetailPageViewModel:BasePageViewModel
 {
-    readonly IContractService _contractService;
+    readonly ILoanService loanService;
 
     [ObservableProperty]
     private int contractId;
@@ -23,11 +23,11 @@ public partial class ContractDetailPageViewModel:BasePageViewModel
     private ObservableCollection<PaymentSchedule> payments = new();
 
     public ContractDetailPageViewModel(
-        IContractService contractService,
+        ILoanService loanService,
         INavigationService navigationService)
         : base(navigationService)
     {
-        _contractService = contractService;
+        this.loanService = loanService;
     }
 
     // Fired when Shell injects the contractId query parameter
@@ -37,14 +37,14 @@ public partial class ContractDetailPageViewModel:BasePageViewModel
     // Load the LoanContract and its payments
     async void LoadContractAsync(int id)
     {
-        Contract = await _contractService.GetByIdAsync(id);
+        Contract = await loanService.GetByIdAsync(id);
         await LoadPaymentsAsync();
     }
 
     // Retrieve and populate the Payments collection
     async Task LoadPaymentsAsync()
     {
-        var list = await _contractService.GetPaymentSchedulesAsync(Contract.Id);
+        var list = await loanService.GetPaymentSchedulesAsync(Contract.Id);
 
         // Actualiza el contador de pagos ya hechos
         Contract.PaidCount = list.Count(p => p.IsPaid);
@@ -69,7 +69,7 @@ public partial class ContractDetailPageViewModel:BasePageViewModel
             if (next != null)
             {
                 // 2) Márquela como pagada
-                await _contractService.MarkPaymentAsPaidAsync(next);
+                await loanService.MarkPaymentAsPaidAsync(next);
             }
         }
         else // MonthlyInterest
@@ -82,7 +82,7 @@ public partial class ContractDetailPageViewModel:BasePageViewModel
                 IsPaid     = true,
                 PaidDate   = DateTime.Now
             };
-            await _contractService.AddPaymentAsync(pago);
+            await loanService.AddPaymentAsync(pago);
         }
 
         // 3) Recarga la lista y notifica progreso
@@ -96,7 +96,7 @@ public partial class ContractDetailPageViewModel:BasePageViewModel
     async Task MarkPaymentAsPaidAsync(PaymentSchedule payment)
     {
         if (payment == null || payment.IsPaid) return;
-        await _contractService.MarkPaymentAsPaidAsync(payment);
+        await loanService.MarkPaymentAsPaidAsync(payment);
         await LoadPaymentsAsync();
     }
 

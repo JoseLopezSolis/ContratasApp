@@ -11,7 +11,6 @@ public class Client : ObservableObject
     public string LastName { get; set; }
     public string Phone { get; set; }
     public string PaymentMethod { get; set;} 
-        
     public string ImagePath { get; set; }
     public bool IsArchived { get; set; }
 

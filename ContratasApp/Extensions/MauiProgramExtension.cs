@@ -65,7 +65,7 @@ public static class MauiProgramExtension
         
         // now register both services that depend on it
         builder.Services.AddSingleton<IClientService, ClientService>();
-        builder.Services.AddSingleton<IContractService, ContractService>();
+        builder.Services.AddSingleton<ILoanService, LoanService>();
         builder.Services.AddSingleton<INavigationService, NavigationService>();
         
         return builder;

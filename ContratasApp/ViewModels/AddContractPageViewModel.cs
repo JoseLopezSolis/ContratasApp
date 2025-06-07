@@ -10,7 +10,7 @@ namespace ContratasApp.ViewModels;
 [QueryProperty(nameof(ClientId), "clientId")]
 public partial class AddContractPageViewModel : BasePageViewModel
 {
-    readonly IContractService _contractService;
+    readonly ILoanService loanService;
 
     [ObservableProperty]
     private int clientId;
@@ -28,11 +28,11 @@ public partial class AddContractPageViewModel : BasePageViewModel
         new List<LoanType> { LoanType.Weekly, LoanType.Monthly };
 
     public AddContractPageViewModel(
-        IContractService contractService,
+        ILoanService loanService,
         INavigationService navigationService)
         : base(navigationService)
     {
-        _contractService = contractService;
+        this.loanService = loanService;
     }
 
     [RelayCommand(CanExecute = nameof(CanSave))]
@@ -47,7 +47,7 @@ public partial class AddContractPageViewModel : BasePageViewModel
             IsClosed  = false
         };
         needRefreshPage = true; //To force refresh of the page
-        await _contractService.CreateAsync(contract);
+        await loanService.CreateAsync(contract);
         await NavigationService.GoBackAsync();
     }
 

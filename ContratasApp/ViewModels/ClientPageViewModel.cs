@@ -14,7 +14,7 @@ namespace ContratasApp.ViewModels;
     public partial class ClientPageViewModel : BasePageViewModel
     {
         readonly IClientService   _clientService;
-        readonly IContractService _contractService;
+        readonly ILoanService loanService;
 
         [ObservableProperty]
         private int clientId;
@@ -30,12 +30,12 @@ namespace ContratasApp.ViewModels;
         
         public ClientPageViewModel(
             IClientService clientService,
-            IContractService contractService,
+            ILoanService loanService,
             INavigationService navigationService)
             : base(navigationService)
         {
             _clientService   = clientService;
-            _contractService = contractService;
+            this.loanService = loanService;
         }
 
         // Called by Shell when the query parameter clientId changes
@@ -50,7 +50,7 @@ namespace ContratasApp.ViewModels;
                 return;
 
             // 2) Load and sort contracts by StartDate descending
-            var list = await _contractService.GetByClientIdAsync(id);
+            var list = await loanService.GetByClientIdAsync(id);
             Loans.Clear();
             foreach (var client in list.OrderByDescending(x => x.StartDate))
                 Loans.Add(client);
@@ -65,7 +65,7 @@ namespace ContratasApp.ViewModels;
             if (Client == null)
                 return;
 
-            var list = await _contractService.GetByClientIdAsync(Client.Id);
+            var list = await loanService.GetByClientIdAsync(Client.Id);
             Loans.Clear();
             foreach (var client in list.OrderByDescending(x => x.StartDate))
                 Loans.Add(client);
@@ -116,4 +116,39 @@ namespace ContratasApp.ViewModels;
             }
         }
 
+        [RelayCommand]
+        private async Task SendWhatsappAsync(string phoneNumber)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(phoneNumber))
+                {
+                    await Shell.Current.DisplayAlert("Error", "Phone number is missing.", "OK");
+                    return;
+                }
+
+                // Your fixed message
+                var message = "Que tal, este es un recordatorio para ver si tenias el abono de la contrata.";
+                var encodedMessage = Uri.EscapeDataString(message);
+                // WhatsApp URLs
+                var personalWhatsApp = $"https://wa.me/{phoneNumber}/?text={encodedMessage}";
+
+                if (await Launcher.Default.CanOpenAsync(personalWhatsApp))
+                {
+                    await Launcher.Default.OpenAsync(personalWhatsApp);
+                    return;
+                }
+
+                // Neither app is available
+                await Shell.Current.DisplayAlert(
+                    "WhatsApp Not Available",
+                    "Neither WhatsApp nor WhatsApp Business is installed.",
+                    "OK");
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", $"Unable to send message: {ex.Message}", "OK");
+            }
+        }
+        
     }

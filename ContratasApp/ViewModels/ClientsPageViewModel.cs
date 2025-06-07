@@ -11,7 +11,7 @@ public partial class ClientsPageViewModel : BasePageViewModel
 {
     #region Services
     readonly IClientService _clientService;
-    readonly IContractService _contractService;
+    readonly ILoanService loanService;
     readonly INavigationService _navigationService;
     #endregion
 
@@ -40,13 +40,13 @@ public partial class ClientsPageViewModel : BasePageViewModel
     #region Constructor
     public ClientsPageViewModel(
         IClientService clientService,
-        IContractService contractService,
+        ILoanService loanService,
         INavigationService navigationService)
         : base(navigationService)
     {
         _clientService = clientService;
         _navigationService = navigationService;
-        _contractService = contractService;
+        this.loanService = loanService;
         showArchived = false;
         Clients.CollectionChanged += (s, e) => OnPropertyChanged(nameof(EmptyClientsMessage));
     }
@@ -102,22 +102,20 @@ public partial class ClientsPageViewModel : BasePageViewModel
         {
             var listClients = ShowArchived
                 ? await _clientService.GetArchivedAsync()
-                : await _clientService.GetAllAsync();
+                : await _clientService.GetAllActiveClients();
 
             Clients.Clear(); 
             
             foreach (var client in listClients.OrderByDescending(client => client.Id))
             {
-                List<Loan> loans = await _contractService
+                List<Loan> loans = await loanService
                     .GetByClientIdAsync(client.Id);
                 client.Loans.Clear();
                 foreach (var loan in loans
                              .OrderByDescending(x => x.StartDate))
                     client.Loans.Add(loan);
-
                 Clients.Add(client);
             }
-
             // refrescas tu lista filtrada…
             FilteredClients.Clear();
             foreach (var c in Clients)

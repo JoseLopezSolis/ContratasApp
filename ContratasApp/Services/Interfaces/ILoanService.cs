@@ -2,14 +2,10 @@ using ContratasApp.Models;
 
 namespace ContratasApp.Services.Interfaces;
 
-public interface IContractService
+public interface ILoanService
 {
-    //CREATE - Loan contract and generate the payment schedule.
-    Task<int> CreateAsync(Loan contract);
-    
-    //GET - List of loan contract giving clientId.
-    Task<List<Loan>> GetByClientIdAsync(int clientId);
-
+    Task<int> CreateAsync(Loan loan); //Create a loan for a Client
+    Task<List<Loan>> GetByClientIdAsync(int clientId); //Get a list of loans of a Client
     //GET - Detail of payments
     Task<List<PaymentSchedule>> GetPaymentSchedulesAsync(int contractId);
 
