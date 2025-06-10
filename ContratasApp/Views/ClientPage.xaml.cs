@@ -24,10 +24,16 @@ public partial class ClientPage
     {
         if (BindingContext is ClientPageViewModel vm && vm.Client is not null)
         {
-            var popup = new ClientDetailPopup
-            {
-                Client = vm.Client
-            };
+            var client = vm.Client;
+
+            var popup = new ClientDetailPopup(
+                $"{client.FullName}",
+                client.Phone,
+                client.PaymentMethod,
+                client.Email, 
+                client.ContractsCount
+            );
+
             await this.ShowPopupAsync(popup);
         }
     }

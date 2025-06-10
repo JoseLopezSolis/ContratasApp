@@ -182,7 +182,7 @@
     <Label
         Grid.Row="2"
         Text="{Binding Clients.Count,
-        StringFormat='Total Clients: {0}'}"
+        StringFormat='Clientes: {0}'}"
         HorizontalOptions="Center"/>
   </Grid>
     

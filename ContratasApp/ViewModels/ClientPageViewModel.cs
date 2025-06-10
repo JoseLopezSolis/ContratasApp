@@ -109,26 +109,37 @@ namespace ContratasApp.ViewModels;
         }
 
         [RelayCommand]
-        private async Task SendWhatsappAsync(string phoneNumber)
+        private async Task SendWhatsappAsync(Client client)
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(phoneNumber))
+                if (string.IsNullOrWhiteSpace(client.Phone))
                 {
-                    await Shell.Current.DisplayAlert("Error", "Phone number is missing.", "OK");
+                    await Shell.Current.DisplayAlert("Error",
+                        "Phone number is missing.", "OK");
                     return;
                 }
 
-                var message = "Que tal, este es un recordatorio para ver si tenias el abono de la contrata.";
+                var message = $"Hola {client.Name}, te recuerdo que aún está pendiente el pago de la contrata. Te agradeceríamos mucho que pudieras realizarlo pronto. ¡Gracias por tu atención!";
                 var encodedMessage = Uri.EscapeDataString(message);
-                var personalWhatsApp = $"https://wa.me/{phoneNumber}/?text={encodedMessage}";
+                var personalWhatsApp = $"https://wa.me/{client.Phone}/?text={encodedMessage}";
 
                 if (await Launcher.Default.CanOpenAsync(personalWhatsApp))
                 {
-                    await Launcher.Default.OpenAsync(personalWhatsApp);
+                    bool confirm = await Shell.Current.DisplayAlert(
+                        "Confirmación",
+                        $"¿Estás seguro que deseas enviar un recordatorio por WhatsApp a {client.FullName}?",
+                        "Sí",
+                        "No"
+                    );
+                    if (confirm)
+                    {
+                        await Launcher.Default.OpenAsync(personalWhatsApp);
+                        return;
+                    }
+
                     return;
                 }
-
                 // Neither app is available
                 await Shell.Current.DisplayAlert(
                     "WhatsApp Not Available",

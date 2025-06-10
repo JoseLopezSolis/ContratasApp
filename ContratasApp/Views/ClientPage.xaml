@@ -126,7 +126,7 @@
                                     <TapGestureRecognizer 
                                         x:DataType="vm:ClientPageViewModel"
                                         Command="{Binding SendWhatsappCommand}" 
-                                        CommandParameter="{Binding Client.Phone}" />
+                                        CommandParameter="{Binding Client}" />
                                 </Image.GestureRecognizers>
                                 
                                 <Image.Source>

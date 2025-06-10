@@ -38,7 +38,6 @@
                 Text="Telefono:"/>
             <Label
                 x:Name="phone"
-                Text="{Binding Client.phone}"
                 Grid.Row="0"
                 Grid.Column="1"
                 HorizontalTextAlignment="End"
@@ -51,10 +50,10 @@
                 Text="Forma de pago:"/>
             <Label
                 x:Name="methodOfPayment"
-                Text="{Binding Client.PaymentMethod}"
                 Grid.Row="1"
                 Grid.Column="1"
-                HorizontalTextAlignment="End"/>
+                HorizontalTextAlignment="End"
+                Text="Efectivo"/>
             
             <Label
                 Grid.Row="2"
@@ -63,10 +62,10 @@
                 Text="Email"/>
             <Label
                 x:Name="email"
-                Text="{Binding Client.Email}"
                 Grid.Row="2"
                 Grid.Column="1"
-                HorizontalTextAlignment="End"/>
+                HorizontalTextAlignment="End"
+                Text="itsjoselops@gmail.com"/>
             
             <Label
                 Grid.Row="3"
@@ -76,7 +75,6 @@
             
             <Label
                 x:Name="loanCount"
-                Text="{Binding Client.ContractsCount}"
                 Grid.Row="3"
                 Grid.Column="1"
                 HorizontalTextAlignment="End"/>

@@ -100,7 +100,8 @@ public partial class AddClientPageViewModel : BasePageViewModel
             var client = new Client
             {
                 Id = ClientId,
-                Name = ValidName(name,lastName),
+                Name = name,
+                LastName = lastName,
                 Phone = phone?.Trim(),
                 Email = email,
                 PaymentMethod = ValidPaymentMethod(PaymentMethod),

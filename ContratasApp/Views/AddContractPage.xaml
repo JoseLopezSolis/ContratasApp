@@ -6,7 +6,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:syst="clr-namespace:System;assembly=System.Runtime"
     xmlns:vm="clr-namespace:ContratasApp.ViewModels"
-    xmlns:behaviors="clr-namespace:ContratasApp.Behavior"
     xmlns:converters="clr-namespace:ContratasApp.Converters"
     x:DataType="vm:AddContractPageViewModel"
     x:Class="ContratasApp.Views.AddContractPage">
@@ -15,76 +14,69 @@
         <converters:LoanTypeToSpanishConverter 
             x:Key="LoanTypeToSpanishConverter" />
     </base:BasePage.Resources>
-    <Grid
-        RowDefinitions="Auto, Auto, Auto, Auto, Auto, *"
-        ColumnDefinitions="*, *"
-        RowSpacing="15"
-        ColumnSpacing="10"
-        Padding="25, 10">
-        <Label 
-            Grid.Row="0"
-            Grid.ColumnSpan="2"
-            Text="Agrega los detalles del prestamo"
-            FontSize="20"
-            FontAttributes="Bold"
-            HorizontalOptions="Center"
-            Margin="0,20, 0,50"/>
-        
-            <Label
-                Grid.Row="1"
-                Grid.Column="0"
-                FontAttributes="Bold"
-                Text="Monto a prestar"
-                Margin="0"/>
-        
-            <Entry
-                Grid.Row="2"
-                Grid.Column="0"
-                HorizontalTextAlignment="Start"
-                Keyboard="Numeric"
-                Placeholder="$0.00"
-                Margin="0"
-                Text="{Binding Amount, Mode=TwoWay}"/>
-        
-            <Label
-                Grid.Row="1"
-                Grid.Column="1"
-                FontAttributes="Bold"
-                Text="Tipo de préstamo"
-                Style="{StaticResource SubtitleLabelStyle}" />
-        
-            <Picker
-                Grid.Row="2"
-                Grid.Column="1"
-                Title="Seleccione tipo"
-                ItemsSource="{Binding LoanTypes}"
-                SelectedItem="{Binding SelectedLoanType}">
-                <Picker.ItemDisplayBinding>
-                    <Binding
-                        Converter="{StaticResource LoanTypeToSpanishConverter}" />
-                </Picker.ItemDisplayBinding>
-            </Picker>
-        
-            <Label
-                Grid.Row="3"
-                Text="Fecha de inicio (opcional)"
-                FontAttributes="Bold"
-                Style="{StaticResource SubtitleLabelStyle}" />
-        
-            <DatePicker
-                Grid.Row="4"
-                Date="{Binding StartDate}"
-                MaximumDate="{x:Static syst:DateTime.Today}" />
-        
-            <Button
-                Grid.Row="5"
-                Grid.ColumnSpan="2"
+    
+    <Shell.TitleView>
+        <Label
+            Text="Detalles del prestamo"
+            Style="{StaticResource shellTitleStyle}"/>
+    </Shell.TitleView>
+    
+    <Grid 
+        RowDefinitions="*, Auto">
+
+        <ScrollView Grid.Row="0">
+            <Grid
+                RowDefinitions="Auto, Auto, Auto, Auto, Auto"
+                ColumnDefinitions="*, *"
+                RowSpacing="15"
+                ColumnSpacing="10"
+                Padding="25, 10">
+
+                <!-- Monto -->
+                <Label Grid.Row="0" Grid.Column="0"
+                       FontAttributes="Bold"
+                       Text="Monto a prestar"
+                       Margin="0" />
+                <Entry Grid.Row="1" Grid.Column="0"
+                       HorizontalTextAlignment="Start"
+                       Keyboard="Numeric"
+                       Placeholder="$0.00"
+                       Margin="0"
+                       Text="{Binding Amount, Mode=TwoWay}" />
+
+                <!-- Tipo de préstamo -->
+                <Label Grid.Row="0" Grid.Column="1"
+                       FontAttributes="Bold"
+                       Text="Tipo de préstamo"
+                       Style="{StaticResource SubtitleLabelStyle}" />
+                <Picker Grid.Row="1" Grid.Column="1"
+                        Title="Seleccione tipo"
+                        ItemsSource="{Binding LoanTypes}"
+                        SelectedItem="{Binding SelectedLoanType}">
+                    <Picker.ItemDisplayBinding>
+                        <Binding Converter="{StaticResource LoanTypeToSpanishConverter}" />
+                    </Picker.ItemDisplayBinding>
+                </Picker>
+
+                <!-- Fecha de inicio -->
+                <Label Grid.Row="2" Grid.Column="0"
+                       FontAttributes="Bold"
+                       Text="Fecha de inicio (opcional)"
+                       Style="{StaticResource SubtitleLabelStyle}" />
+                <DatePicker Grid.Row="3" Grid.Column="0"
+                            Date="{Binding StartDate}"
+                            MaximumDate="{x:Static syst:DateTime.Today}" />
+            </Grid>
+        </ScrollView>
+
+        <!-- Botón fijo abajo -->
+        <Button Grid.Row="1"
                 Text="Agregar"
                 HeightRequest="50"
                 BackgroundColor="Black"
                 TextColor="White"
                 FontAttributes="Bold"
-                Command="{Binding SaveCommand}"/>
-        
+                Margin="25,10"
+                Command="{Binding SaveCommand}" />
     </Grid>
 </base:BasePage >
