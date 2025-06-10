@@ -24,9 +24,6 @@
             <converters:InverseBoolConverter
                 x:Key="InverseBoolConverter"/>
             
-            <converters:HasPendingPaymentsConverter
-                x:Key="HasPendingPaymentsConverter" />
-            
         </ResourceDictionary>
     </Application.Resources>
 </Application>

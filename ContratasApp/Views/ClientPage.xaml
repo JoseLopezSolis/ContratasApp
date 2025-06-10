@@ -8,11 +8,20 @@
     x:DataType="vm:ClientPageViewModel"
     x:Class="ContratasApp.Views.ClientPage">
     
+    <Shell.TitleView>
+            <Label 
+                Text="Detalles del cliente"
+                Style="{StaticResource shellTitleStyle}"/>
+    </Shell.TitleView>
+    
     <!-- FONTAWESOME ICONS-->
     <base:BasePage.Resources>
-        <x:String x:Key="Phone">&#xf095;</x:String>
-        <x:String x:Key="Whatsapp">&#xf232;</x:String>
+        <x:String 
+            x:Key="Phone">&#xf095;</x:String>
+        <x:String 
+            x:Key="Whatsapp">&#xf232;</x:String>
     </base:BasePage.Resources>
+    
     <Grid 
         RowDefinitions="*,Auto" 
         Padding="10">
@@ -22,12 +31,7 @@
                 Spacing="5"
                 Margin="10,0">
                 <Border 
-                    WidthRequest="200"
-                    HeightRequest="200"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Center"
-                    StrokeThickness="0"
-                    BackgroundColor="Transparent">
+                   Style="{StaticResource roundBorderImage}">
                     
                     <Border.StrokeShape>
                         <RoundRectangle 
@@ -48,18 +52,13 @@
                     
                 </Border>
                 <Label
-                    HorizontalOptions="Center"
-                    FontSize="20"
-                    FontAttributes="Bold"
-                    TextColor="Black"
+                    Style="{StaticResource labelClientStyle}"
                     Text="{Binding  Client.FullName}" />
                 
                 <Label
-                    Text="Acciones" 
-                    FontSize="12"
-                    HorizontalOptions="Center"
-                    FontAttributes="Bold"
-                    TextColor="Black"/>
+                    Text="Acciones"
+                    Style="{StaticResource CenteredBoldLabelStyle}"
+                   />
                 
                 <HorizontalStackLayout
                     Margin="0,5"
@@ -141,8 +140,6 @@
                         </Border>
                 </HorizontalStackLayout>
                 
-              
-                
                 <Grid
                     RowDefinitions="Auto, Auto"
                     ColumnDefinitions="*,*">
@@ -179,12 +176,10 @@
                         </Label.FormattedText>
                     </Label>
                 </Grid>
-               
             
                 <CollectionView
-                    SelectionMode="Single"
+                    SelectionMode="None"
                     ItemsSource="{Binding Loans}"
-                    SelectedItem="{Binding SelectedContract, Mode=TwoWay}"
                     VerticalOptions="Fill">
                     
                     <CollectionView.EmptyView>

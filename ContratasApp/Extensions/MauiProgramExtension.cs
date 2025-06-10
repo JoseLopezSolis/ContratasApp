@@ -25,7 +25,6 @@ public static class MauiProgramExtension
         builder.Services.AddTransient<ClientsPageViewModel>();
         builder.Services.AddTransient<ConfigurationPageViewModel>();
         builder.Services.AddTransient<AddContractPageViewModel>();
-        builder.Services.AddTransient<ContractDetailPageViewModel>();
         return builder;
     }
     
@@ -39,8 +38,6 @@ public static class MauiProgramExtension
         builder.Services.AddTransientWithShellRoute<AddClientPage, AddClientPageViewModel>(RouteConstants.AddClientPageRoute);
         builder.Services.AddTransientWithShellRoute<AddContractPage, AddContractPageViewModel>(RouteConstants.AddContractRoute);
         builder.Services.AddTransientWithShellRoute<ClientPage, ClientPageViewModel>(RouteConstants.ClientPageRoute);
-        builder.Services.AddTransientWithShellRoute<ContractDetailPage, ContractDetailPageViewModel>(RouteConstants.ContractDetailRoute);
-
         return builder;
     }
     
@@ -59,7 +56,6 @@ public static class MauiProgramExtension
           var db   = new SQLiteAsyncConnection(path);
           db.CreateTableAsync<Client>().Wait();
           db.CreateTableAsync<Loan>().Wait();
-          db.CreateTableAsync<PaymentSchedule>().Wait();
           return db;
         });
         

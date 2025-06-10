@@ -38,27 +38,19 @@ namespace ContratasApp.ViewModels;
             this.loanService = loanService;
         }
 
-        // Called by Shell when the query parameter clientId changes
         partial void OnClientIdChanged(int id)
             => LoadClientAndContractsAsync(id);
 
         async void LoadClientAndContractsAsync(int id)
         {
-            // 1) Load the Client entity
             Client = await _clientService.GetByIdAsync(id);
-            if (Client == null)
-                return;
-
-            // 2) Load and sort contracts by StartDate descending
+            
             var list = await loanService.GetByClientIdAsync(id);
             Loans.Clear();
-            foreach (var client in list.OrderByDescending(x => x.StartDate))
-                Loans.Add(client);
+            foreach (var loan in list.OrderByDescending(x => x.StartDate))
+                Loans.Add(loan);
         }
 
-        /// <summary>
-        /// Refreshes the contract list (e.g. pull-to-refresh)
-        /// </summary>
         [RelayCommand]
         async Task RefreshContractsAsync()
         {
@@ -90,7 +82,7 @@ namespace ContratasApp.ViewModels;
         /// </summary>
         partial void OnSelectedContractChanged(Loan loan)
         {
-            if (loan == null) return;
+            if (loan.Equals(null)) return;
             NavigateToContractDetailCommand.Execute(loan);
         }
 
@@ -127,10 +119,8 @@ namespace ContratasApp.ViewModels;
                     return;
                 }
 
-                // Your fixed message
                 var message = "Que tal, este es un recordatorio para ver si tenias el abono de la contrata.";
                 var encodedMessage = Uri.EscapeDataString(message);
-                // WhatsApp URLs
                 var personalWhatsApp = $"https://wa.me/{phoneNumber}/?text={encodedMessage}";
 
                 if (await Launcher.Default.CanOpenAsync(personalWhatsApp))
@@ -149,6 +139,12 @@ namespace ContratasApp.ViewModels;
             {
                 await Shell.Current.DisplayAlert("Error", $"Unable to send message: {ex.Message}", "OK");
             }
+        }
+
+        [RelayCommand]
+        public async Task ShowAlertAsync()
+        {
+            await Application.Current.MainPage.DisplayAlert("Test", "message", "OK");
         }
         
     }

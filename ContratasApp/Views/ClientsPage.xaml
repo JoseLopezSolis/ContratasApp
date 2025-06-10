@@ -15,13 +15,13 @@
             
             <Label
                 Grid.Column="0"
-                Style="{StaticResource TitleLabel}"
-                Text="Clientes"/>
+                Text="Clientes"
+                Style="{StaticResource TitleLabel}"/>
             
             <Label
                 Grid.Column="1"
-                Style="{StaticResource CustomHeaderLabel}"
                 Text="{Binding ArchiveButtonText}"
+                Style="{StaticResource CustomHeaderLabel}"
                 TextColor="{Binding ShowArchived,
                 Converter={StaticResource BoolToArchiveColor}}">
                 
@@ -29,7 +29,6 @@
                     <TapGestureRecognizer 
                         Command="{Binding ToggleArchivedCommand}" />
                 </Label.GestureRecognizers>
-                
             </Label>
 
             <Label
@@ -60,9 +59,6 @@
             SearchCommand="{Binding SearchCommand}"
             ios:SearchBar.SearchBarStyle="Minimal"/>
         
-        
-     
-        
         <RefreshView
             Grid.Row="1"
             IsRefreshing="{Binding RefreshCommand.IsRunning}"
@@ -77,30 +73,26 @@
                     <DataTemplate 
                         x:DataType="models:Client">
                         <SwipeView>
-                            
                             <SwipeView.RightItems>
-                                <SwipeItems Mode="Reveal">
-
+                                <SwipeItems 
+                                    Mode="Reveal">
                                     <!-- EDIT -->
                                     <SwipeItemView
                                         Style="{StaticResource SwipeItemCustomStyle}">
                                             <ImageButton
-                                                  Style="{StaticResource ImageButton}"
-                                                  Source="edit.png"
-                                                  Command="{Binding 
-                                                  Source={RelativeSource AncestorType={x:Type vm:ClientsPageViewModel}},
-                                                  Path=EditClientCommand}"
-                                                  CommandParameter="{Binding .}"/>
+                                                Style="{StaticResource ImageButton}"
+                                                Source="edit.png"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ClientsPageViewModel}},
+                                                Path=EditClientCommand}"
+                                                CommandParameter="{Binding .}"/>
                                     </SwipeItemView>
 
                                     <!-- ARCHIVE -->
                                     <SwipeItemView
                                         Style="{StaticResource SwipeItemCustomStyle}"
-                                        IsVisible="{Binding 
-                                        Source={RelativeSource AncestorType={x:Type vm:ClientsPageViewModel}},
+                                        IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:ClientsPageViewModel}},
                                         Path=ShowArchived, 
                                         Converter={StaticResource InverseBoolConverter}}">
-                                        
                                             <ImageButton
                                                 Style="{StaticResource ImageButton}"
                                                 Source="archive.png"
@@ -112,14 +104,12 @@
                                     <!-- DELETE -->
                                     <SwipeItemView
                                         Style="{StaticResource SwipeItemCustomStyle}">
-                                        
                                             <ImageButton
                                                 Style="{StaticResource ImageButton}"
                                                 Source="trash.png"
                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ClientsPageViewModel}},
                                                 Path=DeleteClientCommand}"
                                                 CommandParameter="{Binding .}"/>
-                                            
                                     </SwipeItemView>
 
                                     <!-- UNARCHIVE -->
@@ -143,7 +133,8 @@
                             Style="{StaticResource BorderClient}">
                             
                             <Border.StrokeShape>
-                                <RoundRectangle CornerRadius="12" />
+                                <RoundRectangle 
+                                    CornerRadius="12" />
                             </Border.StrokeShape>
                             
                             <Border.GestureRecognizers>
@@ -162,11 +153,9 @@
                                     <Border.StrokeShape>
                                         <RoundRectangle CornerRadius="30" />
                                     </Border.StrokeShape>
-
                                     <Image
                                         Style="{StaticResource ImageItemStyle}"
-                                        Source="{Binding ImagePath}"
-                                        />
+                                        Source="{Binding ImagePath}"/>
                                 </Border>
 
                                 <!-- Datos -->
@@ -177,8 +166,8 @@
                                         Text="{Binding FullName}" 
                                         Style="{StaticResource UsernameCardLabel}" />
                                     
-                                    <Label Text="{Binding ContractsCount,
-                                     StringFormat='Prestamos totales: {0}'}" />
+                                    <Label 
+                                        Text="{Binding ContractsCount, StringFormat='Prestamos totales: {0}'}" />
                                 </VerticalStackLayout>
                                 
                             </HorizontalStackLayout>

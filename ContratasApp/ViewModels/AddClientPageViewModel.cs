@@ -35,7 +35,7 @@ public partial class AddClientPageViewModel : BasePageViewModel
 
         #region Constants
         const string DefaultImageFileName = "default_profile.png";
-        private readonly string DefaultPaymentMethod = "Money and Bank Transfer" ;
+        private readonly string DefaultPaymentMethod = "Transferencia y efectivo" ;
         #endregion
 
         #region Constructor
@@ -45,8 +45,6 @@ public partial class AddClientPageViewModel : BasePageViewModel
             : base(navigationService)
         {
             _clientService = clientService;
-
-            // Inicializa imagen por defecto
             ImagePath = DefaultImageFileName;
             ProfileImage = ImageSource.FromFile(DefaultImageFileName);
         }
@@ -62,8 +60,8 @@ public partial class AddClientPageViewModel : BasePageViewModel
         {
             try
             {
-                var result = await MediaPicker.PickPhotoAsync(
-                    new MediaPickerOptions { Title = "Select a profile picture" });
+                var result = await MediaPicker.PickPhotoAsync(new MediaPickerOptions { Title = "Selecciona una foto de perfil" });
+                
                 if (result == null)
                     return;
 
@@ -103,7 +101,8 @@ public partial class AddClientPageViewModel : BasePageViewModel
             {
                 Id = ClientId,
                 Name = ValidName(name,lastName),
-                Phone         = Phone?.Trim(),
+                Phone = phone?.Trim(),
+                Email = email,
                 PaymentMethod = ValidPaymentMethod(PaymentMethod),
                 ImagePath     = ImagePath,
                 IsArchived = false
@@ -114,19 +113,15 @@ public partial class AddClientPageViewModel : BasePageViewModel
                 await _clientService.UpdateAsync(client);
             else
                 await _clientService.AddAsync(client);
-            // Force refresh of the page
             await NavigationService.GoBackAsync();
         }
 
         #endregion
         
         #region OnChanged methods
-        // Este partial se invoca automáticamente al recibir el query param
         partial void OnClientIdChanged(int id)
             => LoadExistingClientAsync(id);
         
-        
-        // When picture change, this method runs.
         partial void OnImagePathChanged(string value)
         {
             ProfileImage = ImageSource.FromFile(value);
@@ -140,6 +135,7 @@ public partial class AddClientPageViewModel : BasePageViewModel
         
         partial void OnPhoneChanged(string value)
             => SaveCommand.NotifyCanExecuteChanged();
+        
         #endregion
 
         #region Validators
@@ -148,7 +144,7 @@ public partial class AddClientPageViewModel : BasePageViewModel
 
         private string ValidPaymentMethod(string paymentMethod)
         {
-            if (paymentMethod == null)
+            if (paymentMethod.Equals(null))
                 return DefaultPaymentMethod;
             return paymentMethod;
         }
@@ -163,6 +159,7 @@ public partial class AddClientPageViewModel : BasePageViewModel
             Name = partes[0];
             LastName = partes.Length > 1 ? partes[1] : string.Empty;
             Phone = existing.Phone;
+            Email = email;
             PaymentMethod = existing.PaymentMethod;
             ImagePath = existing.ImagePath;
         }

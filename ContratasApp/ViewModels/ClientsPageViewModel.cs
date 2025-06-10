@@ -116,7 +116,6 @@ public partial class ClientsPageViewModel : BasePageViewModel
                     client.Loans.Add(loan);
                 Clients.Add(client);
             }
-            // refrescas tu lista filtrada…
             FilteredClients.Clear();
             foreach (var c in Clients)
                 FilteredClients.Add(c);
@@ -136,8 +135,8 @@ public partial class ClientsPageViewModel : BasePageViewModel
 
         var resultados = string.IsNullOrWhiteSpace(query)
             ? Clients
-            : Clients.Where(c =>
-                c.Name.ToLower().Contains(query));
+            : Clients.Where(client =>
+                client.Name.ToLower().Contains(query));
 
         foreach (var c in resultados)
             FilteredClients.Add(c);
@@ -187,31 +186,23 @@ public partial class ClientsPageViewModel : BasePageViewModel
         
     [RelayCommand]
     async Task EditClientAsync(Client client)
-                {
-                    needRefreshPage = true;
-                    await NavigationService.GoToAsync(
-                        $"{RouteConstants.AddClientPageRoute}?clientId={client.Id}");
-                }
+    {
+        needRefreshPage = true;
+        await NavigationService.GoToAsync($"{RouteConstants.AddClientPageRoute}?clientId={client.Id}");
+    }
                 
     [RelayCommand]
     async Task ArchiveClientAsync(Client client)
-                {
-                    if (client == null) return;
+    {
+        if (client.Equals(null)) return;
         
-                    bool ok = await Application.Current.MainPage
-                        .DisplayAlert("Archivar",
-                            $"¿Archivar a {client.Name}?",
-                            "Sí", "Cancelar");
+        bool ok = await Application.Current.MainPage
+            .DisplayAlert("Archivar", $"¿Archivar a {client.Name}?", "Sí", "Cancelar");
                     if (!ok) return;
-        
                     await _clientService.ArchiveAsync(client);
-                    await RefreshAsync();
-                }
+                    await RefreshAsync(); 
+    }
         
-    #endregion
-
-    #region Extra Methods 
-    
     #endregion
 }
 

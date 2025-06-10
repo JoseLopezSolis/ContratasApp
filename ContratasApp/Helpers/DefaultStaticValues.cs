@@ -4,7 +4,7 @@ public class DefaultStaticValues
 {
    //FontSize values
    public const int DefaultTitleFontSize = 30;
-   public const int DefaultIconFontSize = 30;
+   public const int DefaultIconFontSize = 20;
    public const int DefaultTextFontSize = 18;
    
    //Width and Heigth values

@@ -5,5 +5,4 @@ public partial class ClientsPage
     {
         InitializeComponent();
     }
-    
 }

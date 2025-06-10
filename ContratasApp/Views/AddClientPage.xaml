@@ -7,6 +7,11 @@
     xmlns:behavior="clr-namespace:ContratasApp.Behavior"
     x:DataType="vm:AddClientPageViewModel"
     x:Class="ContratasApp.Views.AddClientPage">
+    <Shell.TitleView>
+        <Label 
+            Text="Ingresa los detalles del cliente"
+            Style="{StaticResource shellTitleStyle}"/>
+    </Shell.TitleView>
     
     <Grid 
         RowDefinitions="*,Auto" 
@@ -18,35 +23,25 @@
                 Padding="0,20" 
                 Spacing="10">
                 
-                <Label
-                    Text="Ingresa los datos del cliente"
-                    TextColor="Black"
-                    HorizontalTextAlignment="Center"
-                    FontSize="20"
-                    FontAttributes="Bold"
-                    Margin="0,-20,0,30"/>
-
                 <Border 
-                    WidthRequest="200"
-                    HeightRequest="200"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Center"
-                    Stroke="Transparent"
-                    BackgroundColor="Transparent">
+                    Style="{StaticResource roundBorderImage}">
 
                     <Image 
                         Source="{Binding ProfileImage}"
                         Aspect="AspectFill">
+                        
                         <Image.Clip>
                             <EllipseGeometry 
                                 Center="100,100" 
                                 RadiusX="100" 
                                 RadiusY="100" />
                         </Image.Clip>
+                        
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer 
                                 Command="{Binding PickImageCommand}" />
                         </Image.GestureRecognizers>
+                        
                     </Image>
                 </Border>
 
@@ -59,7 +54,7 @@
 
                 <!-- Formulario -->
                 <Grid 
-                    RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto"
+                    RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
                     ColumnDefinitions="*,*"
                     RowSpacing="10"
                     ColumnSpacing="10">
@@ -118,9 +113,27 @@
                         </Entry.Behaviors>
                         
                     </Entry>
+                    
+                    <Label
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        Text="Email"/>
+                    
+                    <Entry
+                        Grid.Row="5"
+                        Grid.ColumnSpan="2"
+                        x:Name="EmailEntry"
+                        Placeholder="example@example.com (opcional)"
+                        Keyboard="Email"
+                        PlaceholderColor="Gray"
+                        FontSize="14"
+                        TextColor="Black"
+                        ClearButtonVisibility="WhileEditing"
+                        Text="{Binding Email, Mode=TwoWay}"
+                        ReturnType="Next" />
 
                     <Label 
-                        Grid.Row="4" 
+                        Grid.Row="6" 
                         Grid.Column="0"
                         Text="Método de pago" 
                         FontAttributes="Bold" 
@@ -128,7 +141,7 @@
                         TextColor="Gray" />
                     
                     <Picker 
-                        Grid.Row="5" 
+                        Grid.Row="7" 
                         Grid.ColumnSpan="2"
                         Title="Selecciona un método de pago"
                         ItemsSource="{Binding PaymentMethods}"
