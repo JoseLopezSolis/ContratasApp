@@ -11,6 +11,8 @@ namespace ContratasApp.ViewModels;
 public partial class AddContractPageViewModel : BasePageViewModel
 {
     readonly ILoanService loanService;
+    readonly ILoanScheduleService loanScheduleService;
+    readonly IPaymentService paymentService;
 
     [ObservableProperty]
     private int clientId;
@@ -29,16 +31,20 @@ public partial class AddContractPageViewModel : BasePageViewModel
 
     public AddContractPageViewModel(
         ILoanService loanService,
-        INavigationService navigationService)
+        INavigationService navigationService,
+        ILoanScheduleService loanScheduleService,
+        IPaymentService paymentService)
         : base(navigationService)
     {
         this.loanService = loanService;
+        this.loanScheduleService = loanScheduleService;
+        this.paymentService = paymentService;
     }
 
     [RelayCommand(CanExecute = nameof(CanSave))]
     async Task SaveAsync()
     {
-        var contract = new Loan()
+        var loan = new Loan()
         {
             ClientId  = ClientId,
             Amount = Amount,
@@ -47,7 +53,10 @@ public partial class AddContractPageViewModel : BasePageViewModel
             IsClosed  = false
         };
         needRefreshPage = true; //To force refresh of the page
-        await loanService.CreateAsync(contract);
+        await loanService.CreateAsync(loan);
+        // Generar calendario de pagos
+        var payments = loanScheduleService.GenerateSchedule(loan);
+        await paymentService.AddPaymentsAsync(payments);
         await NavigationService.GoBackAsync();
     }
 

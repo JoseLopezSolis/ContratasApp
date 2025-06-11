@@ -20,6 +20,23 @@ public static class MauiProgram
             fonts.AddFont("Free-Regular-400.otf", "FAR");
             fonts.AddFont("Free-Solid-900.otf", "FAS");
             #endregion
+            
+            #region CustomFonts 
+            //Intern
+            fonts.AddFont("Inter_18pt-Regular.ttf", "InterRegular");
+            fonts.AddFont("Inter_18pt-SemiBold.ttf", "InterSemiBold");
+            fonts.AddFont("Inter_18pt-SemiBoldItalic.ttf", "InterSemiBoldItalic");
+            fonts.AddFont("Inter_18pt-Thin.ttf", "InterThin");
+            fonts.AddFont("Inter_18pt-Medium.ttf", "InterMedium");
+
+            
+            //RobotoMono 
+            fonts.AddFont("RobotoMono-ExtraLight.ttf", "RobotoMonoExtraLight");
+            fonts.AddFont("RobotoMono-Regular.ttf", "RobotoMonoRegular");
+            fonts.AddFont("RobotoMono-Bold.ttf", "RobotoMonoBold");
+            fonts.AddFont("RobotoMono-BoldItalic.ttf", "RobotoMonoBoldItalic");
+            
+            #endregion
         })
             .RegisterShellRoutes()
             .RegisterViewModels()

@@ -208,6 +208,14 @@
                                 StrokeThickness="1"
                                 Margin="0,5"
                                 BackgroundColor="White">
+                                
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ClientPageViewModel}},
+                                        Path=NavigateToLoanSchedulerCommand}"
+                                        CommandParameter="{Binding .}" />
+                                </Border.GestureRecognizers>
+                                
                                 <Border.StrokeShape>
                                     <RoundRectangle 
                                         CornerRadius="10" />

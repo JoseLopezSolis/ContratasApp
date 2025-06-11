@@ -25,6 +25,7 @@ public static class MauiProgramExtension
         builder.Services.AddTransient<ClientsPageViewModel>();
         builder.Services.AddTransient<ConfigurationPageViewModel>();
         builder.Services.AddTransient<AddContractPageViewModel>();
+        builder.Services.AddTransient<LoanSchedulerPageViewModel>();
         return builder;
     }
     
@@ -38,6 +39,7 @@ public static class MauiProgramExtension
         builder.Services.AddTransientWithShellRoute<AddClientPage, AddClientPageViewModel>(RouteConstants.AddClientPageRoute);
         builder.Services.AddTransientWithShellRoute<AddContractPage, AddContractPageViewModel>(RouteConstants.AddContractRoute);
         builder.Services.AddTransientWithShellRoute<ClientPage, ClientPageViewModel>(RouteConstants.ClientPageRoute);
+        builder.Services.AddTransientWithShellRoute<LoanSchedulerPage, LoanSchedulerPageViewModel>(RouteConstants.LoanSchedulerRoute);
         return builder;
     }
     
@@ -48,21 +50,21 @@ public static class MauiProgramExtension
     /// <returns></returns>
     public static MauiAppBuilder RegisterServices(this MauiAppBuilder builder)
     {
-        
-        // only one SQLiteAsyncConnection in the container
         builder.Services.AddSingleton<SQLiteAsyncConnection>(sp =>
         {
           var path = Path.Combine(FileSystem.AppDataDirectory, "app.db3");
           var db   = new SQLiteAsyncConnection(path);
           db.CreateTableAsync<Client>().Wait();
           db.CreateTableAsync<Loan>().Wait();
+          db.CreateTableAsync<Payment>().Wait();
           return db;
         });
         
-        // now register both services that depend on it
         builder.Services.AddSingleton<IClientService, ClientService>();
         builder.Services.AddSingleton<ILoanService, LoanService>();
         builder.Services.AddSingleton<INavigationService, NavigationService>();
+        builder.Services.AddSingleton<IPaymentService, PaymentService>();
+        builder.Services.AddSingleton<ILoanScheduleService, LoanScheduleService>();
         
         return builder;
     }

@@ -117,7 +117,8 @@
                     <Label
                         Grid.Row="4"
                         Grid.Column="0"
-                        Text="Email"/>
+                        Text="Email"
+                        TextColor="Gray" />
                     
                     <Entry
                         Grid.Row="5"

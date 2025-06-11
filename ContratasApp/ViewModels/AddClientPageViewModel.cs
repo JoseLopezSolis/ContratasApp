@@ -140,9 +140,6 @@ public partial class AddClientPageViewModel : BasePageViewModel
         #endregion
 
         #region Validators
-        private string ValidName(string name, string lastName) =>
-            $"{name.Trim()} {lastName.Trim()}";
-
         private string ValidPaymentMethod(string paymentMethod)
         {
             if (paymentMethod.Equals(null))
@@ -156,11 +153,10 @@ public partial class AddClientPageViewModel : BasePageViewModel
         async void LoadExistingClientAsync(int id)
         {
             var existing = await _clientService.GetByIdAsync(id);
-            var partes = existing.Name.Split(' ', 2);
-            Name = partes[0];
-            LastName = partes.Length > 1 ? partes[1] : string.Empty;
+            Name = existing.Name;
+            LastName = existing.LastName;
             Phone = existing.Phone;
-            Email = email;
+            Email = existing.Email;
             PaymentMethod = existing.PaymentMethod;
             ImagePath = existing.ImagePath;
         }

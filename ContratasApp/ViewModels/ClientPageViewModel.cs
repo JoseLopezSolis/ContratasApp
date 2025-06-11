@@ -1,12 +1,10 @@
 using System.Collections.ObjectModel;
-using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ContratasApp.Helpers;
 using ContratasApp.Models;
 using ContratasApp.Services.Interfaces;
 using ContratasApp.ViewModels.Base;
-using ContratasApp.Views.Popups;
 
 namespace ContratasApp.ViewModels;
 
@@ -83,15 +81,15 @@ namespace ContratasApp.ViewModels;
         partial void OnSelectedContractChanged(Loan loan)
         {
             if (loan.Equals(null)) return;
-            NavigateToContractDetailCommand.Execute(loan);
+            NavigateToLoanSchedulerCommand.Execute(loan);
         }
 
         /// <summary>
         /// Navigates to the detail page of the selected contract.
         /// </summary>
         [RelayCommand]
-        async Task NavigateToContractDetailAsync(Loan contract)
-            => await NavigationService.GoToAsync($"{RouteConstants.ContractDetailRoute}?contractId={contract.Id}");
+        async Task NavigateToLoanSchedulerAsync(Loan loan)
+            => await NavigationService.GoToAsync($"{RouteConstants.LoanSchedulerRoute}?loanId={loan.Id}");
        
         
         [RelayCommand]

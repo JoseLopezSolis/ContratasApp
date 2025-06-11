@@ -8,5 +8,5 @@ public class RouteConstants
     public const string ClientPageRoute = nameof(ClientPage);
     public const string AddClientPageRoute = nameof(AddClientPage);
     public const string AddContractRoute = nameof(AddContractPage);
-    public const string ContractDetailRoute = nameof(ContractDetailPage);
+    public const string LoanSchedulerRoute = nameof(LoanSchedulerPage);
 }
