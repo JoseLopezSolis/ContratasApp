@@ -10,15 +10,16 @@ namespace ContratasApp.ViewModels;
 [QueryProperty(nameof(LoanId), "loanId")]
 public partial class LoanSchedulerPageViewModel : BasePageViewModel
 {
-    private readonly IPaymentService paymentService;
-    private readonly ILoanService loanService;
+    private readonly IPaymentService _paymentService;
+    private readonly ILoanService _loanService;
 
-    public LoanSchedulerPageViewModel(IPaymentService paymentService,
+    public LoanSchedulerPageViewModel(
+        IPaymentService paymentService,
         ILoanService loanService,
         INavigationService navigationService) : base(navigationService)
     {
-        this.paymentService = paymentService;
-        this.loanService = loanService;
+        _paymentService = paymentService;
+        _loanService = loanService;
     }
 
     [ObservableProperty]
@@ -37,9 +38,16 @@ public partial class LoanSchedulerPageViewModel : BasePageViewModel
 
     private async void LoadLoanAndPaymentsAsync(int loanId)
     {
-        Loan = await loanService.GetByIdAsync(loanId);
-        var result = await paymentService.GetPaymentsByLoanIdAsync(loanId);
-        Payments = new ObservableCollection<Payment>(result);
+        Loan = await _loanService.GetByIdAsync(loanId);
+
+        var result = await _paymentService.GetPaymentsByLoanIdAsync(loanId);
+
+        if (Payments == null)
+            Payments = new ObservableCollection<Payment>();
+
+        Payments.Clear();
+        foreach (var payment in result)
+            Payments.Add(payment);
     }
 
     [RelayCommand]
@@ -47,6 +55,6 @@ public partial class LoanSchedulerPageViewModel : BasePageViewModel
     {
         payment.IsPaid = !payment.IsPaid;
         payment.PaidAt = payment.IsPaid ? DateTime.Now : null;
-        await paymentService.UpdatePaymentAsync(payment);
+        await _paymentService.UpdatePaymentAsync(payment);
     }
 }

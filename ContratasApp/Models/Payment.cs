@@ -15,7 +15,6 @@ public class Payment
     public bool IsPaid { get; set; } = false; // Estado del pago
 
     public DateTime? PaidAt { get; set; } // Fecha real de pago, si se pagó
-
-    public string
-        Note { get; set; } // Opcional: puedes guardar comentarios (ej: “pago en efectivo”, “pagó tarde”, etc.)
+    
+    public string Note { get; set; } // Opcional: puedes guardar comentarios (ej: “pago en efectivo”, “pagó tarde”, etc.)
 }

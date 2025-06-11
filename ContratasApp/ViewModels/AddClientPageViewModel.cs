@@ -97,23 +97,37 @@ public partial class AddClientPageViewModel : BasePageViewModel
         [RelayCommand(CanExecute = nameof(CanSave))]
         async Task SaveAsync()
         {
+            if (string.IsNullOrWhiteSpace(name) ||
+                string.IsNullOrWhiteSpace(lastName) ||
+                string.IsNullOrWhiteSpace(phone) ||
+                string.IsNullOrWhiteSpace(PaymentMethod))
+            {
+                await Application.Current.MainPage.DisplayAlert(
+                    "Campos requeridos",
+                    "Por favor completa todos los campos obligatorios: Nombre, Apellido, Teléfono y Método de pago.",
+                    "Aceptar");
+                return;
+            }
+
             var client = new Client
             {
                 Id = ClientId,
                 Name = name,
                 LastName = lastName,
                 Phone = phone?.Trim(),
-                Email = email,
+                Email = email, // puede ser null
                 PaymentMethod = ValidPaymentMethod(PaymentMethod),
-                ImagePath     = ImagePath,
+                ImagePath = ImagePath,
                 IsArchived = false
             };
+
             needRefreshPage = true;
 
             if (ClientId > 0)
                 await _clientService.UpdateAsync(client);
             else
                 await _clientService.AddAsync(client);
+
             await NavigationService.GoBackAsync();
         }
 
@@ -143,7 +157,7 @@ public partial class AddClientPageViewModel : BasePageViewModel
         private string ValidPaymentMethod(string paymentMethod)
         {
             if (paymentMethod.Equals(null))
-                return DefaultPaymentMethod;
+                return "Ambos";
             return paymentMethod;
         }
         #endregion

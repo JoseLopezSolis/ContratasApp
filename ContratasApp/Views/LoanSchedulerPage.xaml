@@ -5,84 +5,94 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:base="clr-namespace:ContratasApp.Views.Base"
     xmlns:vm="clr-namespace:ContratasApp.ViewModels"
+    xmlns:model="clr-namespace:ContratasApp.Models"
+    xmlns:converters="clr-namespace:ContratasApp.Converters"
     x:DataType="vm:LoanSchedulerPageViewModel"
     x:Class="ContratasApp.Views.LoanSchedulerPage">
     
+    <base:BasePage.Resources>
+        <converters:PaidButtonTextConverter 
+            x:Key="PaidButtonTextConverter" />
+        
+        <converters:PaidButtonTextConverter 
+            x:Key="PaidStatusConverter" />
+    </base:BasePage.Resources>
+    
     <Shell.TitleView>
         <Label 
-            Text="Detalles del prestamo"
+            Text="Calendario de pagos"
             Style="{StaticResource shellTitleStyle}"/>
     </Shell.TitleView>
     
-    <ScrollView
-        Margin="20,10">
-        <VerticalStackLayout
-            Spacing="20">
-                <Grid
-                    ColumnDefinitions="Auto, Auto"
-                    RowDefinitions="Auto, Auto, Auto">
-                    <Label
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        FontAttributes="Bold"
-                        FontFamily="InterSemiBold"
-                        Text="Monto prestado:"/>
+    <CollectionView 
+        ItemsSource="{Binding Payments}"
+        SelectionMode="None">
+        
+        <CollectionView.ItemsLayout>
+            <GridItemsLayout 
+                Orientation="Vertical" 
+                VerticalItemSpacing="10"/>
+        </CollectionView.ItemsLayout>
+        
+        <CollectionView.ItemTemplate>
+            <DataTemplate
+                x:DataType="model:Payment">
+                <Border 
+                    Stroke="Gray" 
+                    Padding="10" 
+                    StrokeThickness="1">
                     
-                    <Label
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        FontSize="30"
-                        FontAttributes="Bold"
-                        TextColor="{StaticResource PositiveColor}"
-                        Text="{Binding Loan.Amount, StringFormat='${0:N2}'}" />
-                </Grid>
-            <Grid>
-                <Label
-                    Text="Calendario de pagos:"
-                    FontSize="20"
-                    />
-                
-            <CollectionView 
-                ItemsSource="{Binding Payments}">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Border 
-                            Padding="15"
-                            Margin="5">
-                            <Grid 
-                                ColumnDefinitions="*,Auto" 
-                                VerticalOptions="Center">
+                    <Border.StrokeShape>
+                        <RoundRectangle 
+                            CornerRadius="15" />
+                    </Border.StrokeShape>
+                    <Grid
+                        ColumnDefinitions="Auto, * , Auto"
+                        RowDefinitions="Auto,Auto,Auto">
+                        <Label 
+                            Grid.Column="0"
+                            Grid.Row="0"
+                            Text="Semana #"
+                            FontSize="20"
+                            FontAttributes="Bold"
+                            VerticalOptions="Center"
+                            TextColor="#2E7D32" />
+                        
+                        <Label 
+                            Grid.Column="0"
+                            Grid.Row="1"
+                            Text="{Binding Amount, StringFormat='💵  {0:C}'}"
+                            FontSize="20"
+                            FontAttributes="Bold"
+                            VerticalOptions="Center"
+                            TextColor="#2E7D32" />
+                        
+                        <Label
+                            Grid.Column="1"
+                            Grid.Row="0"
+                            VerticalOptions="Center"
+                            HorizontalOptions="End"
+                            Text="Marcar como pagado:"/>
+                        
+                        <CheckBox 
+                            Grid.Column="2"
+                            Grid.Row="0"
+                            IsChecked="{Binding IsPaid, Mode=TwoWay}" 
+                            Color="#1976D2"
+                            VerticalOptions="Center"
+                            HorizontalOptions="End">
+                        </CheckBox>
 
-                                <VerticalStackLayout>
-                                    <Label
-                                        x:DataType="vm:LoanSchedulerPageViewModel"
-                                        Text="{Binding DueDate, StringFormat='Fecha: {0:dd MMM yyyy}'}"
-                                        FontSize="16"
-                                        FontAttributes="Bold"/>
-
-                                    <Label 
-                                        Text="{Binding Amount, StringFormat='Monto: ${0:N2}'}"
-                                        FontSize="14"/>
-
-                                    <Label 
-                                        Text="{Binding PaidAt, StringFormat='Pagado: {0:dd MMM yyyy}'}"
-                                        FontSize="12"
-                                        TextColor="LightGreen"
-                                        IsVisible="{Binding IsPaid}" />
-                                    
-                                </VerticalStackLayout>
-
-                                <!-- ~1~ Check para marcar como pagado @1@ -->
-                                <!-- <CheckBox Grid.Column="1" -->
-                                <!--           IsChecked="{Binding IsPaid}" -->
-                                <!--           Command="{Binding BindingContext.TogglePaymentCommand, Source={x:Reference PageRef}}" -->
-                                <!--           CommandParameter="{Binding}" /> -->
-                            </Grid>
-                        </Border>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-            </Grid>
-        </VerticalStackLayout>
-    </ScrollView>
+                        <Label 
+                            Grid.Column="0"
+                            Grid.Row="2"
+                            VerticalOptions="Center"
+                            Text="{Binding DueDate, StringFormat='🗓️  Fecha: {0:dd/MM/yyyy}'}"
+                            FontSize="14"
+                            TextColor="Black" />
+                    </Grid>
+                </Border>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
 </base:BasePage>

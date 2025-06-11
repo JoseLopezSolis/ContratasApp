@@ -59,13 +59,16 @@
                 </Picker>
 
                 <!-- Fecha de inicio -->
-                <Label Grid.Row="2" Grid.Column="0"
-                       FontAttributes="Bold"
-                       Text="Fecha de inicio (opcional)"
-                       Style="{StaticResource SubtitleLabelStyle}" />
-                <DatePicker Grid.Row="3" Grid.Column="0"
-                            Date="{Binding StartDate}"
-                            MaximumDate="{x:Static syst:DateTime.Today}" />
+                <Label 
+                    Grid.Row="2" 
+                    Grid.Column="0"
+                    FontAttributes="Bold"
+                    Text="Fecha de inicio (opcional)"
+                    Style="{StaticResource SubtitleLabelStyle}" />
+                <DatePicker 
+                    Grid.Row="3" 
+                    Grid.Column="0"
+                    Date="{Binding StartDate}"/>
             </Grid>
         </ScrollView>
 

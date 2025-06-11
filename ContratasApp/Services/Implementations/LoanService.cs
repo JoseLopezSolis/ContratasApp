@@ -43,6 +43,4 @@ public class LoanService : ILoanService
         contrato.IsClosed = true;
         await _db.UpdateAsync(contrato);
     }
-
-
 }

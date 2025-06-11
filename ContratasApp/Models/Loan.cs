@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using ContratasApp.Enums;
 using SQLite;
@@ -43,4 +44,7 @@ public class Loan : ObservableObject
 
     [Ignore]
     public string LoanTypeTranslated => Type == LoanType.Weekly ? "Semanal" : "Mensual";
+    
+    [Ignore]
+    ObservableCollection<Payment> Payments { get; set; }
 }

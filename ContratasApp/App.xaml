@@ -6,27 +6,6 @@
     x:Class="ContratasApp.App">
     <Application.Resources>
         <ResourceDictionary>
-            <!-- Estilo global para Label -->
-            <Style TargetType="Label">
-                <Setter 
-                    Property="FontFamily" 
-                    Value="InterSemiBold" />
-            </Style>
-
-            <!-- Estilo global para Button -->
-            <Style TargetType="Button">
-                <Setter 
-                    Property="FontFamily" 
-                    Value="InterSemiBold" />
-            </Style>
-
-            <!-- Estilo global para Entry -->
-            <Style TargetType="Entry">
-                <Setter 
-                    Property="FontFamily" 
-                    Value="InterSemiBold" />
-            </Style>
-            
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />

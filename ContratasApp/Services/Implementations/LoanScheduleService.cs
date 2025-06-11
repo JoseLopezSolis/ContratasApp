@@ -18,14 +18,14 @@ public class LoanScheduleService : ILoanScheduleService
             case LoanType.Weekly:
                 for (int i = 0; i < 13; i++)
                 {
+                    dueDate = dueDate.AddDays(7); 
                     payments.Add(new Payment
                     {
                         LoanId = loan.Id,
-                        DueDate = dueDate, // ⬅️ AQUÍ se genera la fecha
+                        DueDate = dueDate, 
                         Amount = installment,
                         IsPaid = false
                     });
-                    dueDate = dueDate.AddDays(7); // ⬅️ Fecha de la próxima semana
                 }
                 break;
 
@@ -37,13 +37,13 @@ public class LoanScheduleService : ILoanScheduleService
                     payments.Add(new Payment
                     {
                         LoanId = loan.Id,
-                        DueDate = dueDate, // ⬅️ Fecha de este pago
+                        DueDate = dueDate, 
                         Amount = cuota,
                         IsPaid = false
                     });
 
                     remaining -= cuota;
-                    dueDate = dueDate.AddDays(30); // ⬅️ Próxima mensualidad
+                    dueDate = dueDate.AddDays(30);
                 }
                 break;
         }
