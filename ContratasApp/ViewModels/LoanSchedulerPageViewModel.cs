@@ -57,4 +57,30 @@ public partial class LoanSchedulerPageViewModel : BasePageViewModel
         payment.PaidAt = payment.IsPaid ? DateTime.Now : null;
         await _paymentService.UpdatePaymentAsync(payment);
     }
+    
+    [RelayCommand]
+    private async Task SavePaidPaymentsAsync()
+    {
+        var pagosMarcados = Payments
+            .Where(p => p.IsPaid && p.PaidAt == null)
+            .ToList();
+
+        var pagosDesmarcados = Payments
+            .Where(p => !p.IsPaid && p.PaidAt != null)
+            .ToList();
+
+        foreach (var payment in pagosMarcados)
+        {
+            payment.PaidAt = DateTime.Now;
+            await _paymentService.UpdatePaymentAsync(payment);
+        }
+
+        foreach (var payment in pagosDesmarcados)
+        {
+            payment.PaidAt = null;
+            await _paymentService.UpdatePaymentAsync(payment);
+        }
+        await NavigationService.GoBackAsync();
+    }
 }
+

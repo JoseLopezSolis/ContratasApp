@@ -12,7 +12,8 @@ namespace ContratasApp.ViewModels;
     public partial class ClientPageViewModel : BasePageViewModel
     {
         readonly IClientService   _clientService;
-        readonly ILoanService loanService;
+        readonly ILoanService _loanService;
+        readonly IPaymentService   _paymentService;
 
         [ObservableProperty]
         private int clientId;
@@ -24,16 +25,21 @@ namespace ContratasApp.ViewModels;
         private ObservableCollection<Loan> loans = new();
         
         [ObservableProperty]
+        private List<Payment> payments;
+        
+        [ObservableProperty]
         private Loan selectedContract;
         
         public ClientPageViewModel(
             IClientService clientService,
+            IPaymentService paymentService,
             ILoanService loanService,
             INavigationService navigationService)
             : base(navigationService)
         {
             _clientService   = clientService;
-            this.loanService = loanService;
+            _paymentService   = paymentService;
+            _loanService = loanService;
         }
 
         partial void OnClientIdChanged(int id)
@@ -42,11 +48,16 @@ namespace ContratasApp.ViewModels;
         async void LoadClientAndContractsAsync(int id)
         {
             Client = await _clientService.GetByIdAsync(id);
-            
-            var list = await loanService.GetByClientIdAsync(id);
+    
+            var list = await _loanService.GetByClientIdAsync(id);
+
             Loans.Clear();
+    
             foreach (var loan in list.OrderByDescending(x => x.StartDate))
+            {
+                loan.Payments = await _paymentService.GetPaymentsByLoanIdAsync(loan.Id);
                 Loans.Add(loan);
+            }
         }
 
         [RelayCommand]
@@ -55,10 +66,15 @@ namespace ContratasApp.ViewModels;
             if (Client == null)
                 return;
 
-            var list = await loanService.GetByClientIdAsync(Client.Id);
+            var list = await _loanService.GetByClientIdAsync(Client.Id);
+
             Loans.Clear();
-            foreach (var client in list.OrderByDescending(x => x.StartDate))
-                Loans.Add(client);
+
+            foreach (var loan in list.OrderByDescending(x => x.StartDate))
+            {
+                loan.Payments = await _paymentService.GetPaymentsByLoanIdAsync(loan.Id);
+                Loans.Add(loan);
+            }
         }
 
         /// <summary>

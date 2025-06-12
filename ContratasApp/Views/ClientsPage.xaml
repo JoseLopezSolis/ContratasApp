@@ -15,13 +15,13 @@
             
             <Label
                 Grid.Column="0"
-                Text="Clientes"
-                Style="{StaticResource TitleLabel}"/>
+                Style="{StaticResource TitleLabel}"
+                Text="Clientes"/>
             
             <Label
                 Grid.Column="1"
-                Text="{Binding ArchiveButtonText}"
                 Style="{StaticResource CustomHeaderLabel}"
+                Text="{Binding ArchiveButtonText}"
                 TextColor="{Binding ShowArchived,
                 Converter={StaticResource BoolToArchiveColor}}">
                 
@@ -29,11 +29,11 @@
                     <TapGestureRecognizer 
                         Command="{Binding ToggleArchivedCommand}" />
                 </Label.GestureRecognizers>
+                
             </Label>
 
             <Label
                 Grid.Column="2"
-                FontFamily="FAS"
                 Style="{StaticResource CustomHeaderIcon}"
                 Text="{x:Static models:FaBrandIcons.Plus}">
                 

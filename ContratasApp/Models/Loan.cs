@@ -5,46 +5,63 @@ using SQLite;
 
 namespace ContratasApp.Models;
 
-public class Loan : ObservableObject
+public partial class Loan : ObservableObject
 {
     [PrimaryKey, AutoIncrement]
     public int Id { get; set; }
 
     [Indexed]
     public int ClientId { get; set; }
+
     public decimal Amount { get; set; }
+
     public LoanType Type { get; set; }
+
     public DateTime StartDate { get; set; }
+
     public DateTime CreatedAt { get; set; } = DateTime.Now;
+
     public bool IsClosed { get; set; }
-
-    // Monto de cada cuota semanal (10% del Amount)
-    [Ignore]
-    public decimal WeeklyPaymentAmount => Math.Round(Amount * 0.10m, 2);
-
-    // Número total de pagos según el tipo
-    [Ignore]
-    public int TotalPayments => Type == LoanType.Weekly ? 13 : 0;
-
-    // Cuotas ya abonadas (se calcula en el ViewModel)
-    [Ignore]
-    public int PaidCount { get; set; }
-
-    // Cuotas restantes
-    [Ignore]
-    public int RemainingPayments => TotalPayments > 0 ? TotalPayments - PaidCount : 0;
-
-    // Progreso en porcentaje para usar en ProgressBar
-    [Ignore]
-    public double PaymentProgress => TotalPayments > 0 ? (double)PaidCount / TotalPayments : 0;
-
-    // Estado legible
-    [Ignore]
-    public string Status => IsClosed ? "Cerrado" : "Activo";
-
-    [Ignore]
-    public string LoanTypeTranslated => Type == LoanType.Weekly ? "Semanal" : "Mensual";
     
     [Ignore]
-    ObservableCollection<Payment> Payments { get; set; }
+    public string LoanTypeTranslated => Type switch
+    {
+        LoanType.Weekly => "Semanal",
+        LoanType.Monthly => "Mensual",
+        _ => "Desconocido"
+    };
+        
+    [Ignore]
+    public List<Payment> Payments { get; set; } = new();
+
+    [Ignore]
+    public int PaidPayments => Payments?.Count(p => p.IsPaid) ?? 0;
+
+    [Ignore]
+    public int RemainingPayments => Payments?.Count(p => !p.IsPaid) ?? 0;
+    
+    [Ignore]
+    public string LoanStatus => RemainingPayments == 0 ? "Pagado ✅" : "Activo";
+
+    [Ignore]
+    public int TotalPayments => Payments?.Count ?? 0;
+
+    [Ignore]
+    public double Progress
+    {
+        get
+        {
+            int totalExpectedPayments = Type switch
+            {
+                LoanType.Weekly => 13,
+                LoanType.Monthly => 10,
+                _ => 1
+            };
+
+            double rawProgress = (double)PaidPayments / totalExpectedPayments;
+            return Math.Min(rawProgress, 1.0);
+        }
+    }
+
+
 }

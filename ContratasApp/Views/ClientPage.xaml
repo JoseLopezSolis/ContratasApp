@@ -10,11 +10,10 @@
     
     <Shell.TitleView>
             <Label 
-                Text="Detalles del cliente"
+                Text="Perfil del cliente"
                 Style="{StaticResource shellTitleStyle}"/>
     </Shell.TitleView>
     
-    <!-- FONTAWESOME ICONS-->
     <base:BasePage.Resources>
         <x:String 
             x:Key="Phone">&#xf095;</x:String>
@@ -55,16 +54,18 @@
                     Style="{StaticResource labelClientStyle}"
                     Text="{Binding  Client.FullName}" />
                 
-                <Label
-                    Text="Acciones"
-                    Style="{StaticResource CenteredBoldLabelStyle}"
-                   />
-                
                 <HorizontalStackLayout
                     Margin="0,5"
                     HorizontalOptions="Center"
                     Spacing="10">
+                    <Grid
+                        RowDefinitions="Auto, Auto"
+                        ColumnDefinitions="Auto,Auto"
+                        RowSpacing="10"
+                        ColumnSpacing="10">
                         <Border
+                            Grid.Column="0"
+                            Grid.Row="0"
                             BackgroundColor="White"
                             StrokeThickness="0"
                             StrokeShape="RoundRectangle 100"
@@ -102,7 +103,15 @@
                                 </Image.Source>
                             </Image>
                         </Border>
+                        <Label
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Text="Llamar"
+                            FontAttributes="Bold"/>
+                    
                         <Border
+                            Grid.Row="0"
+                            Grid.Column="1"
                             BackgroundColor="White"
                             StrokeThickness="0"
                             StrokeShape="RoundRectangle 100"
@@ -138,6 +147,12 @@
                                 </Image.Source>
                             </Image>
                         </Border>
+                        <Label
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            Text="Enviar DM"
+                            FontAttributes="Bold" />
+                    </Grid>
                 </HorizontalStackLayout>
                 
                 <Grid
@@ -146,11 +161,10 @@
                     <Label
                         Grid.Column="0"
                         Grid.Row="0"
-                        Text="Prestamos"
+                        Text="Préstamos activos"
                         FontSize="20"
                         FontAttributes="Bold"
                         Margin="0,10"/>
-                    
                     
                     <Label
                         Grid.Row="0"
@@ -170,8 +184,8 @@
                         
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="Detalles " TextDecorations="Underline"/>
-                                <Span Text="{Binding Client.FullName}" FontAttributes="Bold" TextDecorations="Underline"/>
+                                <Span Text="Ver mas de " TextDecorations="Underline"/>
+                                <Span Text="{Binding Client.Name}" FontAttributes="Bold" TextDecorations="Underline"/>
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
@@ -224,48 +238,54 @@
                                 <VerticalStackLayout 
                                     Padding="15"
                                     Spacing="5">
-                                    <Label 
-                                        FontSize="18" 
-                                        FontAttributes="Bold">
-                                        <Label.FormattedText>
-                                            <FormattedString>
-                                                <Span 
-                                                    Text="Monto: " 
-                                                    TextColor="Black" 
-                                                    FontAttributes="Bold"/>
-                                                <Span 
-                                                    Text="{Binding Amount, StringFormat='{0:C0}'}" 
-                                                    TextColor="#4CAF50"/>
-                                            </FormattedString>
-                                        </Label.FormattedText>
-                                    </Label>
-                                    
-                                    <Label
-                                        Text="{Binding LoanTypeTranslated}"
-                                        FontSize="14"
-                                        TextColor="Gray" />
-
                                     <Grid 
                                         ColumnDefinitions="*"
-                                        RowDefinitions="*,Auto,Auto">
+                                        RowDefinitions="*,Auto,Auto,Auto,Auto"
+                                        RowSpacing="3">
+                                        <Label 
+                                            Grid.Row="0"
+                                            Grid.Column="0"
+                                            FontSize="18" 
+                                            FontAttributes="Bold">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span 
+                                                        Text="Contrata: " 
+                                                        TextColor="Black" />
+                                                    <Span 
+                                                        Text="{Binding Amount, StringFormat='{0:C0} MXN'}"
+                                                        FontAttributes="Bold"
+                                                        TextColor="#4CAF50"/>
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
                                         <Label
-                                            Grid.Row="0" Grid.Column="0"
-                                            Text="{Binding StartDate, StringFormat='Inicio: {0:dd/MM/yyyy}'}"
+                                            Grid.Row="1"
+                                            Grid.Column="0"
+                                            Text="{Binding StartDate, StringFormat='Efectuada el dia: {0:dd/MM/yyyy}'}"
                                             FontSize="12" />
                                         <Label
-                                            Grid.Row="1" Grid.Column="0"
-                                            Text="{Binding IsClosed, Converter={StaticResource BoolToStatusConverter}}"
+                                            Grid.Row="2" 
+                                            Grid.Column="0"
+                                            Text="{Binding LoanTypeTranslated, StringFormat='Frecuencia de pago: {0} '}"
+                                            FontSize="12"
+                                            TextColor="Gray" />
+                                        <Label
+                                            Grid.Row="3" 
+                                            Grid.Column="0"
+                                            Text="{Binding LoanStatus}"
                                             FontSize="12" />
                                         <Label
-                                            Grid.Row="1" Grid.Column="1"
-                                            Text="{Binding RemainingPayments, StringFormat='Faltan: {0}'}"
+                                            Grid.Row="3"
+                                            Grid.Column="1"
+                                            Text="{Binding RemainingPayments, StringFormat='Cuotas restantes: {0}'}"
                                             FontSize="12"
                                             HorizontalOptions="End" />
                                     </Grid>
                                 <!--0.07692307692 1/13 del progress bar -->
                                     <ProgressBar
                                         x:Name="ProgressBar"
-                                        Progress="0.07692307692"
+                                        Progress="{Binding Progress}"
                                         ProgressColor="#4CAF50"
                                         BackgroundColor="#DDDDDD"
                                         HeightRequest="6"
@@ -284,7 +304,7 @@
 
         <!-- Button static from bottom-->
         <Button
-            Grid.Row="1" Text="Agregar nuevo"
+            Grid.Row="1" Text="Nuevo préstamo"
             BackgroundColor="#333" 
             TextColor="White"
             FontSize="16"
