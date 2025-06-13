@@ -9,7 +9,7 @@
     x:Class="ContratasApp.Views.ClientPage">
     
     <Shell.TitleView>
-            <Label 
+            <Label  
                 Text="Perfil del cliente"
                 Style="{StaticResource shellTitleStyle}"/>
     </Shell.TitleView>
