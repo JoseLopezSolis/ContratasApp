@@ -65,6 +65,7 @@ public static class MauiProgramExtension
         builder.Services.AddSingleton<INavigationService, NavigationService>();
         builder.Services.AddSingleton<IPaymentService, PaymentService>();
         builder.Services.AddSingleton<ILoanScheduleService, LoanScheduleService>();
+        builder.Services.AddSingleton<IWhatsappService, WhatsappService>();
         
         return builder;
     }

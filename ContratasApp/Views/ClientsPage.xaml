@@ -8,44 +8,40 @@
     xmlns:models="clr-namespace:ContratasApp.Models"
     x:DataType="vm:ClientsPageViewModel"
     x:Class="ContratasApp.Views.ClientsPage">
+     
     <Shell.TitleView>
         <Grid 
             ColumnDefinitions="*,Auto,Auto" 
             ColumnSpacing="10">
-            
             <Label
                 Grid.Column="0"
                 Style="{StaticResource TitleLabel}"
                 Text="Clientes"/>
-            
             <Label
                 Grid.Column="1"
+                FontSize="14"
+                VerticalOptions="Center"
                 Style="{StaticResource CustomHeaderLabel}"
                 Text="{Binding ArchiveButtonText}"
                 TextColor="{Binding ShowArchived,
                 Converter={StaticResource BoolToArchiveColor}}">
-                
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer 
                         Command="{Binding ToggleArchivedCommand}" />
                 </Label.GestureRecognizers>
-                
             </Label>
-
             <Label
                 Grid.Column="2"
+                VerticalOptions="Center"
                 Style="{StaticResource CustomHeaderIcon}"
-                Text="{x:Static models:FaBrandIcons.Plus}">
-                
+                Text="{x:Static models:FaBrandIcons.Plus}"
+                FontSize="30">
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer
                         Command="{Binding AddClientCommand}" />
                 </Label.GestureRecognizers>
-                
             </Label>
-            
         </Grid>
-        
     </Shell.TitleView>
     
     <Grid 
@@ -68,14 +64,15 @@
                 ItemsSource="{Binding FilteredClients}"
                 EmptyView="{Binding EmptyClientsMessage}"
                 SelectionMode="None">
-
                 <CollectionView.ItemTemplate>
                     <DataTemplate 
                         x:DataType="models:Client">
+                        
                         <SwipeView>
                             <SwipeView.RightItems>
                                 <SwipeItems 
                                     Mode="Reveal">
+                                    
                                     <!-- EDIT -->
                                     <SwipeItemView
                                         Style="{StaticResource SwipeItemCustomStyle}">
@@ -130,11 +127,12 @@
                             </SwipeView.RightItems>
                             
                         <Border 
+                            StrokeThickness="0.5"
                             Style="{StaticResource BorderClient}">
                             
                             <Border.StrokeShape>
                                 <RoundRectangle 
-                                    CornerRadius="12" />
+                                    CornerRadius="15" />
                             </Border.StrokeShape>
                             
                             <Border.GestureRecognizers>
@@ -143,31 +141,37 @@
                                     Path=NavigateToDetailCommand}"
                                     CommandParameter="{Binding .}" />
                             </Border.GestureRecognizers>
-                            
                             <HorizontalStackLayout 
                                 Spacing="12">
                                 
-                                <!-- Imagen circular -->
                                 <Border
                                     Style="{StaticResource ItemClientLayout}">
                                     <Border.StrokeShape>
-                                        <RoundRectangle CornerRadius="30" />
+                                        <RoundRectangle 
+                                            CornerRadius="100" />
                                     </Border.StrokeShape>
                                     <Image
+                                        HeightRequest="60"
+                                        WidthRequest="60"
                                         Style="{StaticResource ImageItemStyle}"
                                         Source="{Binding ImagePath}"/>
                                 </Border>
-
-                                <!-- Datos -->
+                                
                                 <VerticalStackLayout 
-                                    VerticalOptions="CenterAndExpand" 
+                                    VerticalOptions="Center" 
                                     Spacing="2">
                                     <Label 
                                         Text="{Binding FullName}" 
                                         Style="{StaticResource UsernameCardLabel}" />
                                     
                                     <Label 
-                                        Text="{Binding ContractsCount, StringFormat='Prestamos totales: {0}'}" />
+                                        FontSize="10"
+                                        TextColor="Gray"
+                                        Text="{Binding ContractsCount, StringFormat='Prestamos: {0}'}" />
+                                    <Label
+                                        FontSize="10"
+                                        TextColor="Gray"
+                                        Text="Monto semanal:"/>
                                 </VerticalStackLayout>
                                 
                             </HorizontalStackLayout>

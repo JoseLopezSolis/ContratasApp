@@ -10,9 +10,9 @@ public partial class BasePage : ContentPage
         InitializeComponent();
         BindingContext = this.GetViewModel();
         SetValue(HideSoftInputOnTappedProperty, true);
+        Shell.SetNavBarHasShadow(this, false);
     }
 
-    #region Override_methods
     protected override void OnAppearing()
     {
         if (BindingContext is IViewModel viewModel)
@@ -24,5 +24,4 @@ public partial class BasePage : ContentPage
         if (BindingContext is IViewModel viewModel)
             viewModel.OnDisappearing();
     }
-    #endregion
 }

@@ -692,7 +692,7 @@
             Value="Center"/>
         <Setter
             Property="FontSize"
-            Value="20"/>
+            Value="15"/>
         <Setter
             Property="FontAttributes"
             Value="Bold"/>
@@ -782,6 +782,33 @@
             Value="Transparent"/>
     </Style>
     
+    <!-- label form style -->
+    <Style
+        TargetType="Label"
+        x:Key="labelImage">
+        <Setter
+            Property="FontSize"
+            Value="12"/>
+        
+        <Setter
+            Property="TextColor"
+            Value="Gray"/>
+        
+        <Setter
+            Property="HorizontalOptions"
+            Value="Center"/>
+        <Setter
+            Property="Margin"
+            Value="0, 5"/>
+    </Style>
     
-    
+    <!-- label form style -->
+    <Style
+        TargetType="Label"
+        x:Key="labelEntry"
+        BasedOn="{StaticResource labelImage}">
+        <Setter
+            Property="HorizontalOptions"
+            Value="Start"/>
+    </Style>
 </ResourceDictionary>

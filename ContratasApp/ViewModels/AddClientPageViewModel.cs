@@ -34,7 +34,7 @@ public partial class AddClientPageViewModel : BasePageViewModel
         #endregion
 
         #region Constants
-        const string DefaultImageFileName = "default_profile.png";
+        const string DefaultImageFileName = "user.png";
         private readonly string DefaultPaymentMethod = "Transferencia y efectivo" ;
         #endregion
 

@@ -7,16 +7,17 @@
     xmlns:behavior="clr-namespace:ContratasApp.Behavior"
     x:DataType="vm:AddClientPageViewModel"
     x:Class="ContratasApp.Views.AddClientPage">
+    
     <Shell.TitleView>
         <Label 
-            Text="Ingresa los detalles del cliente"
+            Text="Ingresa los datos del cliente"
             Style="{StaticResource shellTitleStyle}"/>
     </Shell.TitleView>
     
     <Grid 
         RowDefinitions="*,Auto" 
-        Padding="20">
-
+        Padding="30, 10">
+        
         <ScrollView 
             Grid.Row="0">
             <VerticalStackLayout 
@@ -46,11 +47,8 @@
                 </Border>
 
                 <Label 
-                    Text="Tap para cambiar la foto"
-                    FontSize="12"
-                    TextColor="Gray"
-                    HorizontalOptions="Center"
-                    Margin="0,5" />
+                    Style="{StaticResource labelImage}"
+                    Text="Tap para cambiar la foto"/>
 
                 <!-- Formulario -->
                 <Grid 
@@ -62,26 +60,20 @@
                     <Label 
                         Grid.Row="0" 
                         Grid.ColumnSpan="2"
-                        Text="Nombre" 
-                        FontAttributes="Bold" 
-                        FontSize="14" 
-                        TextColor="Gray" />
+                        Style="{StaticResource labelEntry}"
+                        Text="Nombre" />
                     
                     <Entry 
                         Grid.Row="1" 
                         Grid.ColumnSpan="2"
                         Text="{Binding Name}"
-                        TextColor="Black"
-                        FontSize="16"
-                        HeightRequest="50"/>
+                        TextColor="Black"/>
 
                     <Label 
                         Grid.Row="2"
                         Grid.Column="0"
-                        Text="Apellido"
-                        FontAttributes="Bold"
-                        FontSize="14"
-                        TextColor="Gray" />
+                        Style="{StaticResource labelEntry}"
+                        Text="Apellido"/>
                     
                     <Entry 
                         Grid.Row="3" 
@@ -94,10 +86,8 @@
                     <Label 
                         Grid.Row="2" 
                         Grid.Column="1"
-                        Text="Teléfono" 
-                        FontAttributes="Bold" 
-                        FontSize="14" 
-                        TextColor="Gray" />
+                        Style="{StaticResource labelEntry}"
+                        Text="Teléfono"/>
                     
                     <Entry 
                         Grid.Row="3" 
@@ -117,8 +107,8 @@
                     <Label
                         Grid.Row="4"
                         Grid.Column="0"
-                        Text="Email"
-                        TextColor="Gray" />
+                        Style="{StaticResource labelEntry}"
+                        Text="Email" />
                     
                     <Entry
                         Grid.Row="5"
@@ -137,9 +127,7 @@
                         Grid.Row="6" 
                         Grid.Column="0"
                         Text="Método de pago" 
-                        FontAttributes="Bold" 
-                        FontSize="14" 
-                        TextColor="Gray" />
+                        Style="{StaticResource labelEntry}"/>
                     
                     <Picker 
                         Grid.Row="7" 

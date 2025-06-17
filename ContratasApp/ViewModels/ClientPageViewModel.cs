@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ContratasApp.Helpers;
 using ContratasApp.Models;
+using ContratasApp.Services.Implementations;
 using ContratasApp.Services.Interfaces;
 using ContratasApp.ViewModels.Base;
 
@@ -14,6 +15,7 @@ namespace ContratasApp.ViewModels;
         readonly IClientService   _clientService;
         readonly ILoanService _loanService;
         readonly IPaymentService   _paymentService;
+        readonly IWhatsappService _whatsappService;
 
         [ObservableProperty]
         private int clientId;
@@ -34,12 +36,14 @@ namespace ContratasApp.ViewModels;
             IClientService clientService,
             IPaymentService paymentService,
             ILoanService loanService,
-            INavigationService navigationService)
+            INavigationService navigationService,
+            IWhatsappService whatsappService)
             : base(navigationService)
         {
             _clientService   = clientService;
             _paymentService   = paymentService;
             _loanService = loanService;
+            _whatsappService = whatsappService;
         }
 
         partial void OnClientIdChanged(int id)
@@ -130,39 +134,42 @@ namespace ContratasApp.ViewModels;
                 if (string.IsNullOrWhiteSpace(client.Phone))
                 {
                     await Shell.Current.DisplayAlert("Error",
-                        "Phone number is missing.", "OK");
+                        "El número de teléfono está vacío.", "OK");
                     return;
                 }
 
-                var message = $"Hola {client.Name}, te recuerdo que aún está pendiente el pago de la contrata. Te agradeceríamos mucho que pudieras realizarlo pronto. ¡Gracias por tu atención!";
-                var encodedMessage = Uri.EscapeDataString(message);
-                var personalWhatsApp = $"https://wa.me/{client.Phone}/?text={encodedMessage}";
+                bool confirm = await Shell.Current.DisplayAlert(
+                    "Confirmación",
+                    $"¿Deseas enviar un recordatorio por WhatsApp a {client.FullName}?",
+                    "Sí", "No");
 
-                if (await Launcher.Default.CanOpenAsync(personalWhatsApp))
+                if (!confirm) return;
+
+                var message = new WhatsappReminderMessage
                 {
-                    bool confirm = await Shell.Current.DisplayAlert(
-                        "Confirmación",
-                        $"¿Estás seguro que deseas enviar un recordatorio por WhatsApp a {client.FullName}?",
-                        "Sí",
-                        "No"
-                    );
-                    if (confirm)
-                    {
-                        await Launcher.Default.OpenAsync(personalWhatsApp);
-                        return;
-                    }
+                    To = client.Phone.StartsWith("52") ? client.Phone : $"52{client.Phone}",
+                    TemplateName = "recordatorio_pago",
+                    LanguageCode = "es_MX",
+                    ClientName = client.Name,
+                    Amount = "$500 MXN", // puedes reemplazar con client.Amount si lo tienes
+                    LimitDate = "12/05/2025" // o client.DueDate?.ToString("dd/MM/yyyy")
+                };
 
-                    return;
+                var service = new WhatsappService(); // clase que crea el HttpClient
+                var success = await service.SendReminderAsync(message);
+
+                if (success)
+                {
+                    await Shell.Current.DisplayAlert("Éxito", "Mensaje enviado por WhatsApp ✅", "OK");
                 }
-                // Neither app is available
-                await Shell.Current.DisplayAlert(
-                    "WhatsApp Not Available",
-                    "Neither WhatsApp nor WhatsApp Business is installed.",
-                    "OK");
+                else
+                {
+                    await Shell.Current.DisplayAlert("Error", "No se pudo enviar el mensaje. Verifica tu backend.", "OK");
+                }
             }
             catch (Exception ex)
             {
-                await Shell.Current.DisplayAlert("Error", $"Unable to send message: {ex.Message}", "OK");
+                await Shell.Current.DisplayAlert("Error", $"Error inesperado: {ex.Message}", "OK");
             }
         }
 
